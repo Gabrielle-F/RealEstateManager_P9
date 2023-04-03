@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 33
@@ -52,4 +54,5 @@ dependencies {
 
     //DAGGER HILT//
     implementation 'com.google.dagger:hilt-android:2.44'
+    kapt 'com.google.dagger:hilt-android-compiler:2.44'
 }
