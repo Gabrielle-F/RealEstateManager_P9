@@ -1,3 +1,32 @@
 <resources>
     <string name="app_name">Real Estate Manager</string>
+
+    <!-- FRAGMENT ADD PROPERTY -->
+    <string name="type">Type</string>
+    <string name="price">Price</string>
+    <string name="area">Area</string>
+    <string name="number_of_rooms">Rooms</string>
+    <string name="city">City</string>
+    <string name="postal_code">Postal Code</string>
+    <string name="street_number">Street Number</string>
+    <string name="street">Street</string>
+    <string name="address">Address</string>
+    <string name="available_or_sold">Sold :</string>
+    <string name="add_property">Add Property</string>
+    <string name="add_pictures">Add Pictures</string>
+    <string name="switch_on">Sold</string>
+    <string name="switch_off">Available</string>
+    <string name="register_date">Register Date</string>
+    <string name="sold_date">Sold Date</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_agent">Agent :</string>
+
+    <!-- AMENITIES CHECKBOX -->
+    <string name="school">School</string>
+    <string name="restaurants">Restaurants</string>
+    <string name="playground">Playground</string>
+    <string name="supermarket">Supermarket</string>
+    <string name="shopping_area">Shopping Area</string>
+    <string name="cinema">Cinema</string>
+
 </resources>
