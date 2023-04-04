@@ -54,6 +54,8 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
     //MATERIAL DESIGN//
     implementation 'com.google.android.material:material:1.8.0'
+    //FRAGMENT//
+    implementation "androidx.fragment:fragment-ktx:1.5.5"
 
     //ROOM//
     implementation 'androidx.room:room-ktx:2.5.1'
