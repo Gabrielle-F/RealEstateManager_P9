@@ -4,31 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.openclassrooms.realestatemanager.ui.MainActivity"
+    tools:context="com.openclassrooms.realestatemanager.ui.main.MainActivity"
     android:gravity="center">
 
-    <include
-        android:id="@+id/activity_main_toolbar_include"
-        layout="@layout/activity_main_toolbar"
-        app:layout_constraintTop_toTopOf="parent"/>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/activity_main_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:backgroundTint="@color/primaryColor"/>
     
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/activity_main_bottom_app_bar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:fabAlignmentMode="end"
-        app:fabCradleMargin="8dp"
+        android:layout_gravity="bottom"
+        app:fabAlignmentMode="center"
         app:fabCradleRoundedCornerRadius="16dp"
         app:fabCradleVerticalOffset="8dp">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="35dp"
             android:layout_height="35dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="20dp"
-            android:layout_marginEnd="20dp"
             app:fabSize="auto"
             app:layout_anchor="@+id/activity_main_bottom_app_bar"
             android:backgroundTint="@color/accentColor"
