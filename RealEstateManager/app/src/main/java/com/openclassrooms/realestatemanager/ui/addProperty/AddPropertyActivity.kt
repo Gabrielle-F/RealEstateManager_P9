@@ -1,44 +1,44 @@
 package com.openclassrooms.realestatemanager.ui.addProperty
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.databinding.FragmentAddPropertyBinding
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import com.openclassrooms.realestatemanager.databinding.ActivityAddPropertyBinding
 import com.openclassrooms.realestatemanager.model.Property
+import com.openclassrooms.realestatemanager.ui.main.MainActivity
 import com.openclassrooms.realestatemanager.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AddPropertyFragment : Fragment(R.layout.fragment_add_property) {
+class AddPropertyActivity : AppCompatActivity() {
 
-    private lateinit var binding : FragmentAddPropertyBinding
+    private lateinit var binding : ActivityAddPropertyBinding
     private val amenitiesView : AddPropertyAmenitiesView = AddPropertyAmenitiesView()
-    private val addPropertyFragmentViewModel : AddPropertyFragmentViewModel by viewModels()
+    private val addPropertyViewModel : AddPropertyViewModel by viewModels()
 
     @Override
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        configureListeners()
-    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    @Override
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentAddPropertyBinding.inflate(inflater, container, false)
+        binding = ActivityAddPropertyBinding.inflate(layoutInflater)
         val view = binding.root
-        return view
+        setContentView(view)
+
+        configureListeners()
     }
 
     fun configureListeners() {
         binding.activityAddFab.setOnClickListener { createProperty() }
+        binding.cancelAddFab.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     fun createProperty() {
         val property : Property = getPropertyToCreate()
-        addPropertyFragmentViewModel.createProperty(property)
+        addPropertyViewModel.createProperty(property)
     }
 
     fun getPropertyToCreate(id : Int = 0) : Property {

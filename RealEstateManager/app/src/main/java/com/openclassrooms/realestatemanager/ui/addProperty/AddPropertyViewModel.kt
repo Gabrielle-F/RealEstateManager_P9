@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class AddPropertyFragmentViewModel @Inject constructor(private val createPropertyUseCase : CreatePropertyUseCase) :
+class AddPropertyViewModel @Inject constructor(private val createPropertyUseCase : CreatePropertyUseCase) :
     ViewModel() {
 
     fun createProperty(property : Property) {
