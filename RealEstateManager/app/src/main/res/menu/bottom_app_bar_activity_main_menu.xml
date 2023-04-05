@@ -3,12 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/bottom_app_bar_icon_menu"
-        android:title="MenuIcon"
-        android:icon="@drawable/ic_menu_bottom_app_bar_white"
-        app:showAsAction="ifRoom" />
-
-    <item
         android:id="@+id/bottom_app_bar_edit_property"
         android:title="EditPropertyIcon"
         android:icon="@drawable/ic_edit_property_white"
