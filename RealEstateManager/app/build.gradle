@@ -56,6 +56,9 @@ dependencies {
     implementation 'com.google.android.material:material:1.8.0'
     //FRAGMENT//
     implementation "androidx.fragment:fragment-ktx:1.5.5"
+    //NAVIGATION//
+    implementation 'androidx.navigation:navigation-runtime:2.5.3'
+    implementation 'androidx.navigation:navigation-fragment:2.5.3'
 
     //ROOM//
     implementation 'androidx.room:room-ktx:2.5.1'
