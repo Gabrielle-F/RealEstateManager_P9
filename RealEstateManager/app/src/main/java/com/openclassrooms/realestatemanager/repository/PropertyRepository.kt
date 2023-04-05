@@ -12,4 +12,8 @@ class PropertyRepository @Inject constructor(private val propertyDao : PropertyD
         return propertyDao.insertProperty(property)
     }
 
+    fun getAllProperties() {
+        return propertyDao.getAllProperties()
+    }
+
 }
