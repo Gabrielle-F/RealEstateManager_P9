@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.openclassrooms.realestatemanager.model.Property
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PropertyDao {
@@ -12,6 +13,6 @@ interface PropertyDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertProperty(property: Property)
 
-    @Query("SELECT * FROM Property")
-    fun getAllProperties()
+    @Query("SELECT * FROM property_table")
+    fun getAllProperties() : Flow<List<Property>>
 }
