@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Real Estate Manager</string>
 
+    <!-- ACTIVITY CHOICE CLIENT OR AGENT -->
+    <string name="you_are">You are :</string>
+    <string name="client">Client</string>
+    <string name="agent">Agent</string>
+
     <!-- FRAGMENT ADD PROPERTY -->
     <string name="type">Type</string>
     <string name="price">Price</string>
