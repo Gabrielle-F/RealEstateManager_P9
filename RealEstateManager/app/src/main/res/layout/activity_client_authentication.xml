@@ -45,15 +45,30 @@
         />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/authentication_btn_client"
+        android:id="@+id/log_in_btn_client"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/sign_in_btn_client"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="20dp"
+        android:text="@string/log_in"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:shadowColor="@color/primaryDarkColor"
+        style="@style/ThemeOverlay.Material3.Button.TonalButton"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/sign_in_btn_client"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/authentication"
-        android:layout_marginBottom="40dp"
-        android:padding="10dp"
+        android:text="@string/sign_in"
+        android:layout_marginBottom="30dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
         android:shadowColor="@color/primaryDarkColor"
         style="@style/ThemeOverlay.Material3.Button.TonalButton"/>
 
