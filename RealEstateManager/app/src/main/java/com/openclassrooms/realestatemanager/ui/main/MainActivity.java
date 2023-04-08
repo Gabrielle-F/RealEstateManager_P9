@@ -11,13 +11,18 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.ui.addProperty.AddPropertyActivity;
+import com.openclassrooms.realestatemanager.ui.authentication.ChoiceClientOrAgentActivity;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
+
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +41,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if(user == null) {
+            Intent intent = new Intent(this, ChoiceClientOrAgentActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
