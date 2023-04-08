@@ -68,9 +68,11 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.5.1'
     implementation 'androidx.room:room-rxjava2:2.5.1'
     kapt 'androidx.room:room-compiler:2.5.1'
-    //FIREBASE//
+    //FIREBASE & FIRESTORE//
     implementation platform('com.google.firebase:firebase-bom:31.4.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-firestore'
 
     //DAGGER HILT//
     implementation 'com.google.dagger:hilt-android:2.43.2'
