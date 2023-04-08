@@ -6,6 +6,11 @@
     <string name="client">Client</string>
     <string name="agent">Agent</string>
 
+    <!-- ACTIVITY CLIENT/AGENT AUTHENTICATION -->
+    <string name="email">Enter your email</string>
+    <string name="password">Enter your password</string>
+    <string name="authentication">Authentication</string>
+
     <!-- FRAGMENT ADD PROPERTY -->
     <string name="type">Type</string>
     <string name="price">Price</string>
