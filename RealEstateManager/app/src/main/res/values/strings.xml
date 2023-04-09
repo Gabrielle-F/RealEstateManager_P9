@@ -9,6 +9,7 @@
     <!-- ACTIVITY CLIENT/AGENT AUTHENTICATION -->
     <string name="email">Enter your email</string>
     <string name="password">Enter your password</string>
+    <string name="name">Enter your name</string>
     <string name="log_in">Log In</string>
     <string name="sign_in">Sign In</string>
 

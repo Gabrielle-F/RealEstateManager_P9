@@ -23,6 +23,7 @@
         android:paddingStart="10sp"
         android:ems="10"
         android:hint="@string/email"
+        android:inputType="textEmailAddress"
         android:textSize="18sp"
         />
 
@@ -41,6 +42,7 @@
         android:paddingStart="10sp"
         android:ems="10"
         android:hint="@string/password"
+        android:inputType="textPassword"
         android:textSize="18sp"
         />
 
