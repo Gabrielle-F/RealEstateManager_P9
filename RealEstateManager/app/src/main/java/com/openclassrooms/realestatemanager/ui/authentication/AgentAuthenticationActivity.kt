@@ -3,9 +3,11 @@ package com.openclassrooms.realestatemanager.ui.authentication
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.openclassrooms.realestatemanager.databinding.ActivityAgentAuthenticationBinding
+import com.openclassrooms.realestatemanager.model.Agent
 import com.openclassrooms.realestatemanager.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -15,6 +17,7 @@ class AgentAuthenticationActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityAgentAuthenticationBinding
     private lateinit var firebaseAuth : FirebaseAuth
+    private val agentAuthenticationViewModel : AgentAuthenticationViewModel by viewModels()
 
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,12 +31,18 @@ class AgentAuthenticationActivity : AppCompatActivity() {
         configureListeners()
     }
 
-    private fun configureListeners() {
+    private fun configureListeners(id : Int = 0) {
         val email : String = binding.editTxtEmailAgentAuthentication.text.toString()
         val password : String = binding.editTxtPasswordAgentAuthentication.text.toString()
+        val name : String = binding.editTxtNameAgentAuthentication.text.toString()
 
-        binding.signInBtnAgent.setOnClickListener { createAgentAccount(email, password) }
+        val agent = Agent(id, email, name)
+
+        binding.signInBtnAgent.setOnClickListener {
+            createAgent(agent)
+            createAgentAccount(email, password) }
         binding.logInBtnAgent.setOnClickListener { connectToAccount(email, password) }
+
     }
 
     private fun createAgentAccount(email : String, password : String) {
@@ -54,7 +63,14 @@ class AgentAuthenticationActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this, "Connection failed. Make sure your email and password are correct.", Toast.LENGTH_LONG).show()
                 }
             }
+    }
+
+    private fun createAgent(agent : Agent) {
+        agentAuthenticationViewModel.createAgent(agent)
     }
 }

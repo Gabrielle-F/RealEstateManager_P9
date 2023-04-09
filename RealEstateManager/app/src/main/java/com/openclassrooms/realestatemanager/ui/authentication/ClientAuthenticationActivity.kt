@@ -29,11 +29,15 @@ class ClientAuthenticationActivity : AppCompatActivity() {
     }
 
     private fun configureListeners() {
-        val email : String = binding.editTxtEmailClientAuthentication.text.toString()
-        val password : String = binding.editTxtPasswordAuthentication.text.toString()
+        val email = binding.editTxtEmailClientAuthentication.text.toString()
+        val password = binding.editTxtPasswordAuthentication.text.toString()
 
-        binding.signInBtnClient.setOnClickListener { createClientAccount(email, password) }
-        binding.logInBtnClient.setOnClickListener { connectToAccount(email, password) }
+        if (email != null && password != null) {
+            binding.signInBtnClient.setOnClickListener { createClientAccount(email, password) }
+            binding.logInBtnClient.setOnClickListener { connectToAccount(email, password) }
+        } else {
+            Toast.makeText(this, "Please enter your email and password !", Toast.LENGTH_LONG).show()
+        }
     }
 
 

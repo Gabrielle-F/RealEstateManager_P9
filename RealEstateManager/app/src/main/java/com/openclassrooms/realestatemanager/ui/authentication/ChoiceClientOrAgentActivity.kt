@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.ui.authentication
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.openclassrooms.realestatemanager.databinding.ActivityChoiceClientOrAgentBinding
@@ -23,14 +24,12 @@ class ChoiceClientOrAgentActivity : AppCompatActivity() {
 
     fun configureListeners() {
         binding.activityChoiceBtnClient.setOnClickListener {
-            //TODO start ClientAuthenticationActivity
-            // or launch pop-up for choice between
-            // connection and create account
+            val intent = Intent(this, ClientAuthenticationActivity::class.java)
+            startActivity(intent)
         }
         binding.activityChoiceBtnAgent.setOnClickListener {
-            //TODO start AgentAuthenticationActivity
-            // or launch pop-up for choice between
-            // connection and create account
+            val intent = Intent(this, AgentAuthenticationActivity::class.java)
+            startActivity(intent)
         }
     }
 }
