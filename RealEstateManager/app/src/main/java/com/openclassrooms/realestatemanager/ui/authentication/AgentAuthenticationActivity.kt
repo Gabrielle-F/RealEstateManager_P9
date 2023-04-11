@@ -61,7 +61,9 @@ class AgentAuthenticationActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     lifecycleScope.launch {
                         val firebaseUser : FirebaseUser? = firebaseAuth.currentUser
-                        agentAuthenticationViewModel.createAgentInFirestoreDatabase(firebaseUser)
+                        if (firebaseUser != null) {
+                            agentAuthenticationViewModel.createAgentInFirestoreDatabase(firebaseUser)
+                        }
                     }
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)

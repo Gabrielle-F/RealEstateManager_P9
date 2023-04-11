@@ -24,7 +24,7 @@ class AgentRepository @Inject constructor(private val agentDao : AgentDao) {
         return FirebaseFirestore.getInstance().collection(agentsCollectionName)
     }
 
-    suspend fun createAgentInFirestoreDatabase(firebaseUser : FirebaseUser?) {
+    fun createAgentInFirestoreDatabase(firebaseUser : FirebaseUser?) {
         if (firebaseUser != null) {
             val id : String = firebaseUser.uid
             val email : String = firebaseUser.email.toString()
@@ -38,7 +38,7 @@ class AgentRepository @Inject constructor(private val agentDao : AgentDao) {
         }
     }
 
-    suspend fun getUserData() : Task<DocumentSnapshot>? {
+    fun getUserData() : Task<DocumentSnapshot>? {
         val uid : String? = this.getCurrentFirebaseUser()?.uid
         if (uid != null) {
             return this.getAgentsCollection().document(uid).get()
