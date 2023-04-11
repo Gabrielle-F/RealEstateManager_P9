@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +16,7 @@ import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.FragmentListPropertiesBinding
 import com.openclassrooms.realestatemanager.model.Property
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -23,7 +26,6 @@ class PropertiesListFragment : Fragment(R.layout.fragment_list_properties) {
     private lateinit var binding : FragmentListPropertiesBinding
     private val propertiesListViewModel : PropertiesListViewModel by viewModels()
     private lateinit var adapter: PropertiesRecyclerViewAdapter
-    private var layoutManager : RecyclerView.LayoutManager? = null
     private lateinit var propertiesList : List<Property>
 
     @Override
@@ -36,13 +38,18 @@ class PropertiesListFragment : Fragment(R.layout.fragment_list_properties) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fetchPropertiesList()
+        lifecycleScope.launch {
+            fetchPropertiesList()
+        }
+
         propertiesList = ArrayList()
         adapter = PropertiesRecyclerViewAdapter(propertiesList)
     }
 
-    private fun fetchPropertiesList() {
-        propertiesListViewModel.properties.observe(viewLifecycleOwner, Observer { propertiesList -> adapter.updatePropertiesList(propertiesList) })
+    private suspend fun fetchPropertiesList() {
+        propertiesListViewModel.getProperties()
+        propertiesListViewModel.propertiesLiveData.observe(viewLifecycleOwner) { propertiesList ->
+            adapter.updatePropertiesList(propertiesList)
+        }
     }
-
 }

@@ -5,18 +5,21 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.openclassrooms.realestatemanager.databinding.ActivityAgentAuthenticationBinding
 import com.openclassrooms.realestatemanager.model.Agent
 import com.openclassrooms.realestatemanager.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
 class AgentAuthenticationActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityAgentAuthenticationBinding
-    private lateinit var firebaseAuth : FirebaseAuth
+    private val firebaseAuth : FirebaseAuth = FirebaseAuth.getInstance()
     private val agentAuthenticationViewModel : AgentAuthenticationViewModel by viewModels()
 
     @Override
@@ -27,28 +30,39 @@ class AgentAuthenticationActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        firebaseAuth = FirebaseAuth.getInstance()
-        configureListeners()
+        lifecycleScope.launch {
+            configureListeners()
+        }
     }
 
-    private fun configureListeners(id : Int = 0) {
-        val email : String = binding.editTxtEmailAgentAuthentication.text.toString()
-        val password : String = binding.editTxtPasswordAgentAuthentication.text.toString()
-        val name : String = binding.editTxtNameAgentAuthentication.text.toString()
-
-        val agent = Agent(id, email, name)
+    private suspend fun configureListeners(id : Int = 0) {
+        lateinit var email : String
+        lateinit var name : String
+        lateinit var password : String
 
         binding.signInBtnAgent.setOnClickListener {
-            createAgent(agent)
-            createAgentAccount(email, password) }
-        binding.logInBtnAgent.setOnClickListener { connectToAccount(email, password) }
-
+            email = binding.editTxtEmailAgentAuthentication.text.toString()
+            name = binding.editTxtNameAgentAuthentication.text.toString()
+            password = binding.editTxtPasswordAgentAuthentication.text.toString()
+            val agent = Agent(id, email, name)
+            lifecycleScope.launch {
+                createAgent(agent)
+                createAgentAccount(email, password) }
+            }
+        binding.logInBtnAgent.setOnClickListener {
+            email = binding.editTxtEmailAgentAuthentication.text.toString()
+            password = binding.editTxtPasswordAgentAuthentication.text.toString()
+            connectToAccount(email, password) }
     }
 
-    private fun createAgentAccount(email : String, password : String) {
+    private suspend fun createAgentAccount(email : String, password : String) {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+                    lifecycleScope.launch {
+                        val firebaseUser : FirebaseUser? = firebaseAuth.currentUser
+                        agentAuthenticationViewModel.createAgentInFirestoreDatabase(firebaseUser)
+                    }
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     Toast.makeText(this, "Account creation : success !", Toast.LENGTH_LONG).show()
@@ -62,6 +76,7 @@ class AgentAuthenticationActivity : AppCompatActivity() {
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                 } else {
@@ -70,7 +85,7 @@ class AgentAuthenticationActivity : AppCompatActivity() {
             }
     }
 
-    private fun createAgent(agent : Agent) {
+    private suspend fun createAgent(agent : Agent) {
         agentAuthenticationViewModel.createAgent(agent)
     }
 }
