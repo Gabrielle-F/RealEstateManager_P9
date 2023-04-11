@@ -4,11 +4,13 @@ import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.openclassrooms.realestatemanager.model.Agent
+import com.openclassrooms.realestatemanager.model.Client
 import com.openclassrooms.realestatemanager.model.Image
 import com.openclassrooms.realestatemanager.model.Property
 
-@Database(entities = [Property::class, Image::class, Agent::class], version = 1, exportSchema = true)
+@Database(entities = [Property::class, Image::class, Agent::class, Client::class], version = 1, exportSchema = true)
 abstract class RealEstateManagerDatabase : RoomDatabase() {
     abstract fun propertyDao() : PropertyDao
     abstract fun agentDao() : AgentDao
+    abstract fun clientDao() : ClientDao
 }

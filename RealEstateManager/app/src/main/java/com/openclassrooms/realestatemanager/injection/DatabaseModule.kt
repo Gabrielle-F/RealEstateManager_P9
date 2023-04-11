@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.injection
 import android.content.Context
 import androidx.room.Room
 import com.openclassrooms.realestatemanager.database.AgentDao
+import com.openclassrooms.realestatemanager.database.ClientDao
 import com.openclassrooms.realestatemanager.database.PropertyDao
 import com.openclassrooms.realestatemanager.database.RealEstateManagerDatabase
 import dagger.Module
@@ -34,5 +35,10 @@ class DatabaseModule {
     @Provides
     fun provideAgentDao(realEstateManagerDatabase: RealEstateManagerDatabase) : AgentDao {
         return realEstateManagerDatabase.agentDao()
+    }
+
+    @Provides
+    fun provideClientDao(realEstateManagerDatabase: RealEstateManagerDatabase) : ClientDao {
+        return realEstateManagerDatabase.clientDao()
     }
 }
