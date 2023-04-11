@@ -7,10 +7,8 @@ import javax.inject.Inject
 
 class GetPropertiesListUseCase @Inject constructor(private val propertyRepository: PropertyRepository) {
 
-    var properties : Flow<List<Property>>
-
-    init {
-        properties = propertyRepository.getAllProperties()
+    fun invoke() : Flow<List<Property>> {
+        return propertyRepository.getAllProperties()
     }
 
 }

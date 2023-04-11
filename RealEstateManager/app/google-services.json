@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "669457324407-f8kqsrajckrodjmo21i3gt7l093ovpqp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.openclassrooms.realestatemanager",
+            "certificate_hash": "34050e11e8b3e1ac554f21654ad4b1c560fcd3e5"
+          }
+        },
+        {
           "client_id": "669457324407-63pdnqbr6qrd7tcntj3c5rta1n8kqpm9.apps.googleusercontent.com",
           "client_type": 3
         }

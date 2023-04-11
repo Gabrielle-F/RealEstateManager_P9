@@ -9,5 +9,5 @@ import com.openclassrooms.realestatemanager.model.Agent
 interface AgentDao {
 
     @Insert(onConflict = OnConflictStrategy.NONE)
-    fun insertAgent(agent : Agent)
+    suspend fun insertAgent(agent : Agent)
 }

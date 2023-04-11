@@ -10,3 +10,9 @@ data class Agent(
     val email : String,
     val name : String
 )
+
+data class AgentFirestore(
+    val id : String,
+    val email : String,
+    val name : String
+)
