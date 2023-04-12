@@ -3,9 +3,11 @@ package com.openclassrooms.realestatemanager.ui.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -57,17 +59,23 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         BottomAppBar bottomAppBar = findViewById(R.id.activity_main_bottom_app_bar);
         bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
-        bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int id = item.getItemId();
-                if(id == R.id.bottom_app_bar_edit_property) {
-                    //TODO start EditPropertyFragment with id of the selected property
-                    return true;
-                }
-                return false;
-            }
-        });
-        return false;
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.bottom_app_bar_activity_main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.bottom_app_bar_edit_property) {
+            //TODO start EditPropertyFragment with id of the selected property
+            return true;
+        }
+        if (id == android.R.id.home) {
+            BottomNavigationDrawerFragment bottomNavDrawerFragment = new BottomNavigationDrawerFragment();
+            bottomNavDrawerFragment.show(getSupportFragmentManager(), bottomNavDrawerFragment.getTag());
+            return true;
+        }
+        return true;
     }
 }
