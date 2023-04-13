@@ -8,9 +8,10 @@ import com.openclassrooms.realestatemanager.model.Client
 import com.openclassrooms.realestatemanager.model.Image
 import com.openclassrooms.realestatemanager.model.Property
 
-@Database(entities = [Property::class, Image::class, Agent::class, Client::class], version = 1, exportSchema = true)
+@Database(entities = [Property::class, Image::class, Agent::class, Client::class], version = 1, exportSchema = false)
 abstract class RealEstateManagerDatabase : RoomDatabase() {
     abstract fun propertyDao() : PropertyDao
     abstract fun agentDao() : AgentDao
     abstract fun clientDao() : ClientDao
+    abstract fun imageDao() : ImageDao
 }

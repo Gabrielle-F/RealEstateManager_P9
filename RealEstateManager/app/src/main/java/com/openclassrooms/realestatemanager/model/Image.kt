@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.model
 
+import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -19,4 +20,12 @@ data class Image(
     var imageDescription: String,
     @ColumnInfo("property_id")
     var propertyId: Int
+)
+
+data class ExternalStorageImage(
+    val id : Long,
+    val name : String,
+    val width : Int,
+    val height: Int,
+    val contentUri: Uri
 )

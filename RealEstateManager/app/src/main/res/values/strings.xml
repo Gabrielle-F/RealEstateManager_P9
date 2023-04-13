@@ -33,6 +33,10 @@
     <string name="cancel">Cancel</string>
     <string name="add_agent">Agent :</string>
 
+    <!-- FRAGMENT ADD IMAGES -->
+    <string name="image_in_album">Choose in album</string>
+    <string name="take_picture">Take a picture</string>
+
     <!-- AMENITIES CHECKBOX -->
     <string name="school">School</string>
     <string name="restaurants">Restaurants</string>
@@ -40,5 +44,8 @@
     <string name="supermarket">Supermarket</string>
     <string name="shopping_area">Shopping Area</string>
     <string name="cinema">Cinema</string>
+
+    <!-- PERMISSIONS -->
+    <string name="camera_and_storage">Multiple permissions for are required for the application to function fully</string>
 
 </resources>

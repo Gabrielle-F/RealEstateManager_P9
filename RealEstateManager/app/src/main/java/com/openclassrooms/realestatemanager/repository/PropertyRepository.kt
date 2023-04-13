@@ -13,6 +13,4 @@ class PropertyRepository @Inject constructor(private val propertyDao : PropertyD
 
     fun getAllProperties(): Flow<List<Property>> = propertyDao.getAllProperties()
 
-
-
 }

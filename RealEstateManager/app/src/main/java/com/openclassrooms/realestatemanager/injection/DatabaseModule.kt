@@ -2,10 +2,7 @@ package com.openclassrooms.realestatemanager.injection
 
 import android.content.Context
 import androidx.room.Room
-import com.openclassrooms.realestatemanager.database.AgentDao
-import com.openclassrooms.realestatemanager.database.ClientDao
-import com.openclassrooms.realestatemanager.database.PropertyDao
-import com.openclassrooms.realestatemanager.database.RealEstateManagerDatabase
+import com.openclassrooms.realestatemanager.database.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,5 +37,10 @@ class DatabaseModule {
     @Provides
     fun provideClientDao(realEstateManagerDatabase: RealEstateManagerDatabase) : ClientDao {
         return realEstateManagerDatabase.clientDao()
+    }
+
+    @Provides
+    fun provideImageDao(realEstateManagerDatabase: RealEstateManagerDatabase) : ImageDao {
+        return realEstateManagerDatabase.imageDao()
     }
 }
