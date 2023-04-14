@@ -37,8 +37,8 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="C:\Users\Gabrielle\Desktop\Développement\IconesAndroid\person_rounded_material_design\res\drawable\round_person_24.xml" />
-                                                <entry key="opacityPercent" value="80" />
+                                                <entry key="imagePath" value="C:\Users\Gabrielle\Desktop\Développement\IconesAndroid\info_material_design\res\drawable\round_info_24.xml" />
+                                                <entry key="opacityPercent" value="60" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -71,9 +71,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\Gabrielle\Desktop\Développement\IconesAndroid\person_rounded_material_design\res\drawable\round_person_24.xml" />
-                                      <entry key="outputName" value="ic_person" />
-                                      <entry key="theme" value="HOLO_DARK" />
+                                      <entry key="imageAsset" value="C:\Users\Gabrielle\Desktop\Développement\IconesAndroid\info_material_design\res\drawable\round_info_24.xml" />
+                                      <entry key="outputName" value="ic_info" />
                                     </map>
                                   </option>
                                 </PersistentState>
