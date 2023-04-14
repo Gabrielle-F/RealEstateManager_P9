@@ -45,6 +45,29 @@
     <string name="shopping_area">Shopping Area</string>
     <string name="cinema">Cinema</string>
 
+    <!-- PROPERTY DETAILS -->
+    <string name="details_media">Media</string>
+    <string name="details_description">Description</string>
+    <string name="details_number_of_rooms">Number of rooms</string>
+    <string name="details_surface">Surface</string>
+    <string name="details_location">Location</string>
+    <string name="details_rooms">Rooms</string>
+    <string name="details_price">Price</string>
+    <string name="details_agent">Agent</string>
+    <string name="details_status">Status</string>
+    <string name="details_available">Available</string>
+    <string name="details_sold">Sold</string>
+    <string name="details_near">Near</string>
+    <string name="details_school">School</string>
+    <string name="details_playground">Playground</string>
+    <string name="details_restaurants">Restaurants</string>
+    <string name="details_supermarket">Supermarket</string>
+    <string name="details_shopping_area">Shopping Area</string>
+    <string name="details_cinema">Cinema</string>
+    <string name="details_address_with_number">%1$s - %2$s - %3$s</string>
+    <string name="details_apartment_info">Apartment</string>
+    <string name="details_city">City</string>
+
     <!-- PERMISSIONS -->
     <string name="camera_and_storage">Multiple permissions for are required for the application to function fully</string>
 
