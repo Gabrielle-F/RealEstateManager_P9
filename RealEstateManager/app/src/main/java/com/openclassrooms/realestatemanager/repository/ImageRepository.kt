@@ -14,7 +14,7 @@ import javax.inject.Singleton
 @Singleton
 class ImageRepository @Inject constructor(private val imageDao: ImageDao) {
 
-    suspend fun insertImage(image : Image) = imageDao.insertImages(image)
+    suspend fun insertImageInLocalDatabase(image : Image) = imageDao.insertImages(image)
 
     suspend fun loadPicturesFromExternalStorage(context: Context) : List<ExternalStorageImage> {
         return with(Dispatchers.IO) {

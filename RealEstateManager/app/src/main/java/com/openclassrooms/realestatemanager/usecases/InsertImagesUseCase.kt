@@ -6,5 +6,5 @@ import javax.inject.Inject
 
 class InsertImagesUseCase @Inject constructor(private val imageRepository: ImageRepository) {
 
-    suspend fun execute(image : Image) = imageRepository.insertImage(image)
+    suspend fun execute(image : Image) = imageRepository.insertImageInLocalDatabase(image)
 }

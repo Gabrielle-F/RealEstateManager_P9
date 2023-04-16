@@ -34,8 +34,11 @@
     <string name="add_agent">Agent :</string>
 
     <!-- FRAGMENT ADD IMAGES -->
+    <string name="name_your_picture">Name</string>
+    <string name="describe_your_picture">Description</string>
     <string name="image_in_album">Choose in album</string>
     <string name="take_picture">Take a picture</string>
+    <string name="save_picture">Save</string>
 
     <!-- AMENITIES CHECKBOX -->
     <string name="school">School</string>
