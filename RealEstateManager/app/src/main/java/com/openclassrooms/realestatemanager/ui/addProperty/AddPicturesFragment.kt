@@ -4,11 +4,13 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.R
@@ -16,7 +18,6 @@ import com.openclassrooms.realestatemanager.databinding.FragmentAddImagePopUpBin
 import com.vmadalin.easypermissions.EasyPermissions
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
-import java.io.File
 
 @AndroidEntryPoint
 class AddPicturesFragment : Fragment(R.layout.fragment_add_image_pop_up) {
@@ -24,6 +25,7 @@ class AddPicturesFragment : Fragment(R.layout.fragment_add_image_pop_up) {
     @ApplicationContext private lateinit var context : Context
     private val contentResolver = context.contentResolver
     private lateinit var binding : FragmentAddImagePopUpBinding
+    private lateinit var imagePath: String
     private val EXTERNAL_STORAGE_PERMISSION_CODE  : Int = 20
     private val CAMERA_PERMISSION_CODE : Int = 10
     private val REQUEST_IMAGE_CAPTURE_CODE : Int = 100
@@ -62,6 +64,9 @@ class AddPicturesFragment : Fragment(R.layout.fragment_add_image_pop_up) {
             val selectPictureIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(selectPictureIntent, REQUEST_IMAGE_SELECT_CODE)
         }
+        binding.addPictureFragmentSaveBtn.setOnClickListener {
+            sendDataToAddPropertyActivity()
+        }
     }
 
     @Deprecated("Deprecated in Java")
@@ -70,14 +75,20 @@ class AddPicturesFragment : Fragment(R.layout.fragment_add_image_pop_up) {
         if(resultCode == Activity.RESULT_OK) {
             when(requestCode) {
                 REQUEST_IMAGE_CAPTURE_CODE -> {
-                    val imageUri = data?.data
-                    val imageView = binding.addPictureFragmentSeeResult
-                    Glide.with(this).load(imageUri).into(imageView)
+                    if(data != null) {
+                        val imageUri = data.data
+                        val imageView = binding.addPictureFragmentSeeResult
+                        Glide.with(this).load(imageUri).into(imageView)
+                        imagePath = convertUriToString(imageUri)
+                    }
                 }
                 REQUEST_IMAGE_SELECT_CODE -> {
-                    val imageUri = data?.data
-                    val imageView = binding.addPictureFragmentSeeResult
-                    Glide.with(this).load(imageUri).into(imageView)
+                    if(data != null) {
+                        val imageUri = data.data
+                        val imageView = binding.addPictureFragmentSeeResult
+                        Glide.with(this).load(imageUri).into(imageView)
+                        imagePath = convertUriToString(imageUri)
+                    }
                 }
             }
         }
@@ -97,5 +108,28 @@ class AddPicturesFragment : Fragment(R.layout.fragment_add_image_pop_up) {
             getString(R.string.camera_and_storage),
             CAMERA_PERMISSION_CODE, *cameraPermissions
         )
+    }
+
+    private fun sendDataToAddPropertyActivity() {
+        val imageName = binding.addPictureFragmentNamePicture.text.toString()
+        val imageDescription = binding.addPictureFragmentDescribePicture.text.toString()
+        val firstPicture = defineAsFirstPictureCheckboxIsCheckedOrNot()
+        val intent = Intent(getContext(), AddPropertyActivity::class.java)
+        intent.putExtra("ImageName", imageName)
+        intent.putExtra("ImageDescription", imageDescription)
+        intent.putExtra("ImagePath", imagePath)
+        intent.putExtra("DefineAsFirstImage", firstPicture)
+    }
+
+    private fun convertUriToString(uriValue: Uri?) : String {
+        val stringToReturn = uriValue.toString()
+        return stringToReturn
+    }
+
+    private fun defineAsFirstPictureCheckboxIsCheckedOrNot() : Boolean {
+        val firstPicture : Boolean
+        val firstPictureCheckbox : CheckBox = binding.addPictureFragmentDefineAsFirstPictureCheckbox
+        firstPicture = firstPictureCheckbox.isChecked
+        return firstPicture
     }
 }
