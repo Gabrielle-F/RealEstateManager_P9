@@ -1,10 +1,14 @@
 package com.openclassrooms.realestatemanager.ui.addProperty
 
+import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.openclassrooms.realestatemanager.databinding.ActivityAddPropertyBinding
+import com.openclassrooms.realestatemanager.model.Image
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.ui.main.MainActivity
 import com.openclassrooms.realestatemanager.utils.Utils
@@ -16,6 +20,8 @@ class AddPropertyActivity : AppCompatActivity() {
     private lateinit var binding : ActivityAddPropertyBinding
     private val amenitiesView : AddPropertyAmenitiesView = AddPropertyAmenitiesView()
     private val addPropertyViewModel : AddPropertyViewModel by viewModels()
+    private val RETRIEVE_SELECTED_PICTURE_REQUEST_CODE : Int = 10
+    private lateinit var picturesMutableList: MutableList<Image>
 
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +39,28 @@ class AddPropertyActivity : AppCompatActivity() {
         binding.cancelAddFab.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+        }
+        binding.addPropertyAddPicturesMaterialBtn.setOnClickListener {
+            val getSelectedPictureIntent = Intent(this, AddPicturesFragment::class.java)
+            startActivityForResult(getSelectedPictureIntent, RETRIEVE_SELECTED_PICTURE_REQUEST_CODE)
+        }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == RETRIEVE_SELECTED_PICTURE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            if(data != null) {
+                val imagePath = data.getStringExtra("ImagePath")!!
+                val imageName = data.getStringExtra("ImageName")
+                val imageDescription = data.getStringExtra("ImageDescription")
+                val imageDefineAsFirst = data.getBooleanExtra("DefineAsFirstImage", true)
+
+                val imageToAdd = Image(imagePath, imageName, imageDescription, imageDefineAsFirst)
+
+                picturesMutableList.add(imageToAdd)
+            }
+
         }
     }
 
@@ -60,7 +88,8 @@ class AddPropertyActivity : AppCompatActivity() {
             cinema = amenitiesView.cinemaCheckBoxIsCheckedOrNot(),
             sold = binding.addPropertySwitchSoldOrAvailable.isActivated,
             soldDate = binding.addPropertySoldDateEdittxt.text.toString(),
-            registerDate = Utils.getTodayDate()
+            registerDate = Utils.getTodayDate(),
+            pictures = picturesMutableList
         )
     }
 }
