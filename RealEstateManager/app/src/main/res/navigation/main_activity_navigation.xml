@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_activity_navigation"
+    app:startDestination="@+id/properties_list">
+
+    <fragment
+        android:id="@+id/properties_list"
+        android:label="fragment_properties_list_view"
+        android:name="com.openclassrooms.realestatemanager.ui.propertiesList.PropertiesListFragment"
+        tools:layout="@layout/fragment_list_properties"/>
+
+</navigation>

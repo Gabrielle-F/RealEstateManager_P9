@@ -39,6 +39,7 @@
     <string name="image_in_album">Choose in album</string>
     <string name="take_picture">Take a picture</string>
     <string name="save_picture">Save</string>
+    <string name="first_picture">Define as first picture ?</string>
 
     <!-- AMENITIES CHECKBOX -->
     <string name="school">School</string>
@@ -70,6 +71,10 @@
     <string name="details_address_with_number">%1$s - %2$s - %3$s</string>
     <string name="details_apartment_info">Apartment</string>
     <string name="details_city">City</string>
+
+    <!-- NAVIGATION DRAWER -->
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
 
     <!-- PERMISSIONS -->
     <string name="camera_and_storage">Multiple permissions for are required for the application to function fully</string>
