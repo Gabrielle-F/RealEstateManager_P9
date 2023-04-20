@@ -42,5 +42,7 @@ data class Property(
     @ColumnInfo(name = "shopping_area")
     var shoppingArea: Boolean,
     @ColumnInfo(name = "cinema")
-    var cinema: Boolean
+    var cinema: Boolean,
+    @ColumnInfo(name = "pictures")
+    var pictures: List<Image>
 )

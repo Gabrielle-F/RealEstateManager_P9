@@ -1,31 +1,18 @@
 package com.openclassrooms.realestatemanager.model
 
 import android.net.Uri
+import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "image_table", foreignKeys = [ForeignKey(entity = Property::class,
-    parentColumns = ["id"],
-    childColumns = ["property_id"])])
-data class Image(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
-    @ColumnInfo("img_path")
-    var imagePath: String,
-    @ColumnInfo("img_title")
-    var imageTitle: String,
-    @ColumnInfo("img_description")
-    var imageDescription: String,
-    @ColumnInfo("property_id")
-    var propertyId: Int
-)
 
-data class ExternalStorageImage(
-    val id : Long,
-    val name : String,
-    val width : Int,
-    val height: Int,
-    val contentUri: Uri
+@Entity
+data class Image(
+    @PrimaryKey
+    var imageUri: String,
+    var imageTitle: String?,
+    var imageDescription: String?,
+    var firstPicture: Boolean?,
 )
