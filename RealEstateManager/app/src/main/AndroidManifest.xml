@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="29" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -32,6 +34,11 @@
         <activity android:name=".ui.authentication.ClientAuthenticationActivity"/>
 
         <activity android:name=".ui.authentication.AgentAuthenticationActivity"/>
+
+
+        <meta-data
+            android:name="com.google.android.maps.v3.API_KEY"
+            android:value="AIzaSyCz9d0eTElReFZ6oYRoGzWXn4DuEmP3uzU"/>
 
 
     </application>
