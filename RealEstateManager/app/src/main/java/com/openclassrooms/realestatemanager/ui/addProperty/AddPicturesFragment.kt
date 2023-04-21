@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.FragmentAddImagePopUpBinding
+import com.openclassrooms.realestatemanager.model.Image
 import com.vmadalin.easypermissions.EasyPermissions
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -23,7 +24,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 class AddPicturesFragment : Fragment(R.layout.fragment_add_image_pop_up) {
 
     @ApplicationContext private lateinit var context : Context
-    private val contentResolver = context.contentResolver
+    private lateinit var listener : OnDataChangeListener
     private lateinit var binding : FragmentAddImagePopUpBinding
     private lateinit var imagePath: String
     private val EXTERNAL_STORAGE_PERMISSION_CODE  : Int = 20
@@ -39,13 +40,15 @@ class AddPicturesFragment : Fragment(R.layout.fragment_add_image_pop_up) {
         Manifest.permission.WRITE_EXTERNAL_STORAGE
     )
 
-    @Override
+    interface OnDataChangeListener {
+        fun getImage(image: Image)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentAddImagePopUpBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    @Override
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -53,6 +56,14 @@ class AddPicturesFragment : Fragment(R.layout.fragment_add_image_pop_up) {
         checkCameraPermissions()
 
         configureListeners()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        if(context is OnDataChangeListener) {
+            listener = context
+        }
     }
 
     private fun configureListeners() {
@@ -114,21 +125,22 @@ class AddPicturesFragment : Fragment(R.layout.fragment_add_image_pop_up) {
         val imageName = binding.addPictureFragmentNamePicture.text.toString()
         val imageDescription = binding.addPictureFragmentDescribePicture.text.toString()
         val firstPicture = defineAsFirstPictureCheckboxIsCheckedOrNot()
-        val intent = Intent(getContext(), AddPropertyActivity::class.java)
-        intent.putExtra("ImageName", imageName)
-        intent.putExtra("ImageDescription", imageDescription)
-        intent.putExtra("ImagePath", imagePath)
-        intent.putExtra("DefineAsFirstImage", firstPicture)
+
+        val imageToCreate = Image(imagePath, imageName, imageDescription, firstPicture)
+
+        listener.getImage(imageToCreate)
     }
 
     private fun convertUriToString(uriValue: Uri?) : String {
-        val stringToReturn = uriValue.toString()
-        return stringToReturn
+        return uriValue.toString()
     }
 
     private fun defineAsFirstPictureCheckboxIsCheckedOrNot() : Boolean {
+        val bundle = arguments
+        val hasFirstPicture = bundle?.getBoolean("hasFirstPicture") ?: false
         val firstPicture : Boolean
         val firstPictureCheckbox : CheckBox = binding.addPictureFragmentDefineAsFirstPictureCheckbox
+        firstPictureCheckbox.isEnabled = !hasFirstPicture
         firstPicture = firstPictureCheckbox.isChecked
         return firstPicture
     }
