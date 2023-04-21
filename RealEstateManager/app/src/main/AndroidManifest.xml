@@ -35,12 +35,6 @@
 
         <activity android:name=".ui.authentication.AgentAuthenticationActivity"/>
 
-
-        <meta-data
-            android:name="com.google.android.maps.v3.API_KEY"
-            android:value="AIzaSyCz9d0eTElReFZ6oYRoGzWXn4DuEmP3uzU"/>
-
-
     </application>
 
 </manifest>
