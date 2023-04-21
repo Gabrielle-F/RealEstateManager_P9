@@ -8,5 +8,5 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddPropertyViewModel @Inject constructor(private val createPropertyUseCase : CreatePropertyUseCase) : ViewModel() {
-    fun createProperty(property : Property) = createPropertyUseCase.createProperty(property)
+    suspend fun createProperty(property : Property) = createPropertyUseCase.createProperty(property)
 }

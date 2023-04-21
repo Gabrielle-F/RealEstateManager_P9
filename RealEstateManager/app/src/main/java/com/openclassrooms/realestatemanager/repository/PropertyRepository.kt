@@ -9,7 +9,7 @@ import javax.inject.Singleton
 @Singleton
 class PropertyRepository @Inject constructor(private val propertyDao : PropertyDao) {
 
-    fun createProperty(property : Property) = propertyDao.insertProperty(property)
+    suspend fun createProperty(property : Property) = propertyDao.insertProperty(property)
 
     fun getAllProperties(): Flow<List<Property>> = propertyDao.getAllProperties()
 

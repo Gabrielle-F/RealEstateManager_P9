@@ -1,27 +1,27 @@
 package com.openclassrooms.realestatemanager.ui.addProperty
 
-import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.openclassrooms.realestatemanager.databinding.ActivityAddPropertyBinding
 import com.openclassrooms.realestatemanager.model.Image
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.ui.main.MainActivity
 import com.openclassrooms.realestatemanager.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class AddPropertyActivity : AppCompatActivity() {
+class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChangeListener {
 
     private lateinit var binding : ActivityAddPropertyBinding
     private val amenitiesView : AddPropertyAmenitiesView = AddPropertyAmenitiesView()
     private val addPropertyViewModel : AddPropertyViewModel by viewModels()
-    private val RETRIEVE_SELECTED_PICTURE_REQUEST_CODE : Int = 10
-    private lateinit var picturesMutableList: MutableList<Image>
+    private val picturesList = ArrayList<Image>()
+    private lateinit var adapter : AddPropertyRecyclerViewAdapter
 
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,43 +30,42 @@ class AddPropertyActivity : AppCompatActivity() {
         binding = ActivityAddPropertyBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+        adapter = AddPropertyRecyclerViewAdapter(picturesList)
 
         configureListeners()
     }
 
     fun configureListeners() {
-        binding.activityAddFab.setOnClickListener { createProperty() }
+        binding.activityAddFab.setOnClickListener {
+            lifecycleScope.launch {
+                createProperty()
+            }
+        }
         binding.cancelAddFab.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
         binding.addPropertyAddPicturesMaterialBtn.setOnClickListener {
-            val getSelectedPictureIntent = Intent(this, AddPicturesFragment::class.java)
-            startActivityForResult(getSelectedPictureIntent, RETRIEVE_SELECTED_PICTURE_REQUEST_CODE)
-        }
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == RETRIEVE_SELECTED_PICTURE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            if(data != null) {
-                val imagePath = data.getStringExtra("ImagePath")!!
-                val imageName = data.getStringExtra("ImageName")
-                val imageDescription = data.getStringExtra("ImageDescription")
-                val imageDefineAsFirst = data.getBooleanExtra("DefineAsFirstImage", true)
-
-                val imageToAdd = Image(imagePath, imageName, imageDescription, imageDefineAsFirst)
-
-                picturesMutableList.add(imageToAdd)
+            val addPicturesFragment = AddPicturesFragment()
+            val fragmentManager = supportFragmentManager
+            var hasFirstPicture = false
+            for (image in picturesList) {
+                if (image.firstPicture == true) {
+                    hasFirstPicture == true
+                    break
+                }
             }
-
+            val bundle = Bundle()
+            bundle.putBoolean("hasFirstPicture", hasFirstPicture)
+            addPicturesFragment.arguments = bundle
+            fragmentManager.beginTransaction().add(android.R.id.content, addPicturesFragment).commit()
         }
     }
 
-    fun createProperty() {
+    suspend fun createProperty() {
         val property : Property = getPropertyToCreate()
         addPropertyViewModel.createProperty(property)
+        Toast.makeText(this, "Property create with success !", Toast.LENGTH_SHORT).show()
     }
 
     fun getPropertyToCreate(id : Int = 0) : Property {
@@ -89,7 +88,16 @@ class AddPropertyActivity : AppCompatActivity() {
             sold = binding.addPropertySwitchSoldOrAvailable.isActivated,
             soldDate = binding.addPropertySoldDateEdittxt.text.toString(),
             registerDate = Utils.getTodayDate(),
-            pictures = picturesMutableList
+            pictures = picturesList
         )
+    }
+
+    private fun fetchPicturesList(pictures : List<Image>) {
+        adapter.updatePicturesList(pictures)
+    }
+
+    override fun getImage(image: Image) {
+        picturesList.add(image)
+        fetchPicturesList(picturesList)
     }
 }

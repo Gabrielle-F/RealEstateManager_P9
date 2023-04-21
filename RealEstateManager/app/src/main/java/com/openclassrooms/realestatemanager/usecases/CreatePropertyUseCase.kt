@@ -5,5 +5,5 @@ import com.openclassrooms.realestatemanager.repository.PropertyRepository
 import javax.inject.Inject
 
 class CreatePropertyUseCase @Inject constructor(private val propertyRepository: PropertyRepository) {
-    fun createProperty(property: Property) = propertyRepository.createProperty(property)
+    suspend fun createProperty(property: Property) = propertyRepository.createProperty(property)
 }

@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface PropertyDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertProperty(property: Property)
+    suspend fun insertProperty(property: Property)
 
     @Query("SELECT * FROM property_table")
     fun getAllProperties() : Flow<List<Property>>
