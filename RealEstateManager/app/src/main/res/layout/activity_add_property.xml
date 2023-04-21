@@ -280,7 +280,8 @@
                     android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/add_property_add_pictures_material_btn" />
+                    app:layout_constraintTop_toBottomOf="@id/add_property_add_pictures_material_btn"
+                    tools:listitem="@layout/pictures_add_property_activity_item"/>
 
                 <Spinner
                     android:id="@+id/add_property_agent_spinner"
