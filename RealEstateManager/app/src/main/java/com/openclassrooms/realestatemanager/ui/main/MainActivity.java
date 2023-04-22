@@ -20,7 +20,9 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -45,14 +47,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if(user == null) {
+            Intent intent = new Intent(this, ChoiceClientOrAgentActivity.class);
+            startActivity(intent);
+            finish();
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         configureToolbar();
+        configureBottomBar();
         configureNavDrawer();
 
         configureNavDrawerOnItemClickListener();
-        configureBottomAppBarOnItemClickListener();
 
         FloatingActionButton fab = findViewById(R.id.activity_main_fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -68,11 +76,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        if(user == null) {
-            Intent intent = new Intent(this, ChoiceClientOrAgentActivity.class);
-            startActivity(intent);
-        }
     }
 
     @Override
@@ -118,15 +121,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    private void configureBottomAppBarOnItemClickListener() {
-        BottomAppBar bottomAppBar = findViewById(R.id.activity_main_bottom_app_bar);
-        bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
-        bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+    private void configureBottomBar() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
-            public boolean onMenuItemClick(MenuItem item) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 if(id == R.id.bottom_app_bar_edit_property) {
-                    //TODO start EditPropertyActivity
+                    //TODO : Start EditPropertyActivity
+                    return true;
+                }
+                if(id == R.id.bottom_app_bar_search) {
+                    //TODO : start search
+                    return true;
                 }
                 return true;
             }
