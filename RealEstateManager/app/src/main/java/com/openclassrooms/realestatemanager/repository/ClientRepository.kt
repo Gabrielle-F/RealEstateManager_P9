@@ -14,11 +14,28 @@ import javax.inject.Inject
 class ClientRepository @Inject constructor(private val clientDao : ClientDao) {
 
     private val clientCollectionName : String = "clients"
+    private val firebaseAuth = FirebaseAuth.getInstance()
 
     suspend fun createClient(client : Client) = clientDao.createClient(client)
 
     fun getClientsCollection() : CollectionReference {
         return FirebaseFirestore.getInstance().collection(clientCollectionName)
+    }
+
+    suspend fun signIn(email: String, password: String) {
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {task ->
+            if(task.isSuccessful) {
+                val firebaseUser = firebaseAuth.currentUser
+            }
+        }
+    }
+
+    suspend fun logIn(email: String, password: String) {
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {task ->
+            if(task.isSuccessful) {
+                val firebaseUser = firebaseAuth.currentUser
+            }
+        }
     }
 
     suspend fun createClientInFirestoreDatabase(firebaseUser: FirebaseUser?) {

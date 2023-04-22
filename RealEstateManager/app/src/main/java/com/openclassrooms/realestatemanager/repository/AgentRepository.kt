@@ -1,5 +1,8 @@
 package com.openclassrooms.realestatemanager.repository
 
+import android.content.Intent
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -9,6 +12,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.openclassrooms.realestatemanager.database.AgentDao
 import com.openclassrooms.realestatemanager.model.Agent
 import com.openclassrooms.realestatemanager.model.AgentFirestore
+import com.openclassrooms.realestatemanager.ui.main.MainActivity
+import kotlinx.coroutines.launch
 import org.w3c.dom.Document
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -17,11 +22,28 @@ import javax.inject.Singleton
 class AgentRepository @Inject constructor(private val agentDao : AgentDao) {
 
     private val agentsCollectionName : String = "agents"
+    private val firebaseAuth : FirebaseAuth = FirebaseAuth.getInstance()
 
     suspend fun createAgent(agent : Agent) = agentDao.insertAgent(agent)
 
     fun getAgentsCollection() : CollectionReference {
         return FirebaseFirestore.getInstance().collection(agentsCollectionName)
+    }
+
+    suspend fun signIn(email: String, password: String) {
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {task ->
+            if(task.isSuccessful) {
+                val firebaseUser = firebaseAuth.currentUser
+            }
+        }
+    }
+
+    suspend fun logIn(email: String, password: String) {
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {task ->
+            if(task.isSuccessful) {
+                val firebaseUser = firebaseAuth.currentUser
+            }
+        }
     }
 
     fun createAgentInFirestoreDatabase(firebaseUser : FirebaseUser?) {
