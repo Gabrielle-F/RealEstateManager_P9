@@ -6,6 +6,11 @@
     <string name="client">Client</string>
     <string name="agent">Agent</string>
 
+    <!-- ACTIVITY CHOICE SIGN IN OR LOG IN -->
+    <string name="you_want_to">You want to :</string>
+    <string name="choice_sign_in">Sign In</string>
+    <string name="choice_log_in">Log In</string>
+
     <!-- ACTIVITY CLIENT/AGENT AUTHENTICATION -->
     <string name="email">Enter your email</string>
     <string name="password">Enter your password</string>

@@ -24,11 +24,19 @@ class ChoiceClientOrAgentActivity : AppCompatActivity() {
 
     fun configureListeners() {
         binding.activityChoiceBtnClient.setOnClickListener {
-            val intent = Intent(this, ClientLogInActivity::class.java)
+            val booleanChoiceClient = true
+            val booleanAgent = false
+            val intent = Intent(this, ChoiceSignInOrLogInActivity::class.java)
+            intent.putExtra("clientChoice", booleanChoiceClient)
+            intent.putExtra("agentChoice", booleanAgent)
             startActivity(intent)
         }
         binding.activityChoiceBtnAgent.setOnClickListener {
-            val intent = Intent(this, AgentSignInActivity::class.java)
+            val booleanAgentClient = true
+            val booleanClient = false
+            val intent = Intent(this, ChoiceSignInOrLogInActivity::class.java)
+            intent.putExtra("agentChoice", booleanAgentClient)
+            intent.putExtra("clientChoice", booleanClient)
             startActivity(intent)
         }
     }
