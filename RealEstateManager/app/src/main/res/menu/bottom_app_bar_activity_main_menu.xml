@@ -6,12 +6,21 @@
         android:id="@+id/bottom_app_bar_edit_property"
         android:title="EditPropertyIcon"
         android:icon="@drawable/ic_edit_property_white"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"
+        />
 
     <item
         android:id="@+id/bottom_app_bar_search"
         android:title="MakeSearch"
         android:icon="@drawable/ic_search_bottom_app_bar_white"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"
+        />
+
+    <item
+        android:id="@+id/bottom_bar_currency_exchange"
+        android:title="CurrencyExchange"
+        android:icon="@drawable/ic_currency_exchange"
+        app:showAsAction="ifRoom"
+        />
 
 </menu>

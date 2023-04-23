@@ -135,6 +135,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     //TODO : start search
                     return true;
                 }
+                if(id == R.id.bottom_bar_currency_exchange) {
+                    //TODO : change type of money
+                    return true;
+                }
                 return true;
             }
         });

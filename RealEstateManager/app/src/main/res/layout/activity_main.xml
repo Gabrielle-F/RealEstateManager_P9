@@ -37,7 +37,8 @@
         android:layout_height="wrap_content"
         app:fabSize="auto"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="25dp"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
         android:backgroundTint="@color/accentLightColor"
         android:src="@drawable/ic_add_property_white"
@@ -49,7 +50,9 @@
         android:layout_height="wrap_content"
         app:menu="@menu/bottom_app_bar_activity_main_menu"
         android:background="@color/primaryColor"
-        android:elevation="5dp"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/primaryColor"
+        android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
