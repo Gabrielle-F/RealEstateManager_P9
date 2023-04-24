@@ -107,7 +107,7 @@ class AddPicturesFragment : Fragment(R.layout.fragment_add_image_pop_up) {
 
     private fun checkExternalStoragePermissions() {
         EasyPermissions.requestPermissions(
-            requireParentFragment(),
+            requireActivity(),
             getString(R.string.camera_and_storage),
             EXTERNAL_STORAGE_PERMISSION_CODE, *externalStoragePermissions
         )
@@ -115,7 +115,7 @@ class AddPicturesFragment : Fragment(R.layout.fragment_add_image_pop_up) {
 
     private fun checkCameraPermissions() {
         EasyPermissions.requestPermissions(
-            requireParentFragment(),
+            requireActivity(),
             getString(R.string.camera_and_storage),
             CAMERA_PERMISSION_CODE, *cameraPermissions
         )
