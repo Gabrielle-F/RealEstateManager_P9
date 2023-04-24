@@ -2,11 +2,13 @@ package com.openclassrooms.realestatemanager.ui.addProperty
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.openclassrooms.realestatemanager.databinding.ActivityAddPropertyBinding
+import com.openclassrooms.realestatemanager.model.Agent
 import com.openclassrooms.realestatemanager.model.Image
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.ui.main.MainActivity
@@ -33,6 +35,10 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
         adapter = AddPropertyRecyclerViewAdapter(picturesList)
 
         configureListeners()
+
+        lifecycleScope.launch {
+            populateAgentsSpinner()
+        }
     }
 
     fun configureListeners() {
@@ -99,5 +105,21 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
     override fun getImage(image: Image) {
         picturesList.add(image)
         fetchPicturesList(picturesList)
+    }
+
+    private suspend fun populateAgentsSpinner() {
+        addPropertyViewModel.getAgentsListLD()
+        addPropertyViewModel.agentsLiveData.observe(this) {agentsList ->
+            fetchAgentsListIntoSpinner(agentsList)
+        }
+    }
+
+    private fun fetchAgentsListIntoSpinner(agents : List<Agent>) {
+        val spinner = binding.addPropertyAgentSpinner
+        val adapter : ArrayAdapter<Agent> = ArrayAdapter(this, android.R.layout.simple_spinner_item, agents)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        if(spinner != null) {
+            spinner.adapter
+        }
     }
 }
