@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(tableName = "property_table")
 data class Property(
@@ -45,4 +46,4 @@ data class Property(
     var cinema: Boolean,
     @ColumnInfo(name = "pictures")
     var pictures: List<Image>
-)
+) : Serializable
