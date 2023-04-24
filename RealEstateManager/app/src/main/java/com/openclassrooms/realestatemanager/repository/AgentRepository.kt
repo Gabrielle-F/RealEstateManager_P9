@@ -1,10 +1,12 @@
 package com.openclassrooms.realestatemanager.repository
 
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
@@ -13,6 +15,7 @@ import com.openclassrooms.realestatemanager.database.AgentDao
 import com.openclassrooms.realestatemanager.model.Agent
 import com.openclassrooms.realestatemanager.model.AgentFirestore
 import com.openclassrooms.realestatemanager.ui.main.MainActivity
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import org.w3c.dom.Document
 import javax.inject.Inject
@@ -23,6 +26,8 @@ class AgentRepository @Inject constructor(private val agentDao : AgentDao) {
 
     private val agentsCollectionName : String = "agents"
     private val firebaseAuth : FirebaseAuth = FirebaseAuth.getInstance()
+    private val TAG_ERROR_SIGN_IN : String = "Error"
+    private val TAG_ERROR_INCORRECT_PASSWORD_OR_EMAIL : String = "Wrong password or email"
 
     suspend fun createAgent(agent : Agent) = agentDao.insertAgent(agent)
 
@@ -30,18 +35,27 @@ class AgentRepository @Inject constructor(private val agentDao : AgentDao) {
         return FirebaseFirestore.getInstance().collection(agentsCollectionName)
     }
 
-    suspend fun signIn(email: String, password: String) {
-        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {task ->
+    suspend fun logIn(email: String, password: String) {
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {task ->
             if(task.isSuccessful) {
-                val firebaseUser = firebaseAuth.currentUser
+                getCurrentFirebaseUser()
+            } else {
+                val exception = task.exception
+                if(exception is FirebaseAuthInvalidCredentialsException) {
+                    Log.e(TAG_ERROR_INCORRECT_PASSWORD_OR_EMAIL, "Wrong password or email")
+                }
             }
         }
     }
 
-    suspend fun logIn(email: String, password: String) {
-        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {task ->
+    suspend fun createUserWithEmailAndPassword(email: String, password: String, name: String) {
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {task ->
             if(task.isSuccessful) {
                 val firebaseUser = firebaseAuth.currentUser
+                createAgentInFirestoreDatabase(firebaseUser)
+            } else {
+                val exception = task.exception
+                Log.e(TAG_ERROR_SIGN_IN, "Error during authentication", exception)
             }
         }
     }
@@ -72,4 +86,6 @@ class AgentRepository @Inject constructor(private val agentDao : AgentDao) {
     private fun getCurrentFirebaseUser() : FirebaseUser? {
         return FirebaseAuth.getInstance().currentUser
     }
+
+    fun getAllAgents() : Flow<List<Agent>> = agentDao.getAllAgents()
 }

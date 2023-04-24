@@ -9,5 +9,5 @@ class CreateClientUseCase @Inject constructor(private val clientRepository : Cli
 
     suspend fun createClient(client : Client) = clientRepository.createClient(client)
 
-    suspend fun createClientInFirestoreDatabase(firebaseUser: FirebaseUser?) = clientRepository.createClientInFirestoreDatabase(firebaseUser)
+    suspend fun invoke(email: String, password: String) = clientRepository.createUserWithEmailAndPassword(email, password)
 }

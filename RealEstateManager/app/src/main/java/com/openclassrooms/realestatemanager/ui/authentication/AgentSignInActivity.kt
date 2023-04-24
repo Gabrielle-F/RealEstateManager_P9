@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.ui.authentication
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -7,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.openclassrooms.realestatemanager.databinding.ActivityAgentCreateAccountBinding
 import com.openclassrooms.realestatemanager.model.Agent
+import com.openclassrooms.realestatemanager.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -28,33 +30,36 @@ class AgentSignInActivity : AppCompatActivity() {
     }
 
     private fun configureListeners(id : Int = 0) {
-        val email = binding.editTxtEmailAgentAuthentication.text.toString()
-        val name = binding.editTxtNameAgentAuthentication.text.toString()
-        val password = binding.editTxtPasswordAgentAuthentication.text.toString()
-
-        val agent = Agent(id, email, name)
-
         binding.signInBtnAgent.setOnClickListener {
-            if(email != null && password != null) {
-                signIn(email, password)
-                if(name != null) {
-                    createAgentInLocalDatabase(agent)
-                }
-            } else {
-                Toast.makeText(applicationContext, "Please enter your email and password !", Toast.LENGTH_LONG).show()
-            }
-        }
-    }
+            val email = binding.editTxtEmailAgentAuthentication.text.toString()
+            val name = binding.editTxtNameAgentAuthentication.text.toString()
+            val password = binding.editTxtPasswordAgentAuthentication.text.toString()
 
-    private fun signIn(email: String, password: String) {
-        lifecycleScope.launch {
-            agentSignInActivityViewModel.signIn(email, password)
+            val agent = Agent(id, email, name)
+            if(email.isNotEmpty() && password.isNotEmpty() && name.isNotEmpty()) {
+                createAgentWithEmailAndPassword(email, password, name)
+                createAgentInLocalDatabase(agent)
+                startMainActivity()
+            } else {
+                Toast.makeText(applicationContext, "Please enter your name !", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
     private fun createAgentInLocalDatabase(agent: Agent) {
         lifecycleScope.launch {
             agentSignInActivityViewModel.createAgent(agent)
+        }
+    }
+
+    private fun startMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun createAgentWithEmailAndPassword(email: String, password: String, name: String) {
+        lifecycleScope.launch {
+            agentSignInActivityViewModel.createAgentWithEmailAndPassword(email, password, name)
         }
     }
 }

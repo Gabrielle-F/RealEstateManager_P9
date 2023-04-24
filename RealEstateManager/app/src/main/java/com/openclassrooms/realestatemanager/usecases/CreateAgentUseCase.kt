@@ -1,6 +1,5 @@
 package com.openclassrooms.realestatemanager.usecases
 
-import com.google.firebase.auth.FirebaseUser
 import com.openclassrooms.realestatemanager.model.Agent
 import com.openclassrooms.realestatemanager.repository.AgentRepository
 import javax.inject.Inject
@@ -9,5 +8,5 @@ class CreateAgentUseCase @Inject constructor(private val agentRepository: AgentR
 
     suspend fun createAgent(agent : Agent) = agentRepository.createAgent(agent)
 
-    suspend fun createAgentInFirestoreDatabase(firebaseUser: FirebaseUser?) = agentRepository.createAgentInFirestoreDatabase(firebaseUser)
+    suspend fun createAgentWithEmailAndPassword(email: String, password: String, name: String) = agentRepository.createUserWithEmailAndPassword(email, password, name)
 }

@@ -31,6 +31,8 @@
 
         <activity android:name=".ui.authentication.ChoiceClientOrAgentActivity"/>
 
+        <activity android:name=".ui.authentication.ChoiceSignInOrLogInActivity"/>
+
         <activity android:name=".ui.authentication.ClientLogInActivity"/>
 
         <activity android:name=".ui.authentication.ClientSignInActivity"/>
