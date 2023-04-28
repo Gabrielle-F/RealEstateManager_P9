@@ -193,7 +193,7 @@
                 android:id="@+id/add_property_cardview_amenities"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_small"
+                android:layout_margin="10sp"
                 android:elevation="5dp"
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/add_property_place_informations">
@@ -230,9 +230,7 @@
                     android:textOff="@string/switch_off"
                     android:textOn="@string/switch_on"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/add_property_txt_available"
-                    app:thumbTint="@color/primaryDarkColor"
-                    app:trackTint="@color/primaryLightColor" />
+                    app:layout_constraintStart_toEndOf="@+id/add_property_txt_available" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/add_property_sold_date_txtInput"
@@ -257,13 +255,14 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/add_property_add_pictures_material_btn"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/add_pictures"
+                    android:textSize="15sp"
+                    app:strokeColor="@color/primaryColor"
                     android:textColor="@color/secondaryDarkColor"
                     android:layout_marginTop="15dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -310,7 +309,7 @@
                     android:backgroundTint="@color/onErrorColor"
                     android:text="@string/cancel"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
+                    android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/activity_add_fab"/>
@@ -326,7 +325,7 @@
                     android:backgroundTint="@color/secondaryLightColor"
                     android:text="@string/add_property"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
+                    android:textSize="15sp"
                     app:icon="@drawable/ic_add_property_circle_outline_white"
                     app:iconGravity="start"
                     app:layout_constraintBottom_toBottomOf="parent"

@@ -9,8 +9,10 @@ import androidx.lifecycle.lifecycleScope
 import com.openclassrooms.realestatemanager.databinding.ActivityClientCreateAccountBinding
 import com.openclassrooms.realestatemanager.model.Client
 import com.openclassrooms.realestatemanager.ui.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class ClientSignInActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityClientCreateAccountBinding
