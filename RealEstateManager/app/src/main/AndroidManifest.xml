@@ -39,7 +39,7 @@
 
         <activity android:name=".ui.authentication.AgentSignInActivity"/>
 
-        <activity android:name=".ui.authentication.AgentLogInActivity"/>
+        <activity android:name=".ui.authentication.LogInActivity"/>
 
     </application>
 

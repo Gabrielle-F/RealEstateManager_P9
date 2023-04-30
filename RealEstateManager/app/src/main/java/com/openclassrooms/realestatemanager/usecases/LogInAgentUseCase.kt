@@ -5,5 +5,7 @@ import javax.inject.Inject
 
 class LogInAgentUseCase @Inject constructor(private val agentRepository: AgentRepository) {
 
-    suspend fun logIn(email: String, password: String) = agentRepository.logIn(email, password)
+    suspend fun invoke(email: String, password: String) : Boolean {
+        return agentRepository.logIn(email, password)
+    }
 }

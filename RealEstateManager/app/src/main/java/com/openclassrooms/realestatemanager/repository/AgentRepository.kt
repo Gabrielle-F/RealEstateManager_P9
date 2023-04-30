@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseUser
@@ -17,6 +18,7 @@ import com.openclassrooms.realestatemanager.model.AgentFirestore
 import com.openclassrooms.realestatemanager.ui.main.MainActivity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import org.w3c.dom.Document
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -35,28 +37,25 @@ class AgentRepository @Inject constructor(private val agentDao : AgentDao) {
         return FirebaseFirestore.getInstance().collection(agentsCollectionName)
     }
 
-    suspend fun logIn(email: String, password: String) {
-        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {task ->
-            if(task.isSuccessful) {
-                getCurrentFirebaseUser()
-            } else {
-                val exception = task.exception
-                if(exception is FirebaseAuthInvalidCredentialsException) {
-                    Log.e(TAG_ERROR_INCORRECT_PASSWORD_OR_EMAIL, "Wrong password or email")
-                }
-            }
+    suspend fun logIn(email: String, password: String) : Boolean {
+        val task : AuthResult = firebaseAuth.signInWithEmailAndPassword(email, password).await()
+        return if (task.user != null) {
+            getCurrentFirebaseUser()
+            true
+        } else {
+            Log.e(TAG_ERROR_INCORRECT_PASSWORD_OR_EMAIL, "Wrong password or email")
+            false
         }
     }
 
-    suspend fun createUserWithEmailAndPassword(email: String, password: String, name: String) {
-        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {task ->
-            if(task.isSuccessful) {
-                val firebaseUser = firebaseAuth.currentUser
-                createAgentInFirestoreDatabase(firebaseUser)
-            } else {
-                val exception = task.exception
-                Log.e(TAG_ERROR_SIGN_IN, "Error during authentication", exception)
-            }
+    suspend fun createUserWithEmailAndPassword(email: String, password: String, name: String) : Boolean {
+        val task : AuthResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
+        return if(task.user != null) {
+            createAgentInFirestoreDatabase(task.user)
+            true
+        } else {
+            Log.e(TAG_ERROR_SIGN_IN, "Error during authentication")
+            false
         }
     }
 
