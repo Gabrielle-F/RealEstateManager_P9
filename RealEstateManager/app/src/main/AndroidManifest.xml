@@ -18,6 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name="com.openclassrooms.realestatemanager.ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
@@ -29,15 +30,7 @@
 
         <activity android:name=".ui.addProperty.AddPropertyActivity"/>
 
-        <activity android:name=".ui.authentication.ChoiceClientOrAgentActivity"/>
-
-        <activity android:name=".ui.authentication.ChoiceSignInOrLogInActivity"/>
-
-        <activity android:name=".ui.authentication.ClientLogInActivity"/>
-
-        <activity android:name=".ui.authentication.ClientSignInActivity"/>
-
-        <activity android:name=".ui.authentication.AgentSignInActivity"/>
+        <activity android:name=".ui.authentication.SignUpActivity"/>
 
         <activity android:name=".ui.authentication.LogInActivity"/>
 

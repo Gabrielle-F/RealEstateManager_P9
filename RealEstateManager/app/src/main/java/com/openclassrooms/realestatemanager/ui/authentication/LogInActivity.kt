@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.ActivityLoginBinding
 import com.openclassrooms.realestatemanager.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,22 +42,53 @@ class LogInActivity : AppCompatActivity() {
         binding.logInBtn.setOnClickListener {
             val email = binding.editTxtEmailAgentConnection.text.toString()
             val password = binding.editTxtPasswordAgentConnection.text.toString()
+            val client = binding.clientRadioBtn.isEnabled
+            val agent = binding.agentRadioBtn.isEnabled
             if(email.isNotEmpty() && password.isNotEmpty()) {
-                logIn(email, password)
+                if(agent) {
+                    logInAgent(email, password)
+                } else if(client) {
+                    logInClient(email, password)
+                }
             } else {
                 Toast.makeText(applicationContext, "Please enter your email and password !", Toast.LENGTH_LONG).show()
             }
         }
+
+        binding.activityLoginSignUpBtn.setOnClickListener {
+            val client = binding.clientRadioBtn.isEnabled
+            val agent = binding.agentRadioBtn.isEnabled
+            if(client && !agent) {
+                startSignUpActivity(client, agent)
+            } else if(!client && agent) {
+                startSignUpActivity(client, agent)
+            } else if(!client && !agent) {
+                Toast.makeText(this, "Please tell us if you are client or agent !", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
-    private fun logIn(email: String, password: String) {
+    private fun logInAgent(email: String, password: String) {
         lifecycleScope.launch {
             viewModel.logIn(email, password)
         }
     }
 
+    private fun logInClient(email: String, password: String) {
+        lifecycleScope.launch {
+            viewModel.logInClient(email, password)
+        }
+    }
+
     private fun startMainActivity(client: Boolean, agent: Boolean) {
         val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("client", client)
+        intent.putExtra("agent", agent)
+        startActivity(intent)
+    }
+
+    private fun startSignUpActivity(client: Boolean, agent: Boolean) {
+        val intent = Intent(this, SignUpActivity::class.java)
         intent.putExtra("client", client)
         intent.putExtra("agent", agent)
         startActivity(intent)

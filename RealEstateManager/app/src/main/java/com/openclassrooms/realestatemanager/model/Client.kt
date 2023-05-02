@@ -7,7 +7,8 @@ import androidx.room.PrimaryKey
 data class Client(
     @PrimaryKey(autoGenerate = true)
     val id : Int,
-    val email : String
+    val email : String,
+    val name : String
 )
 
 data class ClientFirestore(

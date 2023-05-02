@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/background_login_activity_blur_transparent"
+    android:background="@drawable/background_login_and_signup_activities"
     android:padding="40dp">
 
     <androidx.cardview.widget.CardView
@@ -93,7 +93,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="55dp"
+        android:layout_marginBottom="60dp"
         android:text="@string/log_in"
         android:paddingStart="30dp"
         android:paddingEnd="30dp"
@@ -101,6 +101,7 @@
         style="@style/ThemeOverlay.Material3.Button.TonalButton"/>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/activity_login_sign_up_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/not_already_log_in"
