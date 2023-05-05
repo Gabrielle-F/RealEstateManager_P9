@@ -2,10 +2,12 @@ package com.openclassrooms.realestatemanager.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.ForeignKey.Companion.CASCADE
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
-@Entity(tableName = "property_table")
+@Entity(tableName = "property_table", foreignKeys = [ForeignKey(entity = Agent::class, parentColumns = ["id"], childColumns = ["agent_id"], onDelete = CASCADE)])
 data class Property(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
@@ -45,5 +47,7 @@ data class Property(
     @ColumnInfo(name = "cinema")
     var cinema: Boolean,
     @ColumnInfo(name = "pictures")
-    var pictures: List<Image>
+    var pictures: List<Image>,
+    @ColumnInfo(name = "agent_id", index = true)
+    val agentId : Int
 ) : Serializable

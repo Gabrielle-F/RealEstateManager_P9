@@ -1,14 +1,16 @@
 package com.openclassrooms.realestatemanager.ui.addProperty
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.model.Image
 
-class AddPropertyRecyclerViewAdapter(private val picturesList : List<Image>) :
+class AddPropertyRecyclerViewAdapter(private val picturesList : MutableList<Image>) :
     RecyclerView.Adapter<AddPropertyRecyclerViewAdapter.PicturesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PicturesViewHolder {
@@ -20,13 +22,21 @@ class AddPropertyRecyclerViewAdapter(private val picturesList : List<Image>) :
         return picturesList.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updatePicturesList(pictures: List<Image>) {
-        picturesList.plus(pictures)
+        picturesList.clear()
+        picturesList.addAll(pictures)
+        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: PicturesViewHolder, position: Int) {
         val pictureItem = picturesList[position]
         holder.imageView.setImageResource(pictureItem.imageUri.toInt())
+
+        Glide.with(holder.imageView.context)
+            .load(pictureItem.imageUri)
+            .centerCrop()
+            .into(holder.imageView)
     }
 
     class PicturesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

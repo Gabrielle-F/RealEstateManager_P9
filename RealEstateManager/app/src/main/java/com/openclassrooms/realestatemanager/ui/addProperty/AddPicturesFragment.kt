@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.R
@@ -23,7 +24,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 @AndroidEntryPoint
 class AddPicturesFragment : Fragment(R.layout.fragment_add_image_pop_up) {
 
-    @ApplicationContext private lateinit var context : Context
+    private lateinit var context : Context
     private lateinit var listener : OnDataChangeListener
     private lateinit var binding : FragmentAddImagePopUpBinding
     private lateinit var imagePath: String
@@ -51,6 +52,7 @@ class AddPicturesFragment : Fragment(R.layout.fragment_add_image_pop_up) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        context = requireContext()
 
         checkExternalStoragePermissions()
         checkCameraPermissions()
@@ -77,6 +79,7 @@ class AddPicturesFragment : Fragment(R.layout.fragment_add_image_pop_up) {
         }
         binding.addPictureFragmentSaveBtn.setOnClickListener {
             sendDataToAddPropertyActivity()
+            startAddPropertyActivity()
         }
     }
 
@@ -122,13 +125,15 @@ class AddPicturesFragment : Fragment(R.layout.fragment_add_image_pop_up) {
     }
 
     private fun sendDataToAddPropertyActivity() {
-        val imageName = binding.addPictureFragmentNamePicture.text.toString()
-        val imageDescription = binding.addPictureFragmentDescribePicture.text.toString()
-        val firstPicture = defineAsFirstPictureCheckboxIsCheckedOrNot()
+        if(validateFields()) {
+            val imageName = binding.addPictureFragmentNamePicture.text.toString()
+            val imageDescription = binding.addPictureFragmentDescribePicture.text.toString()
+            val firstPicture = defineAsFirstPictureCheckboxIsCheckedOrNot()
 
-        val imageToCreate = Image(imagePath, imageName, imageDescription, firstPicture)
+            val imageToCreate = Image(imagePath, imageName, imageDescription, firstPicture)
 
-        listener.getImage(imageToCreate)
+            listener.getImage(imageToCreate)
+        }
     }
 
     private fun convertUriToString(uriValue: Uri?) : String {
@@ -143,5 +148,28 @@ class AddPicturesFragment : Fragment(R.layout.fragment_add_image_pop_up) {
         firstPictureCheckbox.isEnabled = !hasFirstPicture
         firstPicture = firstPictureCheckbox.isChecked
         return firstPicture
+    }
+
+    private fun validateFields() : Boolean {
+        val imageName = binding.addPictureFragmentNamePicture.text.toString()
+        val imageDescription = binding.addPictureFragmentDescribePicture.text.toString()
+        if(imageName.isBlank()) {
+            Toast.makeText(context, "Please enter a name !", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if(imageDescription.isBlank()) {
+            Toast.makeText(context, "Please enter a description !", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if(imagePath.isBlank()) {
+            Toast.makeText(context, "Please select a picture to add !", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
+    }
+
+    private fun startAddPropertyActivity() {
+        val intent = Intent(context, AddPropertyActivity::class.java)
+        startActivity(intent)
     }
 }

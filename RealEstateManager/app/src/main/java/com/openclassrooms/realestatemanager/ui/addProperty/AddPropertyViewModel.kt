@@ -17,8 +17,8 @@ class AddPropertyViewModel @Inject constructor(private val createPropertyUseCase
     suspend fun createProperty(property : Property) = createPropertyUseCase.createProperty(property)
 
     suspend fun getAgentsListLD() {
-        getAgentsListUseCase.invoke().collect {
-            agents -> agentsLiveData.postValue(agents)
+        getAgentsListUseCase.invoke().collect { agents ->
+            agentsLiveData.value = agents
         }
     }
 }

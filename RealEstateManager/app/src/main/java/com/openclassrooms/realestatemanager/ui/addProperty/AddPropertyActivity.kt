@@ -2,6 +2,9 @@ package com.openclassrooms.realestatemanager.ui.addProperty
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -24,6 +27,7 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
     private val addPropertyViewModel : AddPropertyViewModel by viewModels()
     private val picturesList = ArrayList<Image>()
     private lateinit var adapter : AddPropertyRecyclerViewAdapter
+    private lateinit var selectedAgent : Agent
 
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +41,11 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
         configureListeners()
 
         lifecycleScope.launch {
-            populateAgentsSpinner()
+            addPropertyViewModel.getAgentsListLD()
+        }
+        addPropertyViewModel.agentsLiveData.observe(this) {agentsList ->
+            Log.d("TAG", "Agents list size: ${agentsList.size}")
+            fetchAgentsListIntoSpinner(agentsList)
         }
     }
 
@@ -69,9 +77,11 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
     }
 
     suspend fun createProperty() {
-        val property : Property = getPropertyToCreate()
-        addPropertyViewModel.createProperty(property)
-        Toast.makeText(this, "Property create with success !", Toast.LENGTH_SHORT).show()
+        if(validateFields() && validateFieldsSoldOrAvailable()) {
+            val property : Property = getPropertyToCreate()
+            addPropertyViewModel.createProperty(property)
+            Toast.makeText(this, "Property create with success !", Toast.LENGTH_SHORT).show()
+        }
     }
 
     fun getPropertyToCreate(id : Int = 0) : Property {
@@ -94,7 +104,8 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
             sold = binding.addPropertySwitchSoldOrAvailable.isActivated,
             soldDate = binding.addPropertySoldDateEdittxt.text.toString(),
             registerDate = Utils.getTodayDate(),
-            pictures = picturesList
+            pictures = picturesList,
+            agentId = selectedAgent.id
         )
     }
 
@@ -107,19 +118,82 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
         fetchPicturesList(picturesList)
     }
 
-    private suspend fun populateAgentsSpinner() {
-        addPropertyViewModel.getAgentsListLD()
-        addPropertyViewModel.agentsLiveData.observe(this) {agentsList ->
-            fetchAgentsListIntoSpinner(agentsList)
-        }
-    }
-
     private fun fetchAgentsListIntoSpinner(agents : List<Agent>) {
         val spinner = binding.addPropertyAgentSpinner
         val adapter : ArrayAdapter<Agent> = ArrayAdapter(this, android.R.layout.simple_spinner_item, agents)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         if(spinner != null) {
-            spinner.adapter
+            spinner.adapter = adapter
+            spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                    selectedAgent = parent.getItemAtPosition(position) as Agent
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+
+                }
+
+            }
         }
+    }
+
+    private fun validateFields() : Boolean {
+        val type = binding.addPropertyTypeEdittxt.text.toString()
+        val rooms = binding.addPropertyRoomsEdittxt.text.toString()
+        val price = binding.addPropertyPriceEdittxt.text.toString()
+        val area = binding.addPropertyAreaEdittxt.text.toString()
+        val streetNumber = binding.addPropertyStreetNumberEdittxt.text.toString()
+        val streetName = binding.addPropertyStreetEdittxt.text.toString()
+        val postalCode = binding.addPropertyPostalCodeEdittxt.text.toString()
+        val city = binding.addPropertyCityEdittxt.text.toString()
+
+        return when {
+            type.isEmpty() -> {
+                binding.addPropertyTypeEdittxt.error = "Type cannot be empty"
+                false
+            }
+            rooms.isEmpty() -> {
+                binding.addPropertyRoomsEdittxt.error = "Rooms cannot be empty"
+                false
+            }
+            price.isEmpty() -> {
+                binding.addPropertyPriceEdittxt.error = "Price cannot be empty"
+                false
+            }
+            area.isEmpty() -> {
+                binding.addPropertyAreaEdittxt.error = "Area cannot be empty"
+                false
+            }
+            streetNumber.isEmpty() -> {
+                binding.addPropertyStreetNumberEdittxt.error = "Street number cannot be empty"
+                false
+            }
+            streetName.isEmpty() -> {
+                binding.addPropertyStreetEdittxt.error = "Street name cannot be empty"
+                false
+            }
+            postalCode.isEmpty() -> {
+                binding.addPropertyPostalCodeEdittxt.error = "Postal code cannot be empty"
+                false
+            }
+            city.isEmpty() -> {
+                binding.addPropertyCityEdittxt.error = "City cannot be empty"
+                false
+            }
+            else -> true
+        }
+    }
+
+    private fun validateFieldsSoldOrAvailable() : Boolean {
+        val sold = binding.addPropertySwitchSoldOrAvailable.isActivated
+        val soldDate = binding.addPropertySoldDateEdittxt.text.toString()
+
+        if(sold){
+            if (soldDate.isEmpty()) {
+                binding.addPropertySoldDateEdittxt.error = "Sold date cannot be empty"
+                return false
+            }
+        }
+        return true
     }
 }
