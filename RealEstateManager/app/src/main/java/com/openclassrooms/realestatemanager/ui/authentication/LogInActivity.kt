@@ -58,12 +58,10 @@ class LogInActivity : AppCompatActivity() {
         binding.activityLoginSignUpBtn.setOnClickListener {
             val client = binding.clientRadioBtn.isEnabled
             val agent = binding.agentRadioBtn.isEnabled
-            if(client && !agent) {
-                startSignUpActivity(client, agent)
-            } else if(!client && agent) {
-                startSignUpActivity(client, agent)
-            } else if(!client && !agent) {
+            if(!client && !agent) {
                 Toast.makeText(this, "Please tell us if you are client or agent !", Toast.LENGTH_LONG).show()
+            } else {
+                startSignUpActivity(client, agent)
             }
         }
     }

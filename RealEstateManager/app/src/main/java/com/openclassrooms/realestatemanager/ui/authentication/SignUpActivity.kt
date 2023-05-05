@@ -16,11 +16,13 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class SignUpActivity : AppCompatActivity() {
 
+    enum class CurrentUser {
+        CLIENT, AGENT
+    }
+
     private lateinit var binding : ActivitySignUpBinding
     private val viewModel : SignUpViewModel by viewModels()
-    private val clientBoolean: Boolean = intent.getBooleanExtra("client", false)
-    private val agentBoolean: Boolean = intent.getBooleanExtra("agent", true)
-
+    private lateinit var currentUser : CurrentUser
 
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,12 +33,28 @@ class SignUpActivity : AppCompatActivity() {
         setContentView(view)
 
         configureListeners()
+
+        val agentClient = intent.getBooleanExtra("client", false)
+        val agentBoolean: Boolean = intent.getBooleanExtra("agent", true)
+        if(agentClient) {
+            currentUser = CurrentUser.CLIENT
+        } else if(agentBoolean) {
+            currentUser = CurrentUser.AGENT
+        }
     }
 
     private fun configureListeners(id : Int = 0) {
         viewModel.liveDataUserSignUp.observe(this) { signUpSuccess ->
             if(signUpSuccess) {
-                startMainActivity(clientBoolean, agentBoolean)
+                if(currentUser == CurrentUser.AGENT) {
+                    val clientBoolean = false
+                    val agentBoolean = true
+                    startMainActivity(clientBoolean, agentBoolean)
+                } else if(currentUser == CurrentUser.CLIENT) {
+                    val clientBoolean = true
+                    val agentBoolean = false
+                    startMainActivity(clientBoolean, agentBoolean)
+                }
             } else {
                 Toast.makeText(this, "Sign up failed ! Please retry later", Toast.LENGTH_LONG).show()
             }
@@ -50,10 +68,10 @@ class SignUpActivity : AppCompatActivity() {
             val agent = Agent(id, email, name)
             val client = Client(id, email, name)
             if(email.isNotEmpty() && password.isNotEmpty() && name.isNotEmpty()) {
-                if(clientBoolean) {
+                if(currentUser == CurrentUser.CLIENT) {
                     createClientWithEmailAndPassword(email, password, name)
                     createClientInLocalDatabase(client)
-                } else if (agentBoolean) {
+                } else if (currentUser == CurrentUser.AGENT) {
                     createAgentWithEmailAndPassword(email, password, name)
                     createAgentInLocalDatabase(agent)
                 }
