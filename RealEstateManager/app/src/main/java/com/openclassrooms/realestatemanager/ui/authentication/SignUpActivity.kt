@@ -34,9 +34,9 @@ class SignUpActivity : AppCompatActivity() {
 
         configureListeners()
 
-        val agentClient = intent.getBooleanExtra("client", false)
-        val agentBoolean: Boolean = intent.getBooleanExtra("agent", true)
-        if(agentClient) {
+        val clientBoolean = intent.getBooleanExtra("client", false)
+        val agentBoolean = intent.getBooleanExtra("agent", false)
+        if(clientBoolean) {
             currentUser = CurrentUser.CLIENT
         } else if(agentBoolean) {
             currentUser = CurrentUser.AGENT
