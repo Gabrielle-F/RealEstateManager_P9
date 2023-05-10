@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.ActivityAddPropertyBinding
 import com.openclassrooms.realestatemanager.model.Agent
 import com.openclassrooms.realestatemanager.model.Image
@@ -26,17 +28,25 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
     private val amenitiesView : AddPropertyAmenitiesView = AddPropertyAmenitiesView()
     private val addPropertyViewModel : AddPropertyViewModel by viewModels()
     private val picturesList = ArrayList<Image>()
-    private lateinit var adapter : AddPropertyRecyclerViewAdapter
+    private lateinit var addPropertyAdapter : AddPropertyRecyclerViewAdapter
     private lateinit var selectedAgent : Agent
 
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.add(R.id.amenities_view_container, AddPropertyAmenitiesView()).commit()
+
         binding = ActivityAddPropertyBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        adapter = AddPropertyRecyclerViewAdapter(picturesList)
+
+        addPropertyAdapter = AddPropertyRecyclerViewAdapter(picturesList)
+        val recyclerView = binding.addPropertyPicturesRecyclerView
+        val layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = addPropertyAdapter
 
         configureListeners()
 
@@ -110,7 +120,7 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
     }
 
     private fun fetchPicturesList(pictures : List<Image>) {
-        adapter.updatePicturesList(pictures)
+        addPropertyAdapter.updatePicturesList(pictures)
     }
 
     override fun getImage(image: Image) {
@@ -120,13 +130,13 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
 
     private fun fetchAgentsListIntoSpinner(agents : List<Agent>) {
         val spinner = binding.addPropertyAgentSpinner
-        val adapter : ArrayAdapter<Agent> = ArrayAdapter(this, android.R.layout.simple_spinner_item, agents)
+        val adapter : ArrayAdapter<String> = ArrayAdapter(this, android.R.layout.simple_spinner_item, agents.map { it.name })
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         if(spinner != null) {
             spinner.adapter = adapter
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                    selectedAgent = parent.getItemAtPosition(position) as Agent
+                    selectedAgent = agents[position]
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {

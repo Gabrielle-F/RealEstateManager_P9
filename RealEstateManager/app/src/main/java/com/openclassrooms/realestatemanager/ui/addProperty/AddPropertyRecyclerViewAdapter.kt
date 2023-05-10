@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.ui.addProperty
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.model.Image
+import java.net.URL
 
 class AddPropertyRecyclerViewAdapter(private val picturesList : MutableList<Image>) :
     RecyclerView.Adapter<AddPropertyRecyclerViewAdapter.PicturesViewHolder>() {
@@ -31,10 +33,11 @@ class AddPropertyRecyclerViewAdapter(private val picturesList : MutableList<Imag
 
     override fun onBindViewHolder(holder: PicturesViewHolder, position: Int) {
         val pictureItem = picturesList[position]
-        holder.imageView.setImageResource(pictureItem.imageUri.toInt())
+        val uri = Uri.parse(pictureItem.imageUri)
+        val url = URL(pictureItem.imageUri)
 
         Glide.with(holder.imageView.context)
-            .load(pictureItem.imageUri)
+            .load(url)
             .centerCrop()
             .into(holder.imageView)
     }

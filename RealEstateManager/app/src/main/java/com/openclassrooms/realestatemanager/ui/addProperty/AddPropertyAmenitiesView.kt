@@ -18,13 +18,12 @@ class AddPropertyAmenitiesView : Fragment(R.layout.amenities_checkbox) {
     @Override
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = AmenitiesCheckboxBinding.bind(view)
     }
 
     @Override
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = AmenitiesCheckboxBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+        return inflater.inflate(R.layout.amenities_checkbox, container, false)
     }
 
     fun schoolCheckBoxIsCheckedOrNot() : Boolean {

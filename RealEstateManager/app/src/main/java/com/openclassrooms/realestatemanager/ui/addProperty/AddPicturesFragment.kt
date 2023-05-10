@@ -15,19 +15,20 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.databinding.FragmentAddImagePopUpBinding
+import com.openclassrooms.realestatemanager.databinding.FragmentAddImageBinding
 import com.openclassrooms.realestatemanager.model.Image
 import com.vmadalin.easypermissions.EasyPermissions
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.qualifiers.ApplicationContext
+import java.net.URL
 
 @AndroidEntryPoint
-class AddPicturesFragment : Fragment(R.layout.fragment_add_image_pop_up) {
+class AddPicturesFragment : Fragment(R.layout.fragment_add_image) {
 
     private lateinit var context : Context
     private lateinit var listener : OnDataChangeListener
-    private lateinit var binding : FragmentAddImagePopUpBinding
+    private lateinit var binding : FragmentAddImageBinding
     private lateinit var imagePath: String
+    private lateinit var imageUrl: URL
     private val EXTERNAL_STORAGE_PERMISSION_CODE  : Int = 20
     private val CAMERA_PERMISSION_CODE : Int = 10
     private val REQUEST_IMAGE_CAPTURE_CODE : Int = 100
@@ -46,7 +47,7 @@ class AddPicturesFragment : Fragment(R.layout.fragment_add_image_pop_up) {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentAddImagePopUpBinding.inflate(inflater, container, false)
+        binding = FragmentAddImageBinding.inflate(inflater, container, false)
         return binding.root
     }
 
