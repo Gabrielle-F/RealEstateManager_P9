@@ -28,7 +28,8 @@
             app:layout_constraintTop_toBottomOf="@+id/add_picture_fragment_name_picture"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="35dp"/>
+            android:layout_marginTop="35dp"
+            android:scaleType="centerCrop"/>
 
         <EditText
             android:id="@+id/add_picture_fragment_describe_picture"

@@ -2,7 +2,9 @@
 <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:columnCount="3">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:columnCount="3"
+    tools:context=".ui.addProperty.AddPropertyAmenitiesView">
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/school_checkbox"

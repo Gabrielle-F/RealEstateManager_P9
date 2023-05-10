@@ -198,16 +198,17 @@
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/add_property_place_informations">
 
-                <include
-                    layout="@layout/amenities_checkbox"
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/amenities_view_container"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"/>
 
             </androidx.cardview.widget.CardView>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp">
 
                 <TextView
                     android:id="@+id/add_property_txt_available"
@@ -272,7 +273,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/add_property_pictures_recycler_view"
                     android:layout_width="0dp"
-                    android:layout_height="100dp"
+                    android:layout_height="250dp"
                     android:orientation="horizontal"
                     android:scrollbars="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -283,10 +284,10 @@
 
                 <Spinner
                     android:id="@+id/add_property_agent_spinner"
-                    android:layout_width="@dimen/add_agent_spinner_width"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_small"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="25dp"
                     android:layout_marginBottom="15dp"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
