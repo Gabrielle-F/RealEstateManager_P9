@@ -22,7 +22,7 @@ class PropertiesListFragment : Fragment(R.layout.fragment_list_properties), Prop
 
     private lateinit var binding : FragmentListPropertiesBinding
     private val propertiesListViewModel : PropertiesListViewModel by viewModels()
-    private lateinit var adapter: PropertiesRecyclerViewAdapter
+    private lateinit var propertiesAdapter: PropertiesRecyclerViewAdapter
 
     @Override
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -34,25 +34,19 @@ class PropertiesListFragment : Fragment(R.layout.fragment_list_properties), Prop
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = PropertiesRecyclerViewAdapter(this)
-        binding.propertiesListRecyclerView.adapter = adapter
+        propertiesAdapter = PropertiesRecyclerViewAdapter(this)
+        binding.propertiesListRecyclerView.adapter = propertiesAdapter
 
-        lifecycleScope.launch {
-            fetchPropertiesList()
+        propertiesListViewModel.propertiesLiveData.observe(viewLifecycleOwner) { propertiesList ->
+            Log.d("TAG", "Properties list size: ${propertiesList.size}")
+            propertiesAdapter.updatePropertiesList(propertiesList)
         }
     }
 
     @Override
     override fun onStart() {
         super.onStart()
-    }
-
-    private suspend fun fetchPropertiesList() {
-        propertiesListViewModel.propertiesLiveData.observe(viewLifecycleOwner) { propertiesList ->
-            Log.d("TAG", "Properties list size: ${propertiesList.size}")
-            adapter.updatePropertiesList(propertiesList)
-        }
-        propertiesListViewModel.getProperties()
+        propertiesListViewModel.getPropertiesList()
     }
 
     fun updatePropertiesList() {
@@ -60,7 +54,7 @@ class PropertiesListFragment : Fragment(R.layout.fragment_list_properties), Prop
             propertiesListViewModel.getProperties()
             propertiesListViewModel.propertiesLiveData.observe(viewLifecycleOwner) { propertiesList ->
                 Log.d("TAG", "Properties list size: ${propertiesList.size}")
-                adapter.updatePropertiesList(propertiesList)
+                propertiesAdapter.updatePropertiesList(propertiesList)
             }
         }
     }

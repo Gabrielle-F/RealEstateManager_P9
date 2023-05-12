@@ -50,4 +50,10 @@ data class Property(
     var pictures: List<Image>,
     @ColumnInfo(name = "agent_id", index = true)
     val agentId : Int
-) : Serializable
+) : Serializable {
+
+    fun getFirstImage(): Image? {
+        return pictures.find { it.firstPicture == true }
+    }
+
+}

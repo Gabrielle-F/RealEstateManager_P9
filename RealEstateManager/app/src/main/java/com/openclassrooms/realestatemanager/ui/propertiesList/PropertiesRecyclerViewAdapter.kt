@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.ui.propertiesList
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,7 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.model.Image
 import com.openclassrooms.realestatemanager.model.Property
 
 class PropertiesRecyclerViewAdapter(private val onItemClickListener: OnItemClickListener) :
@@ -20,12 +20,14 @@ class PropertiesRecyclerViewAdapter(private val onItemClickListener: OnItemClick
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PropertiesViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.property_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_property, parent, false)
         return PropertiesViewHolder(view, onItemClickListener)
     }
 
     fun updatePropertiesList(properties : List<Property>) {
-        list.plus(properties)
+        list.clear()
+        list.addAll(properties)
+        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: PropertiesViewHolder, position: Int) {
@@ -33,7 +35,9 @@ class PropertiesRecyclerViewAdapter(private val onItemClickListener: OnItemClick
         holder.property = item
         holder.propertyType.text = item.type
         holder.propertyPrice.text = item.price.toString()
-        holder.propertyImage.setColorFilter(R.color.accentColor)
+        val firstPicture = item.getFirstImage()
+        val uri = Uri.parse(firstPicture?.imageUri)
+        holder.propertyImage.setImageURI(uri)
     }
 
     override fun getItemCount(): Int {
