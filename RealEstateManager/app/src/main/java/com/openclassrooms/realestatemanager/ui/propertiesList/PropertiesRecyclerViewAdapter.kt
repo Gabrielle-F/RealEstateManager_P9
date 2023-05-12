@@ -7,10 +7,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.model.Image
 import com.openclassrooms.realestatemanager.model.Property
 
-class PropertiesRecyclerViewAdapter(private val propertiesList : List<Property>, private val onItemClickListener: OnItemClickListener) :
+class PropertiesRecyclerViewAdapter(private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<PropertiesRecyclerViewAdapter.PropertiesViewHolder>() {
+
+    private val list = mutableListOf<Property>()
 
     interface OnItemClickListener {
         fun onClick(property: Property)
@@ -21,20 +24,20 @@ class PropertiesRecyclerViewAdapter(private val propertiesList : List<Property>,
         return PropertiesViewHolder(view, onItemClickListener)
     }
 
-    override fun getItemCount(): Int {
-        return propertiesList.size
-    }
-
     fun updatePropertiesList(properties : List<Property>) {
-        propertiesList.plus(properties)
+        list.plus(properties)
     }
 
     override fun onBindViewHolder(holder: PropertiesViewHolder, position: Int) {
-        val item = propertiesList[position]
+        val item = list[position]
         holder.property = item
         holder.propertyType.text = item.type
         holder.propertyPrice.text = item.price.toString()
+        holder.propertyImage.setColorFilter(R.color.accentColor)
+    }
 
+    override fun getItemCount(): Int {
+        return list.size
     }
 
     class PropertiesViewHolder(itemView: View, private val onItemClickListener: OnItemClickListener) : RecyclerView.ViewHolder(itemView) {
