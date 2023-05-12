@@ -3,22 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/bottom_app_bar_edit_property"
-        android:title="EditPropertyIcon"
-        android:icon="@drawable/ic_edit_property_white"
+        android:id="@+id/bottom_bar_properties_list"
+        android:title="@string/properties_list"
+        android:icon="@drawable/ic_properties_list"
         app:showAsAction="ifRoom"
         />
 
     <item
-        android:id="@+id/bottom_app_bar_search"
-        android:title="MakeSearch"
+        android:id="@+id/bottom_bar_search"
+        android:title="@string/make_search"
         android:icon="@drawable/ic_search_bottom_app_bar_white"
         app:showAsAction="ifRoom"
         />
 
     <item
         android:id="@+id/bottom_bar_currency_exchange"
-        android:title="CurrencyExchange"
+        android:title="@string/currency_money_exchange"
         android:icon="@drawable/ic_currency_exchange"
         app:showAsAction="ifRoom"
         />

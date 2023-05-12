@@ -7,13 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.model.Image
-import java.net.URL
 
-class AddPropertyRecyclerViewAdapter(private val picturesList : MutableList<Image>) :
+class AddPropertyRecyclerViewAdapter :
     RecyclerView.Adapter<AddPropertyRecyclerViewAdapter.PicturesViewHolder>() {
+
+    val picturesList = mutableListOf<Image>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PicturesViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.pictures_add_property_activity_item, parent, false)
@@ -34,12 +34,7 @@ class AddPropertyRecyclerViewAdapter(private val picturesList : MutableList<Imag
     override fun onBindViewHolder(holder: PicturesViewHolder, position: Int) {
         val pictureItem = picturesList[position]
         val uri = Uri.parse(pictureItem.imageUri)
-        val url = URL(pictureItem.imageUri)
-
-        Glide.with(holder.imageView.context)
-            .load(url)
-            .centerCrop()
-            .into(holder.imageView)
+        holder.imageView.setImageURI(uri)
     }
 
     class PicturesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

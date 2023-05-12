@@ -75,6 +75,11 @@
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
 
+    <!-- BOTTOMBAR MENU -->
+    <string name="properties_list">PropertiesListIcon</string>
+    <string name="make_search">MakeSearchIcon</string>
+    <string name="currency_money_exchange">CurrencyExchangeIcon</string>
+
     <!-- PERMISSIONS -->
     <string name="camera_and_storage">Multiple permissions for are required for the application to function fully</string>
 

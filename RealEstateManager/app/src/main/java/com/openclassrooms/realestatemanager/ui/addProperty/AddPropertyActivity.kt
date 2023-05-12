@@ -32,6 +32,10 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
     private lateinit var addPropertyAdapter : AddPropertyRecyclerViewAdapter
     private lateinit var selectedAgent : Agent
 
+    interface OnPropertyAddedListener {
+        fun onPropertyAdded()
+    }
+
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +44,7 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
         val view = binding.root
         setContentView(view)
 
-        addPropertyAdapter = AddPropertyRecyclerViewAdapter(picturesList)
+        addPropertyAdapter = AddPropertyRecyclerViewAdapter()
         val recyclerView = binding.addPropertyPicturesRecyclerView
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
@@ -67,10 +71,17 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
     }
 
     fun configureListeners() {
+        val addPropertyAddedListener = object : OnPropertyAddedListener{
+            override fun onPropertyAdded() {
+                val intent = Intent(applicationContext, MainActivity::class.java)
+                startActivity(intent)
+            }
+        }
         binding.activityAddFab.setOnClickListener {
             lifecycleScope.launch {
                 createProperty()
             }
+            addPropertyAddedListener.onPropertyAdded()
         }
         binding.cancelAddFab.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
@@ -258,27 +269,14 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
     }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        val rooms = binding.addPropertyRoomsEdittxt.text.toString().toInt()
-        val area = binding.addPropertyAreaEdittxt.text.toString().toInt()
-        val streetNumber = binding.addPropertyStreetNumberEdittxt.text.toString()
-        val streetName = binding.addPropertyStreetEdittxt.text.toString()
-        val postalCode = binding.addPropertyPostalCodeEdittxt.text.toString()
-        val city = binding.addPropertyCityEdittxt.text.toString()
-        val school = schoolCheckBoxIsCheckedOrNot()
-        val restaurants = restaurantsCheckBoxIsCheckedOrNot()
-        val playground = playgroundCheckBoxIsCheckedOrNot()
-        val supermarket = supermarketCheckBoxIsCheckedOrNot()
-        val shoppingArea = shoppingAreaCheckBoxIsCheckedOrNot()
-        val cinema = cinemaCheckBoxIsCheckedOrNot()
-
         if(binding.addPropertyTypeEdittxt.text.toString().isNotBlank()) {
             outState.putString("type", binding.addPropertyTypeEdittxt.text.toString())
         }
         if(binding.addPropertyCityEdittxt.text.toString().isNotBlank()) {
             outState.putString("city", binding.addPropertyCityEdittxt.text.toString())
         }
-        if(rooms.toString().isNotBlank()) {
-            outState.putInt("rooms", rooms)
+        if(binding.addPropertyRoomsEdittxt.text.toString().isNotBlank()) {
+            outState.putString("rooms", binding.addPropertyRoomsEdittxt.text.toString())
         }
         if(binding.addPropertyPriceEdittxt.text.toString().isNotBlank()) {
             outState.putString("price", binding.addPropertyPriceEdittxt.text.toString())
@@ -286,8 +284,24 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
         if(binding.addPropertySoldDateEdittxt.text.toString().isNotBlank()) {
             outState.putString("soldDate", binding.addPropertySoldDateEdittxt.text.toString())
         }
-
-
+        if(binding.addPropertyStreetNumberEdittxt.text.toString().isNotBlank()) {
+            outState.putString("streetNumber", binding.addPropertyStreetNumberEdittxt.text.toString())
+        }
+        if(binding.addPropertyStreetEdittxt.text.toString().isNotBlank()) {
+            outState.putString("streetName", binding.addPropertyStreetEdittxt.text.toString())
+        }
+        if(binding.addPropertyPostalCodeEdittxt.text.toString().isNotBlank()) {
+            outState.putString("postalCode", binding.addPropertyPostalCodeEdittxt.text.toString())
+        }
+        if(binding.addPropertyAreaEdittxt.text.toString().isNotBlank()) {
+            outState.putString("area", binding.addPropertyAreaEdittxt.text.toString())
+        }
+        outState.putBoolean("school", schoolCheckBoxIsCheckedOrNot())
+        outState.putBoolean("restaurants", restaurantsCheckBoxIsCheckedOrNot())
+        outState.putBoolean("playground", playgroundCheckBoxIsCheckedOrNot())
+        outState.putBoolean("shoppingArea", shoppingAreaCheckBoxIsCheckedOrNot())
+        outState.putBoolean("supermarket", supermarketCheckBoxIsCheckedOrNot())
+        outState.putBoolean("cinema", cinemaCheckBoxIsCheckedOrNot())
         outState.putBoolean("sold", binding.addPropertySwitchSoldOrAvailable.isActivated)
         outState.putStringArrayList("pictures", ArrayList(picturesList.map { it.imageUri }))
     }

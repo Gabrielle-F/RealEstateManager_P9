@@ -34,8 +34,13 @@ import java.util.Objects;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, AddPropertyActivity.OnPropertyAddedListener {
 
+    public enum CurrentFragment {
+        PROPERTIES_LIST, SEARCH, CURRENCY_EXCHANGE
+    }
+
+    private CurrentFragment currentFragment = CurrentFragment.PROPERTIES_LIST;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
@@ -132,11 +137,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-                if(id == R.id.bottom_app_bar_edit_property) {
-                    //TODO : Start EditPropertyActivity
+                if(id == R.id.bottom_bar_properties_list) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_fragment_container_view, propertiesListFragment).commit();
                     return true;
                 }
-                if(id == R.id.bottom_app_bar_search) {
+                if(id == R.id.bottom_bar_search) {
                     //TODO : start search
                     return true;
                 }
@@ -168,11 +173,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.properties_list:
-                getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_fragment_container_view, propertiesListFragment).commit();
-                break;
-        }
+        //TODO : use it for Toolbar
         return true;
+    }
+
+    @Override
+    public void onPropertyAdded() {
+        propertiesListFragment.updatePropertiesList();
     }
 }
