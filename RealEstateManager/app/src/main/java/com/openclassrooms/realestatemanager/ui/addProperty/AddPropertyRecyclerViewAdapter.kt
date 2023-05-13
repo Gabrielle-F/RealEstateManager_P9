@@ -13,10 +13,10 @@ import com.openclassrooms.realestatemanager.model.Image
 class AddPropertyRecyclerViewAdapter :
     RecyclerView.Adapter<AddPropertyRecyclerViewAdapter.PicturesViewHolder>() {
 
-    val picturesList = mutableListOf<Image>()
+    private val picturesList = mutableListOf<Image>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PicturesViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.pictures_add_property_activity_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_pictures_add_property_activity, parent, false)
         return PicturesViewHolder(view)
     }
 

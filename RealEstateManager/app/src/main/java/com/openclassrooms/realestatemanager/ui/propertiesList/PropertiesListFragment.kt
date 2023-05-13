@@ -63,8 +63,11 @@ class PropertiesListFragment : Fragment(R.layout.fragment_list_properties), Prop
         val propertyDetailsFragment = PropertyDetailsFragment()
         val fragmentManager = requireActivity().supportFragmentManager
         val bundle = Bundle()
-        bundle.putSerializable("selectedProperty", property)
+        bundle.putInt("selectedPropertyId", property.id)
         propertyDetailsFragment.arguments = bundle
-        fragmentManager.beginTransaction().show(propertyDetailsFragment).commit()
+        fragmentManager.beginTransaction()
+            .add(R.id.activity_main_fragment_container_view, propertyDetailsFragment)
+            .addToBackStack(null)
+            .commit()
     }
 }

@@ -1,6 +1,6 @@
 package com.openclassrooms.realestatemanager.ui.propertiesList
 
-import android.net.Uri
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +24,7 @@ class PropertiesRecyclerViewAdapter(private val onItemClickListener: OnItemClick
         return PropertiesViewHolder(view, onItemClickListener)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updatePropertiesList(properties : List<Property>) {
         list.clear()
         list.addAll(properties)
@@ -35,9 +36,12 @@ class PropertiesRecyclerViewAdapter(private val onItemClickListener: OnItemClick
         holder.property = item
         holder.propertyType.text = item.type
         holder.propertyPrice.text = item.price.toString()
+        /**
         val firstPicture = item.getFirstImage()
         val uri = Uri.parse(firstPicture?.imageUri)
-        holder.propertyImage.setImageURI(uri)
+        if(uri != null) {
+            holder.propertyImage.setImageURI(uri)
+        } */
     }
 
     override fun getItemCount(): Int {
