@@ -87,4 +87,6 @@ class AgentRepository @Inject constructor(private val agentDao : AgentDao) {
     }
 
     fun getAllAgents() : Flow<List<Agent>> = agentDao.getAllAgents()
+
+    fun getAgentById(id : Int) : Flow<Agent> = agentDao.getAgentById(id)
 }

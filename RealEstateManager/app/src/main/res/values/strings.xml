@@ -49,14 +49,15 @@
     <string name="cinema">Cinema</string>
 
     <!-- PROPERTY DETAILS -->
+    <string name="details_type">Type :</string>
     <string name="details_media">Media</string>
     <string name="details_description">Description</string>
     <string name="details_number_of_rooms">Number of rooms</string>
-    <string name="details_surface">Surface</string>
+    <string name="details_area">Area</string>
     <string name="details_location">Location</string>
     <string name="details_rooms">Rooms</string>
-    <string name="details_price">Price</string>
-    <string name="details_agent">Agent</string>
+    <string name="details_price">Price :</string>
+    <string name="details_agent">Agent :</string>
     <string name="details_status">Status</string>
     <string name="details_available">Available</string>
     <string name="details_sold">Sold</string>
@@ -68,8 +69,9 @@
     <string name="details_shopping_area">Shopping Area</string>
     <string name="details_cinema">Cinema</string>
     <string name="details_address_with_number">%1$s - %2$s - %3$s</string>
-    <string name="details_apartment_info">Apartment</string>
     <string name="details_city">City</string>
+    <string name="details_register_date">Register date :</string>
+    <string name="details_sold_date">Sold date :</string>
 
     <!-- NAVIGATION DRAWER -->
     <string name="nav_open">Open</string>

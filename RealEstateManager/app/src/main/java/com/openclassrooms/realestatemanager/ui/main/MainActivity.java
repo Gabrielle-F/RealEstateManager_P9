@@ -59,28 +59,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(this, LogInActivity.class);
             startActivity(intent);
             finish();
+        } else {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_fragment_container_view, propertiesListFragment).commit();
+
+            userClient = getIntent().getBooleanExtra("client", false);
+            userAgent = getIntent().getBooleanExtra("agent", true);
+
+            configureToolbar();
+            configureBottomBar();
+            configureNavDrawer();
+
+            configureNavDrawerOnItemClickListener();
+
+            FloatingActionButton fab = findViewById(R.id.activity_main_fab);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), AddPropertyActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        userClient = getIntent().getBooleanExtra("client", false);
-        userAgent = getIntent().getBooleanExtra("agent", true);
-
-        configureToolbar();
-        configureBottomBar();
-        configureNavDrawer();
-
-        configureNavDrawerOnItemClickListener();
-
-        FloatingActionButton fab = findViewById(R.id.activity_main_fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AddPropertyActivity.class);
-                startActivity(intent);
-            }
-        });
-
     }
 
     @Override

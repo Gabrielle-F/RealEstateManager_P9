@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.FragmentPropertyDetailsBinding
+import com.openclassrooms.realestatemanager.model.Agent
 import com.openclassrooms.realestatemanager.model.Property
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,6 +31,9 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
         viewModel.propertyLiveData.observe(viewLifecycleOwner) {property ->
             fetchPropertyDetails(property)
         }
+        viewModel.agentLiveData.observe(viewLifecycleOwner) { agent ->
+            fetchAgent(agent)
+        }
     }
 
     @Override
@@ -44,33 +48,55 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
     }
 
     private fun fetchPropertyDetails(property : Property) {
+        binding.propertyDetailsTypeInfo.setText(property.type)
         binding.propertyDetailsCityInfo.setText(property.city)
-        binding.propertyDetailsSurfaceInfo.setText(property.area)
+        binding.propertyDetailsSurfaceInfo.setText(property.area.toString())
         binding.propertyDetailsNumberOfRoomsInfo.setText(property.rooms.toString())
+        val address = getString(R.string.details_address_with_number, property.streetNumber, property.streetName, property.postalCode)
+        binding.propertyDetailsLocationAddress.setText(address)
+        binding.propertyDetailsPriceInfo.setText(property.price.toString())
+        binding.propertyDetailsRegisterDateInfo.setText(property.registerDate)
+        if(property.sold) {
+            binding.propertyDetailsSoldDateInfo.setText(property.soldDate)
+        } else {
+            binding.propertyDetailsSoldDateInfo.setText("?")
+        }
+        val agentId = property.agentId
+        viewModel.getAgentById(agentId)
 
         if(property.school) {
-            binding.propertyDetailsPositiveIconSchool.visibility = View.VISIBLE
-            binding.propertyDetailsNegativeIconSchool.visibility = View.GONE
+            binding.propertyDetailsNegativeIconSchool.visibility = View.INVISIBLE
+        } else {
+            binding.propertyDetailsPositiveIconSchool.visibility = View.INVISIBLE
         }
         if(property.restaurants) {
-            binding.propertyDetailsPositiveIconRestaurants.visibility = View.VISIBLE
-            binding.propertyDetailsNegativeIconRestaurants.visibility = View.GONE
+            binding.propertyDetailsNegativeIconRestaurants.visibility = View.INVISIBLE
+        } else {
+            binding.propertyDetailsPositiveIconRestaurants.visibility = View.INVISIBLE
         }
         if(property.supermarket) {
-            binding.propertyDetailsPositiveIconSupermarket.visibility = View.VISIBLE
-            binding.propertyDetailsNegativeIconSupermarket.visibility = View.GONE
+            binding.propertyDetailsNegativeIconSupermarket.visibility = View.INVISIBLE
+        } else {
+            binding.propertyDetailsPositiveIconSupermarket.visibility = View.INVISIBLE
         }
         if(property.shoppingArea) {
-            binding.propertyDetailsPositiveIconShoppingArea.visibility = View.VISIBLE
-            binding.propertyDetailsNegativeIconShoppingArea.visibility = View.GONE
+            binding.propertyDetailsNegativeIconShoppingArea.visibility = View.INVISIBLE
+        } else {
+            binding.propertyDetailsPositiveIconShoppingArea.visibility = View.INVISIBLE
         }
         if(property.playground) {
-            binding.propertyDetailsPositiveIconPlayground.visibility = View.VISIBLE
-            binding.propertyDetailsNegativeIconPlayground.visibility = View.GONE
+            binding.propertyDetailsNegativeIconPlayground.visibility = View.INVISIBLE
+        } else {
+            binding.propertyDetailsPositiveIconPlayground.visibility = View.INVISIBLE
         }
         if(property.cinema) {
-            binding.propertyDetailsPositiveIconCinema.visibility = View.VISIBLE
-            binding.propertyDetailsNegativeIconCinema.visibility = View.GONE
+            binding.propertyDetailsNegativeIconCinema.visibility = View.INVISIBLE
+        } else {
+            binding.propertyDetailsPositiveIconCinema.visibility = View.INVISIBLE
         }
+    }
+
+    private fun fetchAgent(agent : Agent) {
+        binding.propertyDetailsAgentInfo.setText(agent.name)
     }
 }
