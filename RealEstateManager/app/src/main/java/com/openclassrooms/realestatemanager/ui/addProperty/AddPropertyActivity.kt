@@ -59,15 +59,6 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
             Log.d("TAG", "Agents list size: ${agentsList.size}")
             fetchAgentsListIntoSpinner(agentsList)
         }
-
-        if(savedInstanceState != null) {
-            binding.addPropertyTypeEdittxt.setText(savedInstanceState.getString("type"))
-            binding.addPropertyRoomsEdittxt.setText(savedInstanceState.getInt("rooms").toString())
-            binding.addPropertyPriceEdittxt.setText(savedInstanceState.getInt("price").toString())
-            binding.addPropertyAreaEdittxt.setText(savedInstanceState.getInt("area").toString())
-            binding.addPropertyStreetNumberEdittxt.setText(savedInstanceState.getString("streetNumber"))
-            binding.addPropertyStreetEdittxt.setText(savedInstanceState.getString("streetName"))
-        }
     }
 
     fun configureListeners() {
@@ -100,7 +91,7 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
             val bundle = Bundle()
             bundle.putBoolean("hasFirstPicture", hasFirstPicture)
             addPicturesFragment.arguments = bundle
-            fragmentManager.beginTransaction().add(android.R.id.content, addPicturesFragment).commit()
+            addPicturesFragment.show(fragmentManager, "Show AddPicturesFragment")
         }
     }
 
@@ -138,13 +129,9 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
         )
     }
 
-    private fun fetchPicturesList(pictures : List<Image>) {
-        addPropertyAdapter.updatePicturesList(pictures)
-    }
-
     override fun getImage(image: Image) {
         picturesList.add(image)
-        fetchPicturesList(picturesList)
+        addPropertyAdapter.updatePicturesList(picturesList)
     }
 
     private fun fetchAgentsListIntoSpinner(agents : List<Agent>) {
@@ -157,51 +144,49 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
                 override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                     selectedAgent = agents[position]
                 }
-
                 override fun onNothingSelected(p0: AdapterView<*>?) {
 
                 }
-
             }
         }
     }
 
-    fun schoolCheckBoxIsCheckedOrNot() : Boolean {
+    private fun schoolCheckBoxIsCheckedOrNot() : Boolean {
         val school : Boolean
         val schoolCheckbox : CheckBox = binding.schoolCheckbox
         school = schoolCheckbox.isChecked
         return school
     }
 
-    fun restaurantsCheckBoxIsCheckedOrNot() : Boolean {
+    private fun restaurantsCheckBoxIsCheckedOrNot() : Boolean {
         val restaurants : Boolean
         val restaurantsCheckbox : CheckBox = binding.restaurantsCheckbox
         restaurants = restaurantsCheckbox.isChecked
         return restaurants
     }
 
-    fun playgroundCheckBoxIsCheckedOrNot() : Boolean {
+    private fun playgroundCheckBoxIsCheckedOrNot() : Boolean {
         val playground : Boolean
         val playgroundCheckbox : CheckBox = binding.playgroundCheckbox
         playground = playgroundCheckbox.isChecked
         return playground
     }
 
-    fun supermarketCheckBoxIsCheckedOrNot() : Boolean {
+    private fun supermarketCheckBoxIsCheckedOrNot() : Boolean {
         val supermarket : Boolean
         val supermarketCheckbox : CheckBox = binding.supermarketCheckbox
         supermarket = supermarketCheckbox.isChecked
         return supermarket
     }
 
-    fun shoppingAreaCheckBoxIsCheckedOrNot() : Boolean {
+    private fun shoppingAreaCheckBoxIsCheckedOrNot() : Boolean {
         val shoppingArea : Boolean
         val shoppingAreaCheckbox : CheckBox = binding.shoppingAreaCheckbox
         shoppingArea = shoppingAreaCheckbox.isChecked
         return shoppingArea
     }
 
-    fun cinemaCheckBoxIsCheckedOrNot() : Boolean {
+    private fun cinemaCheckBoxIsCheckedOrNot() : Boolean {
         val cinema : Boolean
         val cinemaCheckbox : CheckBox = binding.cinemaCheckbox
         cinema = cinemaCheckbox.isChecked
@@ -266,43 +251,5 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
             }
         }
         return true
-    }
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        if(binding.addPropertyTypeEdittxt.text.toString().isNotBlank()) {
-            outState.putString("type", binding.addPropertyTypeEdittxt.text.toString())
-        }
-        if(binding.addPropertyCityEdittxt.text.toString().isNotBlank()) {
-            outState.putString("city", binding.addPropertyCityEdittxt.text.toString())
-        }
-        if(binding.addPropertyRoomsEdittxt.text.toString().isNotBlank()) {
-            outState.putString("rooms", binding.addPropertyRoomsEdittxt.text.toString())
-        }
-        if(binding.addPropertyPriceEdittxt.text.toString().isNotBlank()) {
-            outState.putString("price", binding.addPropertyPriceEdittxt.text.toString())
-        }
-        if(binding.addPropertySoldDateEdittxt.text.toString().isNotBlank()) {
-            outState.putString("soldDate", binding.addPropertySoldDateEdittxt.text.toString())
-        }
-        if(binding.addPropertyStreetNumberEdittxt.text.toString().isNotBlank()) {
-            outState.putString("streetNumber", binding.addPropertyStreetNumberEdittxt.text.toString())
-        }
-        if(binding.addPropertyStreetEdittxt.text.toString().isNotBlank()) {
-            outState.putString("streetName", binding.addPropertyStreetEdittxt.text.toString())
-        }
-        if(binding.addPropertyPostalCodeEdittxt.text.toString().isNotBlank()) {
-            outState.putString("postalCode", binding.addPropertyPostalCodeEdittxt.text.toString())
-        }
-        if(binding.addPropertyAreaEdittxt.text.toString().isNotBlank()) {
-            outState.putString("area", binding.addPropertyAreaEdittxt.text.toString())
-        }
-        outState.putBoolean("school", schoolCheckBoxIsCheckedOrNot())
-        outState.putBoolean("restaurants", restaurantsCheckBoxIsCheckedOrNot())
-        outState.putBoolean("playground", playgroundCheckBoxIsCheckedOrNot())
-        outState.putBoolean("shoppingArea", shoppingAreaCheckBoxIsCheckedOrNot())
-        outState.putBoolean("supermarket", supermarketCheckBoxIsCheckedOrNot())
-        outState.putBoolean("cinema", cinemaCheckBoxIsCheckedOrNot())
-        outState.putBoolean("sold", binding.addPropertySwitchSoldOrAvailable.isActivated)
-        outState.putStringArrayList("pictures", ArrayList(picturesList.map { it.imageUri }))
     }
 }

@@ -14,7 +14,6 @@ class SignUpViewModel @Inject constructor(private val createAgentUseCase: Create
 
     val liveDataUserSignUp = MutableLiveData<Boolean>()
     suspend fun createAgent(agent : Agent) = createAgentUseCase.createAgent(agent)
-
     suspend fun createAgentWithEmailAndPassword(email: String, password: String, name: String) {
         val success = createAgentUseCase.createAgentWithEmailAndPassword(email, password, name)
         liveDataUserSignUp.postValue(success)
@@ -26,5 +25,4 @@ class SignUpViewModel @Inject constructor(private val createAgentUseCase: Create
         val success = createClientUseCase.invoke(email, password, name)
         liveDataUserSignUp.postValue(success)
     }
-
 }

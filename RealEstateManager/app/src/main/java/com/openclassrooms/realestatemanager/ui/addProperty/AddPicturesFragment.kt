@@ -14,6 +14,7 @@ import android.widget.CheckBox
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.FragmentAddImageBinding
 import com.openclassrooms.realestatemanager.model.Image
@@ -22,7 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.net.URL
 
 @AndroidEntryPoint
-class AddPicturesFragment : Fragment(R.layout.fragment_add_image) {
+class AddPicturesFragment : BottomSheetDialogFragment(R.layout.fragment_add_image) {
 
     private lateinit var context : Context
     private lateinit var listener : OnDataChangeListener
@@ -80,7 +81,7 @@ class AddPicturesFragment : Fragment(R.layout.fragment_add_image) {
         }
         binding.addPictureFragmentSaveBtn.setOnClickListener {
             sendDataToAddPropertyActivity()
-            startAddPropertyActivity()
+            dismiss()
         }
     }
 
@@ -94,7 +95,7 @@ class AddPicturesFragment : Fragment(R.layout.fragment_add_image) {
                         val imageUri = data.data
                         val imageView = binding.addPictureFragmentSeeResult
                         Glide.with(this).load(imageUri).into(imageView)
-                        imagePath = convertUriToString(imageUri)
+                        imagePath = imageUri.toString()
                     }
                 }
                 REQUEST_IMAGE_SELECT_CODE -> {
@@ -102,7 +103,7 @@ class AddPicturesFragment : Fragment(R.layout.fragment_add_image) {
                         val imageUri = data.data
                         val imageView = binding.addPictureFragmentSeeResult
                         Glide.with(this).load(imageUri).into(imageView)
-                        imagePath = convertUriToString(imageUri)
+                        imagePath = imageUri.toString()
                     }
                 }
             }
@@ -137,10 +138,6 @@ class AddPicturesFragment : Fragment(R.layout.fragment_add_image) {
         }
     }
 
-    private fun convertUriToString(uriValue: Uri?) : String {
-        return uriValue.toString()
-    }
-
     private fun defineAsFirstPictureCheckboxIsCheckedOrNot() : Boolean {
         val bundle = arguments
         val hasFirstPicture = bundle?.getBoolean("hasFirstPicture") ?: false
@@ -167,10 +164,5 @@ class AddPicturesFragment : Fragment(R.layout.fragment_add_image) {
             return false
         }
         return true
-    }
-
-    private fun startAddPropertyActivity() {
-        val intent = Intent(context, AddPropertyActivity::class.java)
-        startActivity(intent)
     }
 }

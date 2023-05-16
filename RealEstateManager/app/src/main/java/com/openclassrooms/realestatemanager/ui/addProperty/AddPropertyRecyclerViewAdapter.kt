@@ -38,6 +38,6 @@ class AddPropertyRecyclerViewAdapter :
     }
 
     class PicturesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageView : ImageView = itemView.findViewById(R.id.add_property_activity_picture_item_view)
+        val imageView = itemView as ImageView
     }
 }

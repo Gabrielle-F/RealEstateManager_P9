@@ -29,8 +29,7 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivitySignUpBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
 
         configureListeners()
 

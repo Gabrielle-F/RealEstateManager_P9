@@ -15,7 +15,6 @@ class LogInViewModel @Inject constructor(private val logInAgentUseCase: LogInAge
         val success = logInAgentUseCase.invoke(email, password)
         liveDataUserLogIn.postValue(success)
     }
-
     suspend fun logInClient(email: String, password: String) {
         val success = logInClientUseCase.invoke(email, password)
         liveDataUserLogIn.postValue(success)
