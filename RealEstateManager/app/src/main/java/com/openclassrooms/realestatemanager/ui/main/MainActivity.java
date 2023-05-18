@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,6 +30,7 @@ import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.ui.addProperty.AddPropertyActivity;
 import com.openclassrooms.realestatemanager.ui.authentication.LogInActivity;
 import com.openclassrooms.realestatemanager.ui.propertiesList.PropertiesListFragment;
+import com.openclassrooms.realestatemanager.ui.searchProperties.SearchPropertiesFragment;
 
 import java.util.Objects;
 
@@ -37,7 +40,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, AddPropertyActivity.OnPropertyAddedListener {
 
     public enum CurrentFragment {
-        PROPERTIES_LIST, SEARCH, CURRENCY_EXCHANGE
+        PROPERTIES_LIST, CURRENCY_EXCHANGE
     }
 
     private CurrentFragment currentFragment = CurrentFragment.PROPERTIES_LIST;
@@ -47,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolbar;
 
     private PropertiesListFragment propertiesListFragment = new PropertiesListFragment();
+
+    private SearchPropertiesFragment searchPropertiesFragment = new SearchPropertiesFragment();
 
     private Boolean userClient;
 
@@ -101,7 +106,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.toolbar_activity_main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.search_toolbar:
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                searchPropertiesFragment.show(fragmentManager, "Show SearchPropertiesFragment");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void configureToolbar() {
@@ -141,10 +159,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 int id = item.getItemId();
                 if(id == R.id.bottom_bar_properties_list) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_fragment_container_view, propertiesListFragment).commit();
-                    return true;
-                }
-                if(id == R.id.bottom_bar_search) {
-                    //TODO : start search
                     return true;
                 }
                 if(id == R.id.bottom_bar_currency_exchange) {

@@ -37,7 +37,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="C:\Users\Gabrielle\Desktop\Développement\IconesAndroid\calendar_month_material_design\res\drawable\twotone_calendar_month_24.xml" />
+                                                <entry key="imagePath" value="C:\Users\Gabrielle\Desktop\Développement\IconesAndroid\city_material_design\res\drawable\outline_location_city_24.xml" />
                                                 <entry key="opacityPercent" value="80" />
                                               </map>
                                             </option>
@@ -71,8 +71,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\Gabrielle\Desktop\Développement\IconesAndroid\calendar_month_material_design\res\drawable\twotone_calendar_month_24.xml" />
-                                      <entry key="outputName" value="ic_calendar_month" />
+                                      <entry key="imageAsset" value="C:\Users\Gabrielle\Desktop\Développement\IconesAndroid\city_material_design\res\drawable\outline_location_city_24.xml" />
+                                      <entry key="outputName" value="ic_city" />
                                       <entry key="theme" value="HOLO_DARK" />
                                       <entry key="themeColor" value="494949" />
                                     </map>
