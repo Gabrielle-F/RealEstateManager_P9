@@ -59,7 +59,8 @@
                 android:orientation="horizontal"
                 android:scrollbars="horizontal"
                 app:layout_constraintTop_toBottomOf="@+id/property_details_media_title_txt"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                tools:listitem="@layout/item_pictures_property_details_fragment"/>
 
             <TextView
                 android:id="@+id/property_details_description_title_txt"

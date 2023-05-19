@@ -125,6 +125,8 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
             soldDate = binding.addPropertySoldDateEdittxt.text.toString(),
             registerDate = Utils.getTodayDate(),
             pictures = picturesList,
+            numberOfPictures = picturesList.size,
+            description = binding.addPropertyDescriptionEditTxt.text.toString(),
             agentId = selectedAgent.id
         )
     }
@@ -202,6 +204,7 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
         val streetName = binding.addPropertyStreetEdittxt.text.toString()
         val postalCode = binding.addPropertyPostalCodeEdittxt.text.toString()
         val city = binding.addPropertyCityEdittxt.text.toString()
+        val description = binding.addPropertyDescriptionEditTxt.text.toString()
 
         return when {
             type.isEmpty() -> {
@@ -234,6 +237,10 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
             }
             city.isEmpty() -> {
                 binding.addPropertyCityEdittxt.error = "City cannot be empty"
+                false
+            }
+            description.isEmpty() -> {
+                binding.addPropertyDescriptionEditTxt.error = "Description cannot be empty"
                 false
             }
             else -> true

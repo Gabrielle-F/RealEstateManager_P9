@@ -48,6 +48,10 @@ data class Property(
     var cinema: Boolean,
     @ColumnInfo(name = "pictures")
     var pictures: List<Image>,
+    @ColumnInfo(name = "number_of_pictures")
+    var numberOfPictures: Int,
+    @ColumnInfo(name = "description")
+    var description: String,
     @ColumnInfo(name = "agent_id", index = true)
     val agentId : Int
 ) : Serializable {
