@@ -39,6 +39,13 @@ class SearchPropertiesFragment : BottomSheetDialogFragment(R.layout.fragment_sea
     private var cinemaAmenitie : Boolean = false
     private lateinit var selectedAgent : Agent
 
+
+    interface OnParametersSelected {
+        fun filterList(minPrice: Int, maxPrice: Int, minArea: Int, maxArea: Int, city: String?,
+                       types: List<String>?, rooms: List<Int>?, availability: Boolean?, startDate: String?,
+                       endDate: String?, numberOfPictures: List<Int>?, agentId: Int?, school: Boolean, restaurants: Boolean,
+                       playground: Boolean, supermarket: Boolean, shoppingArea: Boolean, cinema: Boolean)
+    }
     @Override
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentSearchPropertiesBinding.inflate(inflater, container, false)
@@ -67,26 +74,64 @@ class SearchPropertiesFragment : BottomSheetDialogFragment(R.layout.fragment_sea
     }
 
     private fun configureListener() {
+        val filterListListener = object : OnParametersSelected{
+            override fun filterList(
+                minPrice: Int, maxPrice: Int, minArea: Int, maxArea: Int, city: String?, types: List<String>?,
+                rooms: List<Int>?, availability: Boolean?, startDate: String?, endDate: String?,
+                numberOfPictures: List<Int>?, agentId: Int?, school: Boolean, restaurants: Boolean,
+                playground: Boolean, supermarket: Boolean, shoppingArea: Boolean, cinema: Boolean
+            ) { dismiss() }
+        }
+
         binding.searchStartDateEditTxt.setOnClickListener {
             showDatePickerDialog(binding.searchStartDateEditTxt)
         }
         binding.searchEndDateEditTxt.setOnClickListener {
             showDatePickerDialog(binding.searchEndDateEditTxt)
         }
+
+        binding.searchMaterialBtn.setOnClickListener {
+            getMinPrice()
+            getMaxPrice()
+            getMinArea()
+            getMaxArea()
+            getSelectedAmenities()
+            val city : String? = binding.searchCityEditTxt.text.toString()
+            val startDate : String? = binding.searchStartDateEditTxt.text.toString()
+            val endDate : String?  = binding.searchEndDateEditTxt.text.toString()
+            filterListListener.filterList(minPrice, maxPrice, minArea, maxArea, city, getSelectedTypes(),
+                getSelectedNumberOfRooms(), getAvailabilityChoice(), startDate, endDate, getSelectedNumberOfPictures(),
+                selectedAgent.id, schoolAmenitie, restaurantsAmenitie, playgroundAmenitie,
+                supermarketAmenitie, shoppingAreaAmenitie, cinemaAmenitie)
+        }
     }
 
-    private fun getMinAndMaxPrice() {
+    private fun getMinPrice() : Int {
         binding.searchRangeSliderPrice.addOnChangeListener { slider, value, fromUser ->
             minPrice = slider.values[0].toInt()
-            maxPrice = slider.values[1].toInt()
         }
+        return minPrice
     }
 
-    private fun getMinAndMaxArea() {
+    private fun getMaxPrice() : Int {
+        binding.searchRangeSliderPrice.addOnChangeListener { slider, value, fromUser ->
+            maxPrice = slider.values[1].toInt()
+        }
+        return maxPrice
+    }
+
+    private fun getMinArea() : Int {
         binding.searchRangeSliderArea.addOnChangeListener { slider, value, fromUser ->
             minArea = slider.values[0].toInt()
+        }
+        return minArea
+    }
+
+    private fun getMaxArea() : Int {
+        binding.searchRangeSliderArea.addOnChangeListener { slider, value, fromUser ->
             maxArea = slider.values[1].toInt()
         }
+        return maxArea
     }
 
     private fun getSelectedTypes() : List<String>? {
