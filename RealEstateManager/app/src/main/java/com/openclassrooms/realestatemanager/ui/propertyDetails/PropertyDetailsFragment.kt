@@ -17,6 +17,7 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
 
     private lateinit var binding : FragmentPropertyDetailsBinding
     private val viewModel : PropertyDetailsViewModel by viewModels()
+    private lateinit var picturesAdapter : PropertyDetailsRecyclerViewAdapter
 
     @Override
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -28,8 +29,12 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        picturesAdapter = PropertyDetailsRecyclerViewAdapter()
+        binding.propertyDetailsRecyclerView.adapter = picturesAdapter
+
         viewModel.propertyLiveData.observe(viewLifecycleOwner) {property ->
             fetchPropertyDetails(property)
+            picturesAdapter.updatePicturesList(property.pictures)
         }
         viewModel.agentLiveData.observe(viewLifecycleOwner) { agent ->
             fetchAgent(agent)
@@ -56,6 +61,7 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
         binding.propertyDetailsLocationAddress.setText(address)
         binding.propertyDetailsPriceInfo.setText(property.price.toString())
         binding.propertyDetailsRegisterDateInfo.setText(property.registerDate)
+        binding.propertyDetailsDescriptionContent.setText(property.description)
         if(property.sold) {
             binding.propertyDetailsSoldDateInfo.setText(property.soldDate)
         } else {
