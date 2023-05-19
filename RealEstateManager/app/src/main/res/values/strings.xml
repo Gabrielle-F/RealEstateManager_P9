@@ -73,6 +73,43 @@
     <string name="details_register_date">Register date :</string>
     <string name="details_sold_date">Sold date :</string>
 
+    <!-- PROPERTIES SEARCH -->
+    <string name="search_toolbar_title">Search Properties</string>
+    <string name="search_price_range_title">Price Range</string>
+    <string name="search_type_chips_title">Type</string>
+    <string name="search_proximity_chips_title">Proximity</string>
+    <string name="search_area_range_title">Area Range</string>
+    <string name="search_number_of_rooms_chips_title">Number of rooms</string>
+    <string name="search_availability_chips_title">Availability</string>
+    <string name="search_number_of_pictures_chips_title">Number of pictures</string>
+    <string name="search_chip_manor">Manor</string>
+    <string name="search_chip_apartment">Apartment</string>
+    <string name="search_chip_house">House</string>
+    <string name="search_chip_studio">Studio</string>
+    <string name="search_chip_school">School</string>
+    <string name="search_chip_restaurants">Restaurants</string>
+    <string name="search_chip_playground">Playground</string>
+    <string name="search_chip_cinema">Cinema</string>
+    <string name="search_chip_shopping_area">Shopping Area</string>
+    <string name="search_chip_supermarket">Supermarket</string>
+    <string name="search_chip_number_of_rooms_or_pictures_one">1</string>
+    <string name="search_chip_number_of_rooms_or_pictures_two">2</string>
+    <string name="search_chip_number_of_rooms_or_pictures_three">3</string>
+    <string name="search_chip_number_of_rooms_or_pictures_four">4</string>
+    <string name="search_chip_number_of_rooms_or_pictures_five">5</string>
+    <string name="search_chip_number_of_rooms_or_pictures_six">6</string>
+    <string name="search_chip_number_of_rooms_or_pictures_seven">7</string>
+    <string name="search_chip_number_of_rooms_or_pictures_eight">8</string>
+    <string name="search_chip_number_of_rooms_or_pictures_nine">9</string>
+    <string name="search_chip_number_of_rooms_or_pictures_ten">10</string>
+    <string name="search_chip_number_of_rooms_or_pictures_eleven">11</string>
+    <string name="search_chip_availability_available">Available</string>
+    <string name="search_chip_availability_sold">Sold</string>
+    <string name="search_date_picker_start_date">Start date :</string>
+    <string name="search_date_picker_end_date">End date :</string>
+    <string name="search_edit_text_city">City</string>
+    <string name="search_material_button_text">Search</string>
+
     <!-- NAVIGATION DRAWER -->
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>

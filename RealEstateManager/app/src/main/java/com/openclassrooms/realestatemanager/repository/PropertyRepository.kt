@@ -15,4 +15,10 @@ class PropertyRepository @Inject constructor(private val propertyDao : PropertyD
 
     fun getPropertyById(id : Int) : Flow<Property> = propertyDao.getPropertyById(id)
 
+    fun getSearchProperties(minPrice : Int, maxPrice : Int, minArea : Int, maxArea : Int,
+                            types : List<String>?, rooms : List<Int>?,
+                            availability : Boolean?, startDate : String?, endDate : String?,
+                            agentId : Int?, school : Boolean, restaurants : Boolean, playground : Boolean,
+                            supermarket : Boolean, shoppingArea : Boolean, cinema : Boolean) : Flow<List<Property>> = propertyDao.getSearchProperties(minPrice, maxPrice, minArea, maxArea, types, rooms, availability, startDate, endDate, agentId, school, restaurants, playground, supermarket, shoppingArea, cinema)
+
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="fragment_search_slider_price_values">
+        <item>10000</item>
+        <item>500000</item>
+    </array>
+
+    <array name="fragment_search_slider_area_values">
+        <item>20</item>
+        <item>500</item>
+    </array>
+
+</resources>
