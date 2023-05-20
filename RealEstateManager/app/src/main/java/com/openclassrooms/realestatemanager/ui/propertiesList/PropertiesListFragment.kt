@@ -41,6 +41,9 @@ class PropertiesListFragment : Fragment(R.layout.fragment_list_properties), Prop
             Log.d("TAG", "Properties list size: ${propertiesList.size}")
             propertiesAdapter.updatePropertiesList(propertiesList)
         }
+        propertiesListViewModel.searchProperties.observe(viewLifecycleOwner) { searchPropertiesList ->
+            propertiesAdapter.updatePropertiesList(searchPropertiesList)
+        }
     }
 
     @Override
@@ -57,6 +60,14 @@ class PropertiesListFragment : Fragment(R.layout.fragment_list_properties), Prop
                 propertiesAdapter.updatePropertiesList(propertiesList)
             }
         }
+    }
+
+    fun getFilteredList(minPrice: Int, maxPrice: Int, minArea: Int, maxArea:Int, city: String?,
+                        types: List<String>?, rooms: List<Int>?, availability: Boolean?, startDate:
+                        String?, endDate: String ?, numberOfPictures: List<Int>, agentId: Int?,
+                        school: Boolean, restaurants: Boolean, playground: Boolean, supermarket: Boolean, shoppingArea: Boolean, cinema: Boolean) {
+        propertiesListViewModel.updateFilteredList(minPrice, maxPrice, minArea, maxArea, city, types, rooms, availability, startDate, endDate,
+            numberOfPictures, agentId, school, restaurants, playground, supermarket, shoppingArea, cinema)
     }
 
     override fun onClick(property: Property) {

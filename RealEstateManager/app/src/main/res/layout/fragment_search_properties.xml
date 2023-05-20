@@ -441,7 +441,7 @@
                     android:ems="10"
                     android:hint="@string/search_date_picker_start_date"
                     android:textSize="18sp"
-                    android:inputType="date"/>
+                    android:inputType="text"/>
 
                 <EditText
                     android:id="@+id/search_end_date_edit_txt"
@@ -461,7 +461,7 @@
                     android:ems="10"
                     android:hint="@string/search_date_picker_end_date"
                     android:textSize="18sp"
-                    android:inputType="date"/>
+                    android:inputType="text"/>
 
                 <EditText
                     android:id="@+id/search_city_edit_txt"
@@ -499,6 +499,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginTop="12dp"
+                    android:layout_marginBottom="22dp"
                     android:text="@string/search_material_button_text"
                     android:textSize="15sp"
                     android:textColor="@color/white"

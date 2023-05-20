@@ -21,7 +21,7 @@ class DatabaseModule {
             appContext,
             RealEstateManagerDatabase::class.java,
             "RealEstateManagerDatabase"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
     @Provides

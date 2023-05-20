@@ -73,6 +73,7 @@
     <string name="details_city">City</string>
     <string name="details_register_date">Register date :</string>
     <string name="details_sold_date">Sold date :</string>
+    <string name="details_edit_property">Edit</string>
 
     <!-- PROPERTIES SEARCH -->
     <string name="search_toolbar_title">Search Properties</string>

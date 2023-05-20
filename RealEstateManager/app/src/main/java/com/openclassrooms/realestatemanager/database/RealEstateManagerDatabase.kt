@@ -9,7 +9,7 @@ import com.openclassrooms.realestatemanager.model.Image
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.utils.Converters
 
-@Database(entities = [Property::class, Image::class, Agent::class, Client::class], version = 1, exportSchema = false)
+@Database(entities = [Property::class, Image::class, Agent::class, Client::class], version = 2, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class RealEstateManagerDatabase : RoomDatabase() {
     abstract fun propertyDao() : PropertyDao

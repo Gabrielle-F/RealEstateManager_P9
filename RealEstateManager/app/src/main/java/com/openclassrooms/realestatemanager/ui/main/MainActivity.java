@@ -32,12 +32,16 @@ import com.openclassrooms.realestatemanager.ui.authentication.LogInActivity;
 import com.openclassrooms.realestatemanager.ui.propertiesList.PropertiesListFragment;
 import com.openclassrooms.realestatemanager.ui.searchProperties.SearchPropertiesFragment;
 
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, AddPropertyActivity.OnPropertyAddedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        AddPropertyActivity.OnPropertyAddedListener, SearchPropertiesFragment.OnParametersSelected {
 
     public enum CurrentFragment {
         PROPERTIES_LIST, CURRENCY_EXCHANGE
@@ -196,5 +200,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onPropertyAdded() {
         propertiesListFragment.updatePropertiesList();
+    }
+
+    @Override
+    public void filterList(int minPrice, int maxPrice, int minArea, int maxArea, @Nullable String city, @Nullable List<String> types,
+                           @Nullable List<Integer> rooms, @Nullable Boolean availability, @Nullable String startDate, @Nullable String endDate,
+                           @Nullable List<Integer> numberOfPictures, @Nullable Integer agentId, boolean school, boolean restaurants,
+                           boolean playground, boolean supermarket, boolean shoppingArea, boolean cinema) {
+        propertiesListFragment.getFilteredList(minPrice, maxPrice, minArea, maxArea, city, types, rooms, availability, startDate, endDate, numberOfPictures,
+                agentId, school, restaurants, playground, supermarket, shoppingArea, cinema);
     }
 }
