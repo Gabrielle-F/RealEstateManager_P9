@@ -188,6 +188,7 @@
                 android:textSize="14sp"/>
 
             <TextView
+                android:id="@+id/property_details_sold_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toEndOf="@+id/property_details_available_or_sold_title"
@@ -593,6 +594,16 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/property_details_edit_property_material_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/details_edit_property"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"/>
 
     </LinearLayout>
 

@@ -10,11 +10,9 @@ import android.widget.CheckBox
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ReportFragment.Companion.reportFragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.databinding.ActivityAddPropertyBinding
+import com.openclassrooms.realestatemanager.databinding.AddEditPropertyBinding
 import com.openclassrooms.realestatemanager.model.Agent
 import com.openclassrooms.realestatemanager.model.Image
 import com.openclassrooms.realestatemanager.model.Property
@@ -26,7 +24,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChangeListener {
 
-    private lateinit var binding : ActivityAddPropertyBinding
+    private lateinit var binding : AddEditPropertyBinding
     private val addPropertyViewModel : AddPropertyViewModel by viewModels()
     private val picturesList = ArrayList<Image>()
     private lateinit var addPropertyAdapter : AddPropertyRecyclerViewAdapter
@@ -40,7 +38,7 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityAddPropertyBinding.inflate(layoutInflater)
+        binding = AddEditPropertyBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 

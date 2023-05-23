@@ -10,6 +10,7 @@ import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.FragmentPropertyDetailsBinding
 import com.openclassrooms.realestatemanager.model.Agent
 import com.openclassrooms.realestatemanager.model.Property
+import com.openclassrooms.realestatemanager.ui.editProperty.EditPropertyFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,6 +19,7 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
     private lateinit var binding : FragmentPropertyDetailsBinding
     private val viewModel : PropertyDetailsViewModel by viewModels()
     private lateinit var picturesAdapter : PropertyDetailsRecyclerViewAdapter
+    private var selectedPropertyId : Int = 0
 
     @Override
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -38,13 +40,24 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
         viewModel.agentLiveData.observe(viewLifecycleOwner) { agent ->
             fetchAgent(agent)
         }
+
+        binding.propertyDetailsEditPropertyMaterialBtn.setOnClickListener {
+            val editPropertyFragment = EditPropertyFragment()
+            val fragmentManager = requireActivity().supportFragmentManager
+            val bundle = Bundle()
+            bundle.putInt("selectedPropertyId", selectedPropertyId)
+            editPropertyFragment.arguments = bundle
+            fragmentManager.beginTransaction()
+                .replace(R.id.activity_main_fragment_container_view, editPropertyFragment)
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     @Override
     override fun onStart() {
         super.onStart()
         val bundle = arguments
-        var selectedPropertyId = 0
         if (bundle != null) {
             selectedPropertyId = bundle.getInt("selectedPropertyId")
         }
@@ -70,6 +83,10 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
         val agentId = property.agentId
         viewModel.getAgentById(agentId)
 
+        if(property.sold) {
+            binding.propertyDetailsAvailableInfo.visibility = View.INVISIBLE
+            binding.propertyDetailsSoldInfo.visibility = View.VISIBLE
+        }
         if(property.school) {
             binding.propertyDetailsNegativeIconSchool.visibility = View.INVISIBLE
         } else {

@@ -11,6 +11,8 @@ class PropertyRepository @Inject constructor(private val propertyDao : PropertyD
 
     suspend fun createProperty(property : Property) = propertyDao.insertProperty(property)
 
+    suspend fun updateProperty(property: Property) = propertyDao.updateProperty(property)
+
     fun getAllProperties(): Flow<List<Property>> = propertyDao.getAllProperties()
 
     fun getPropertyById(id : Int) : Flow<Property> = propertyDao.getPropertyById(id)
