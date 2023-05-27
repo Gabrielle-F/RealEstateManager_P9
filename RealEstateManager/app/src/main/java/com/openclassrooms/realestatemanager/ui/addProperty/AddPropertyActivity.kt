@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.ui.addProperty
 
 import android.content.Intent
+import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.maps.model.LatLng
 import com.openclassrooms.realestatemanager.databinding.AddEditPropertyBinding
 import com.openclassrooms.realestatemanager.model.Agent
 import com.openclassrooms.realestatemanager.model.Image
@@ -125,8 +127,30 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
             pictures = picturesList,
             numberOfPictures = picturesList.size,
             description = binding.addPropertyDescriptionEditTxt.text.toString(),
+            latLng = convertAddressToLatLng(),
             agentId = selectedAgent.id
         )
+    }
+
+    fun convertAddressToLatLng() : LatLng? {
+        val streetNumber = binding.addPropertyStreetNumberEdittxt.text.toString()
+        val streetName = binding.addPropertyStreetEdittxt.text.toString()
+        val postalCode = binding.addPropertyPostalCodeEdittxt.text.toString()
+        val city = binding.addPropertyCityEdittxt.text.toString()
+        val geocoder = Geocoder(this)
+        var latLng : LatLng? = null
+        val addressParts = listOf(streetNumber, streetName, postalCode, city)
+        val address = addressParts.joinToString(", ")
+        val addressList = geocoder.getFromLocationName(address, 1)
+        if(addressList != null && addressList.isNotEmpty()) {
+            val location = addressList[0]
+            val latitude = location.latitude
+            val longitude = location.longitude
+            latLng = LatLng(latitude, longitude)
+        } else {
+            latLng = null
+        }
+        return latLng
     }
 
     override fun getImage(image: Image) {

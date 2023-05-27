@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.ui.editProperty
 
 import android.content.Intent
+import android.location.Geocoder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.maps.model.LatLng
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.AddEditPropertyBinding
 import com.openclassrooms.realestatemanager.model.Agent
@@ -111,6 +113,7 @@ class EditPropertyFragment : Fragment(R.layout.add_edit_property) {
             pictures = picturesList,
             numberOfPictures = picturesList.size,
             description = binding.addPropertyDescriptionEditTxt.text.toString(),
+            latLng = convertAddressToLatLng(),
             agentId = selectedAgent.id
         )
     }
@@ -138,8 +141,33 @@ class EditPropertyFragment : Fragment(R.layout.add_edit_property) {
         binding.addPropertySoldDateEdittxt.setText(property.soldDate)
         propertyRegisterDate = property.registerDate
 
+        var propertyLatLng : LatLng? = null
         val agentId = property.agentId
         binding.addPropertyAgentSpinner.id = agentId
+        if(property.latLng != null) {
+            propertyLatLng = property.latLng
+        }
+    }
+
+    fun convertAddressToLatLng() : LatLng? {
+        val streetNumber = binding.addPropertyStreetNumberEdittxt.text.toString()
+        val streetName = binding.addPropertyStreetEdittxt.text.toString()
+        val postalCode = binding.addPropertyPostalCodeEdittxt.text.toString()
+        val city = binding.addPropertyCityEdittxt.text.toString()
+        val geocoder = Geocoder(requireActivity())
+        var latLng: LatLng?
+        val addressParts = listOf(streetNumber, streetName, postalCode, city)
+        val address = addressParts.joinToString(", ")
+        val addressList = geocoder.getFromLocationName(address, 1)
+        if(addressList != null && addressList.isNotEmpty()) {
+            val location = addressList[0]
+            val latitude = location.latitude
+            val longitude = location.longitude
+            latLng = LatLng(latitude, longitude)
+        } else {
+            latLng = null
+        }
+        return latLng
     }
 
     private fun fetchAgentsListIntoSpinner(agents: List<Agent>) {
