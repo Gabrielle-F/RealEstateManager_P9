@@ -16,4 +16,14 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_property"/>
 
+    <FrameLayout
+        android:id="@+id/properties_list_map_container"
+        android:layout_width="155dp"
+        android:layout_height="155dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="30dp"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.Companion.CASCADE
 import androidx.room.PrimaryKey
+import com.google.android.gms.maps.model.LatLng
 import java.io.Serializable
 
 @Entity(tableName = "property_table", foreignKeys = [ForeignKey(entity = Agent::class, parentColumns = ["id"], childColumns = ["agent_id"], onDelete = CASCADE)])
@@ -52,6 +53,8 @@ data class Property(
     var numberOfPictures: Int,
     @ColumnInfo(name = "description")
     var description: String,
+    @ColumnInfo(name = "lat_lng")
+    var latLng: LatLng?,
     @ColumnInfo(name = "agent_id", index = true)
     val agentId : Int
 ) : Serializable {

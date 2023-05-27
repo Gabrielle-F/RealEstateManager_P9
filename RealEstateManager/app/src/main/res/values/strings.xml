@@ -112,16 +112,23 @@
     <string name="search_edit_text_city">City</string>
     <string name="search_material_button_text">Search</string>
 
+    <!-- FRAGMENT MAP -->
+    <string name="retry">Retry</string>
+    <string name="no_connection_or_geolocation_data">No connection or geolocalisation data</string>
+
     <!-- NAVIGATION DRAWER -->
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
 
-    <!-- BOTTOMBAR MENU -->
-    <string name="properties_list">PropertiesListIcon</string>
-    <string name="make_search">MakeSearchIcon</string>
-    <string name="currency_money_exchange">CurrencyExchangeIcon</string>
+    <!-- BOTTOMBAR/TOOLBAR MENU -->
+    <string name="properties_list_bottom_bar">PropertiesListIcon</string>
+    <string name="make_search_toolbar">MakeSearchIcon</string>
+    <string name="currency_money_exchange_bottom_bar">CurrencyExchangeIcon</string>
+    <string name="add_property_bottom_bar">AddProperty</string>
 
     <!-- PERMISSIONS -->
-    <string name="camera_and_storage">Multiple permissions for are required for the application to function fully</string>
+    <string name="camera_and_storage">Multiple permissions are required for the application to function fully</string>
+    <string name="fine_and_coarse_location">Multiple permissions are required for the application to function fully</string>
+    <string name="wifi_state">RealEstateManager needs to get acces to wifi state to function fully</string>
 
 </resources>

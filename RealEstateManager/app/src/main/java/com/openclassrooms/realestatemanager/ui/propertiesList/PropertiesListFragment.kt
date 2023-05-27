@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.FragmentListPropertiesBinding
 import com.openclassrooms.realestatemanager.model.Property
+import com.openclassrooms.realestatemanager.ui.propertiesMap.MapFragment
 import com.openclassrooms.realestatemanager.ui.propertyDetails.PropertyDetailsFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -23,6 +24,7 @@ class PropertiesListFragment : Fragment(R.layout.fragment_list_properties), Prop
     private lateinit var binding : FragmentListPropertiesBinding
     private val propertiesListViewModel : PropertiesListViewModel by viewModels()
     private lateinit var propertiesAdapter: PropertiesRecyclerViewAdapter
+    private lateinit var mapFragment : MapFragment
 
     @Override
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -33,6 +35,9 @@ class PropertiesListFragment : Fragment(R.layout.fragment_list_properties), Prop
     @Override
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        mapFragment = MapFragment()
+        childFragmentManager.beginTransaction().add(binding.propertiesListMapContainer.id, mapFragment).commit()
 
         propertiesAdapter = PropertiesRecyclerViewAdapter(this)
         binding.propertiesListRecyclerView.adapter = propertiesAdapter

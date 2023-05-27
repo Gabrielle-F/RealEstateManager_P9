@@ -4,14 +4,20 @@
 
     <item
         android:id="@+id/bottom_bar_properties_list"
-        android:title="@string/properties_list"
+        android:title="@string/properties_list_bottom_bar"
         android:icon="@drawable/ic_properties_list"
         app:showAsAction="ifRoom"
         />
 
     <item
+        android:id="@+id/bottom_bar_add_property"
+        android:title="@string/add_property_bottom_bar"
+        android:icon="@drawable/ic_add_property_white"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/bottom_bar_currency_exchange"
-        android:title="@string/currency_money_exchange"
+        android:title="@string/currency_money_exchange_bottom_bar"
         android:icon="@drawable/ic_currency_exchange"
         app:showAsAction="ifRoom"
         />

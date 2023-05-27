@@ -82,15 +82,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             configureNavDrawer();
 
             configureNavDrawerOnItemClickListener();
-
-            FloatingActionButton fab = findViewById(R.id.activity_main_fab);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getApplicationContext(), AddPropertyActivity.class);
-                    startActivity(intent);
-                }
-            });
         }
     }
 
@@ -164,6 +155,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if(id == R.id.bottom_bar_properties_list) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_fragment_container_view, propertiesListFragment).commit();
                     return true;
+                }
+                if(id == R.id.bottom_bar_add_property) {
+                    Intent intent = new Intent(getApplicationContext(), AddPropertyActivity.class);
+                    startActivity(intent);
                 }
                 if(id == R.id.bottom_bar_currency_exchange) {
                     //TODO : change type of money
