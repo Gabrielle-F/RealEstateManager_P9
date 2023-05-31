@@ -15,7 +15,7 @@ class PropertyRepository @Inject constructor(private val propertyDao : PropertyD
 
     fun getAllProperties(): Flow<List<Property>> = propertyDao.getAllProperties()
 
-    fun getPropertyById(id : Int) : Flow<Property> = propertyDao.getPropertyById(id)
+    fun getPropertyById(id : Int) : Flow<Property>? = propertyDao.getPropertyById(id)
 
     fun getSearchProperties(minPrice : Int, maxPrice : Int, minArea : Int, maxArea : Int, city: String?,
                             types : List<String>?, rooms : List<Int>?,

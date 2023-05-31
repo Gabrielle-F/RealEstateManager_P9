@@ -17,7 +17,7 @@ interface PropertyDao {
     fun getAllProperties() : Flow<List<Property>>
 
     @Query("SELECT * FROM property_table WHERE id = :id")
-    fun getPropertyById(id : Int) : Flow<Property>
+    fun getPropertyById(id : Int) : Flow<Property>?
 
     @Query("SELECT * FROM property_table WHERE price BETWEEN :minPrice AND :maxPrice " +
             "AND area BETWEEN :minArea AND :maxArea " +

@@ -32,7 +32,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.addProperty.AddPropertyActivity"/>
+        <activity android:name=".ui.addProperty.AddEditPropertyActivity"/>
 
         <activity android:name=".ui.authentication.SignUpActivity"/>
 

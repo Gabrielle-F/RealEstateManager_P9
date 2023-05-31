@@ -32,6 +32,7 @@
     <string name="cancel">Cancel</string>
     <string name="add_agent">Agent :</string>
     <string name="add_property_description">Description</string>
+    <string name="update_property">Update Property</string>
 
     <!-- FRAGMENT ADD IMAGES -->
     <string name="name_your_picture">Name</string>

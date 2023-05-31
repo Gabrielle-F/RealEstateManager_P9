@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,20 +13,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.openclassrooms.realestatemanager.R;
-import com.openclassrooms.realestatemanager.ui.addProperty.AddPropertyActivity;
+import com.openclassrooms.realestatemanager.ui.addProperty.AddEditPropertyActivity;
 import com.openclassrooms.realestatemanager.ui.authentication.LogInActivity;
 import com.openclassrooms.realestatemanager.ui.propertiesList.PropertiesListFragment;
 import com.openclassrooms.realestatemanager.ui.searchProperties.SearchPropertiesFragment;
@@ -41,7 +37,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        AddPropertyActivity.OnPropertyAddedListener, SearchPropertiesFragment.OnParametersSelected {
+        AddEditPropertyActivity.OnPropertyAddedOrUpdatedListener, SearchPropertiesFragment.OnParametersSelected {
 
     public enum CurrentFragment {
         PROPERTIES_LIST, CURRENCY_EXCHANGE
@@ -109,8 +105,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search_toolbar:
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                searchPropertiesFragment.show(fragmentManager, "Show SearchPropertiesFragment");
+                getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_fragment_container_view, searchPropertiesFragment).commit();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -157,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     return true;
                 }
                 if(id == R.id.bottom_bar_add_property) {
-                    Intent intent = new Intent(getApplicationContext(), AddPropertyActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), AddEditPropertyActivity.class);
                     startActivity(intent);
                 }
                 if(id == R.id.bottom_bar_currency_exchange) {
@@ -193,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onPropertyAdded() {
+    public void onPropertyAddedOrUpdated() {
         propertiesListFragment.updatePropertiesList();
     }
 

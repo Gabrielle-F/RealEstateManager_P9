@@ -19,8 +19,7 @@ class PropertyDetailsViewModel @Inject constructor(private val getPropertyByIdUs
 
     fun getPropertyById(id : Int) {
         viewModelScope.launch {
-            getPropertyByIdUseCase.invoke(id).collect {
-                property -> propertyLiveData.postValue(property)
+            getPropertyByIdUseCase.invoke(id)?.collect { property -> propertyLiveData.postValue(property)
             }
         }
     }

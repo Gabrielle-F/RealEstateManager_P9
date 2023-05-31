@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.model.LatLng
-import com.openclassrooms.realestatemanager.databinding.AddEditPropertyBinding
+import com.openclassrooms.realestatemanager.databinding.ActivityAddEditPropertyBinding
 import com.openclassrooms.realestatemanager.model.Agent
 import com.openclassrooms.realestatemanager.model.Image
 import com.openclassrooms.realestatemanager.model.Property
@@ -24,23 +24,25 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChangeListener {
+class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChangeListener {
 
-    private lateinit var binding : AddEditPropertyBinding
-    private val addPropertyViewModel : AddPropertyViewModel by viewModels()
+    private lateinit var binding : ActivityAddEditPropertyBinding
+    private val viewModel : AddEditPropertyViewModel by viewModels()
     private val picturesList = ArrayList<Image>()
     private lateinit var addPropertyAdapter : AddPropertyRecyclerViewAdapter
     private lateinit var selectedAgent : Agent
+    private lateinit var propertyRegisterDate : String
+    private var selectedPropertyId : Int = 0
 
-    interface OnPropertyAddedListener {
-        fun onPropertyAdded()
+    interface OnPropertyAddedOrUpdatedListener {
+        fun onPropertyAddedOrUpdated()
     }
 
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = AddEditPropertyBinding.inflate(layoutInflater)
+        binding = ActivityAddEditPropertyBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
@@ -52,18 +54,29 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
 
         configureListeners()
 
+
         lifecycleScope.launch {
-            addPropertyViewModel.getAgentsListLD()
+            viewModel.getAgentsListLD()
         }
-        addPropertyViewModel.agentsLiveData.observe(this) {agentsList ->
+        viewModel.propertyLiveData.observe(this) { property ->
+            fetchPropertyData(property)
+        }
+        viewModel.agentsLiveData.observe(this) { agentsList ->
             Log.d("TAG", "Agents list size: ${agentsList.size}")
             fetchAgentsListIntoSpinner(agentsList)
         }
     }
 
+    @Override
+    override fun onStart() {
+        super.onStart()
+        selectedPropertyId = intent.getIntExtra("selectedPropertyId", 0)
+        viewModel.getPropertyById(selectedPropertyId)
+    }
+
     fun configureListeners() {
-        val addPropertyAddedListener = object : OnPropertyAddedListener{
-            override fun onPropertyAdded() {
+        val addPropertyAddedOrUpdatedListener = object : OnPropertyAddedOrUpdatedListener{
+            override fun onPropertyAddedOrUpdated() {
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 startActivity(intent)
             }
@@ -72,11 +85,17 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
             lifecycleScope.launch {
                 createProperty()
             }
-            addPropertyAddedListener.onPropertyAdded()
+            addPropertyAddedOrUpdatedListener.onPropertyAddedOrUpdated()
         }
         binding.cancelAddFab.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+        }
+        binding.updateFab.setOnClickListener {
+            lifecycleScope.launch {
+                updateProperty()
+            }
+            addPropertyAddedOrUpdatedListener.onPropertyAddedOrUpdated()
         }
         binding.addPropertyAddPicturesMaterialBtn.setOnClickListener {
             val addPicturesFragment = AddPicturesFragment()
@@ -99,9 +118,15 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
     suspend fun createProperty() {
         if(validateFields() && validateFieldsSoldOrAvailable()) {
             val property : Property = getPropertyToCreate()
-            addPropertyViewModel.createProperty(property)
+            viewModel.createProperty(property)
             Toast.makeText(this, "Property create with success !", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    suspend fun updateProperty() {
+        val property : Property = getUpdateProperty()
+        viewModel.updateProperty(property)
+        Toast.makeText(this, "Property update with success !", Toast.LENGTH_SHORT).show()
     }
 
     fun getPropertyToCreate(id : Int = 0) : Property {
@@ -130,6 +155,67 @@ class AddPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChang
             latLng = convertAddressToLatLng(),
             agentId = selectedAgent.id
         )
+    }
+
+    private fun getUpdateProperty(): Property {
+        return Property(
+            id = selectedPropertyId,
+            type = binding.addPropertyTypeEdittxt.text.toString(),
+            rooms = binding.addPropertyRoomsEdittxt.text.toString().toInt(),
+            price = binding.addPropertyPriceEdittxt.text.toString().toInt(),
+            area = binding.addPropertyAreaEdittxt.text.toString().toInt(),
+            streetNumber = binding.addPropertyStreetNumberEdittxt.text.toString(),
+            streetName = binding.addPropertyStreetEdittxt.text.toString(),
+            postalCode = binding.addPropertyPostalCodeEdittxt.text.toString(),
+            city = binding.addPropertyCityEdittxt.text.toString(),
+            school = schoolCheckBoxIsCheckedOrNot(),
+            restaurants = restaurantsCheckBoxIsCheckedOrNot(),
+            playground = playgroundCheckBoxIsCheckedOrNot(),
+            shoppingArea = shoppingAreaCheckBoxIsCheckedOrNot(),
+            supermarket = supermarketCheckBoxIsCheckedOrNot(),
+            cinema = cinemaCheckBoxIsCheckedOrNot(),
+            sold = binding.addPropertySwitchSoldOrAvailable.isChecked,
+            soldDate = binding.addPropertySoldDateEdittxt.text.toString(),
+            registerDate = propertyRegisterDate,
+            pictures = picturesList,
+            numberOfPictures = picturesList.size,
+            description = binding.addPropertyDescriptionEditTxt.text.toString(),
+            latLng = convertAddressToLatLng(),
+            agentId = selectedAgent.id
+        )
+    }
+
+    private fun fetchPropertyData(property: Property?) {
+        if(property != null) {
+            binding.addPropertyTypeEdittxt.setText(property.type)
+            binding.addPropertyRoomsEdittxt.setText(property.rooms.toString())
+            binding.addPropertyCityEdittxt.setText(property.city)
+            binding.addPropertyPriceEdittxt.setText(property.price.toString())
+            binding.addPropertyAreaEdittxt.setText(property.area.toString())
+            binding.addPropertyDescriptionEditTxt.setText(property.description)
+            binding.addPropertyStreetEdittxt.setText(property.streetName)
+            binding.addPropertyStreetNumberEdittxt.setText(property.streetNumber)
+            binding.addPropertyPostalCodeEdittxt.setText(property.postalCode)
+            addPropertyAdapter.updatePicturesList(property.pictures)
+
+            binding.schoolCheckbox.isChecked = property.school
+            binding.restaurantsCheckbox.isChecked = property.restaurants
+            binding.playgroundCheckbox.isChecked = property.playground
+            binding.shoppingAreaCheckbox.isChecked = property.shoppingArea
+            binding.supermarketCheckbox.isChecked = property.supermarket
+            binding.cinemaCheckbox.isChecked = property.cinema
+
+            binding.addPropertySwitchSoldOrAvailable.isChecked = property.sold
+            binding.addPropertySoldDateEdittxt.setText(property.soldDate)
+            propertyRegisterDate = property.registerDate
+
+            var propertyLatLng : LatLng? = null
+            val agentId = property.agentId
+            binding.addPropertyAgentSpinner.id = agentId
+            if(property.latLng != null) {
+                propertyLatLng = property.latLng
+            }
+        }
     }
 
     fun convertAddressToLatLng() : LatLng? {
