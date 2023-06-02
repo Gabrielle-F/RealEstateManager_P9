@@ -8,5 +8,11 @@
             android:icon="@drawable/ic_person"
             android:iconTint="@color/accentColor"/>
 
+        <item
+            android:id="@+id/currency_exchange"
+            android:title="Currency Exchange"
+            android:icon="@drawable/ic_currency_exchange"
+            android:iconTint="@color/accentColor"/>
+
     </group>
 </menu>

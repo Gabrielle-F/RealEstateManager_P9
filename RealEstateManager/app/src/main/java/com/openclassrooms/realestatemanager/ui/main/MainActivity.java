@@ -1,6 +1,8 @@
 package com.openclassrooms.realestatemanager.ui.main;
 
+import android.app.Application;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -22,6 +25,7 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.openclassrooms.realestatemanager.DaggerHiltApplication;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.ui.addProperty.AddEditPropertyActivity;
 import com.openclassrooms.realestatemanager.ui.authentication.LogInActivity;
@@ -51,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private PropertiesListFragment propertiesListFragment = new PropertiesListFragment();
 
-    private SearchPropertiesFragment searchPropertiesFragment = new SearchPropertiesFragment();
+    private final SearchPropertiesFragment searchPropertiesFragment = new SearchPropertiesFragment();
 
     private Boolean userClient;
 
@@ -72,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             userClient = getIntent().getBooleanExtra("client", false);
             userAgent = getIntent().getBooleanExtra("agent", true);
+            searchPropertiesFragment.setOnParametersSelectedListener(this);
 
             configureToolbar();
             configureBottomBar();
@@ -82,9 +87,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-    }
+    protected void onStart() { super.onStart(); }
 
     @Override
     public void onBackPressed() {
@@ -135,6 +138,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.logout:
                         signOut(getApplicationContext());
                         break;
+                    case R.id.currency_exchange:
+                        showCurrencyDialog();
+                        break;
                 }
                 return true;
             }
@@ -154,10 +160,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if(id == R.id.bottom_bar_add_property) {
                     Intent intent = new Intent(getApplicationContext(), AddEditPropertyActivity.class);
                     startActivity(intent);
-                }
-                if(id == R.id.bottom_bar_currency_exchange) {
-                    //TODO : change type of money
-                    return true;
                 }
                 return true;
             }
@@ -181,6 +183,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(intent);
     }
 
+    private void showCurrencyDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+        dialog.setTitle("Choisissez une devise");
+        final String[] currencies = {"Dollar", "Euro"};
+        final DaggerHiltApplication daggerHilt = (DaggerHiltApplication) getApplication();
+        dialog.setItems(currencies, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String selectedCurrency = currencies[which];
+                if(Objects.equals(selectedCurrency, "Euro")) {
+                    daggerHilt.appPreferences.setSelectedCurrency("Euro");
+                } else {
+                    daggerHilt.appPreferences.setSelectedCurrency("Dollar");
+                }
+            }
+        });
+        dialog.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialog.create().show();
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         //TODO : use it for Toolbar
@@ -189,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onPropertyAddedOrUpdated() {
-        propertiesListFragment.updatePropertiesList();
+
     }
 
     @Override
@@ -199,5 +226,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                            boolean playground, boolean supermarket, boolean shoppingArea, boolean cinema) {
         propertiesListFragment.getFilteredList(minPrice, maxPrice, minArea, maxArea, city, types, rooms, availability, startDate, endDate, numberOfPictures,
                 agentId, school, restaurants, playground, supermarket, shoppingArea, cinema);
+        getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_fragment_container_view, propertiesListFragment).commit();
     }
 }
