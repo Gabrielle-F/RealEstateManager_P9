@@ -7,6 +7,8 @@ import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.usecases.GetPropertiesListUseCase
 import com.openclassrooms.realestatemanager.usecases.GetSearchPropertiesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,6 +17,7 @@ class PropertiesListViewModel @Inject constructor(private val getAllPropertiesLi
 
     val propertiesLiveData = object : MutableLiveData<List<Property>>(){}
     val searchProperties = object : MutableLiveData<List<Property>>(){}
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     suspend fun getProperties() {
         getAllPropertiesListUseCase.invoke().collect {
@@ -35,7 +38,7 @@ class PropertiesListViewModel @Inject constructor(private val getAllPropertiesLi
                            availability : Boolean?, startDate : String?, endDate : String?, numberOfPictures: List<Int>,
                            agentId : Int?, school : Boolean, restaurants : Boolean, playground : Boolean,
                            supermarket : Boolean, shoppingArea : Boolean, cinema : Boolean) {
-        viewModelScope.launch {
+        coroutineScope.launch {
             getSearchPropertiesUseCase.invoke(minPrice, maxPrice, minArea, maxArea, city, types, rooms, availability, startDate, endDate, numberOfPictures, agentId, school,
                 restaurants, playground, supermarket, shoppingArea, cinema).collect {
                     properties -> searchProperties.postValue(properties)

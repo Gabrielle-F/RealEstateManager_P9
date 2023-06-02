@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.navArgs
+import com.openclassrooms.realestatemanager.DaggerHiltApplication
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.FragmentListPropertiesBinding
 import com.openclassrooms.realestatemanager.model.Property
@@ -46,17 +48,19 @@ class PropertiesListFragment : Fragment(R.layout.fragment_list_properties), Prop
             Log.d("TAG", "Properties list size: ${propertiesList.size}")
             propertiesAdapter.updatePropertiesList(propertiesList)
         }
-        propertiesListViewModel.searchProperties.observe(viewLifecycleOwner) { searchPropertiesList ->
-            propertiesAdapter.updatePropertiesList(searchPropertiesList)
-        }
     }
 
     @Override
     override fun onStart() {
         super.onStart()
         propertiesListViewModel.getPropertiesList()
+        propertiesListViewModel.searchProperties.observe(viewLifecycleOwner) { searchPropertiesList ->
+            Log.d("TAG", "SearchProperties list size : ${searchPropertiesList.size}")
+            propertiesAdapter.updatePropertiesList(searchPropertiesList)
+        }
     }
 
+    /**
     fun updatePropertiesList() {
         lifecycleScope.launch {
             propertiesListViewModel.getProperties()
@@ -65,7 +69,7 @@ class PropertiesListFragment : Fragment(R.layout.fragment_list_properties), Prop
                 propertiesAdapter.updatePropertiesList(propertiesList)
             }
         }
-    }
+    } */
 
     fun getFilteredList(minPrice: Int, maxPrice: Int, minArea: Int, maxArea:Int, city: String?,
                         types: List<String>?, rooms: List<Int>?, availability: Boolean?, startDate:
@@ -85,5 +89,11 @@ class PropertiesListFragment : Fragment(R.layout.fragment_list_properties), Prop
             .replace(R.id.activity_main_fragment_container_view, propertyDetailsFragment)
             .addToBackStack(null)
             .commit()
+    }
+
+    override fun getSharedPreferences(): String {
+        val daggerHilt = requireActivity().application as DaggerHiltApplication
+        var selectedCurrency : String = daggerHilt.appPreferences.getSelectedCurrency()
+        return selectedCurrency
     }
 }

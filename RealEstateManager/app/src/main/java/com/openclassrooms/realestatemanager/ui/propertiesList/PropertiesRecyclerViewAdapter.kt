@@ -7,16 +7,20 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.openclassrooms.realestatemanager.DaggerHiltApplication
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.model.Property
+import com.openclassrooms.realestatemanager.utils.Utils
 
 class PropertiesRecyclerViewAdapter(private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<PropertiesRecyclerViewAdapter.PropertiesViewHolder>() {
 
     private val list = mutableListOf<Property>()
+    private var selectedCurrency : String = "Dollar"
 
     interface OnItemClickListener {
         fun onClick(property: Property)
+        fun getSharedPreferences(): String
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PropertiesViewHolder {
@@ -33,9 +37,15 @@ class PropertiesRecyclerViewAdapter(private val onItemClickListener: OnItemClick
 
     override fun onBindViewHolder(holder: PropertiesViewHolder, position: Int) {
         val item = list[position]
+        val sharedPreferences = onItemClickListener.getSharedPreferences()
         holder.property = item
         holder.propertyType.text = item.type
         holder.propertyPrice.text = item.price.toString()
+        if(sharedPreferences == "Euro") {
+            Utils.convertEuroToDollar(item.price)
+        } else if (sharedPreferences == "Dollar") {
+            Utils.convertEuroToDollar(item.price)
+        }
         /**
         val firstPicture = item.getFirstImage()
         val uri = Uri.parse(firstPicture?.imageUri)
