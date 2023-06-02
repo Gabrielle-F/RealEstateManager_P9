@@ -18,6 +18,7 @@ import com.openclassrooms.realestatemanager.databinding.ActivityAddEditPropertyB
 import com.openclassrooms.realestatemanager.model.Agent
 import com.openclassrooms.realestatemanager.model.Image
 import com.openclassrooms.realestatemanager.model.Property
+import com.openclassrooms.realestatemanager.model.PropertyFirestore
 import com.openclassrooms.realestatemanager.ui.main.MainActivity
 import com.openclassrooms.realestatemanager.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,6 +30,7 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
     private lateinit var binding : ActivityAddEditPropertyBinding
     private val viewModel : AddEditPropertyViewModel by viewModels()
     private val picturesList = ArrayList<Image>()
+    private val picturesUriList = ArrayList<String>()
     private lateinit var addPropertyAdapter : AddPropertyRecyclerViewAdapter
     private lateinit var selectedAgent : Agent
     private lateinit var propertyRegisterDate : String
@@ -118,7 +120,9 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
     suspend fun createProperty() {
         if(validateFields() && validateFieldsSoldOrAvailable()) {
             val property : Property = getPropertyToCreate()
+            val propertyFirestore : PropertyFirestore = getPropertyFirestore()
             viewModel.createProperty(property)
+            viewModel.createPropertyInFirestore(propertyFirestore)
             Toast.makeText(this, "Property create with success !", Toast.LENGTH_SHORT).show()
         }
     }
@@ -154,6 +158,35 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
             description = binding.addPropertyDescriptionEditTxt.text.toString(),
             latLng = convertAddressToLatLng(),
             agentId = selectedAgent.id
+        )
+    }
+
+    private fun getPropertyFirestore(firestoreId: String = "id") : PropertyFirestore {
+        return PropertyFirestore(
+            id = firestoreId,
+            type = binding.addPropertyTypeEdittxt.text.toString(),
+            price = binding.addPropertyPriceEdittxt.text.toString().toInt(),
+            streetName = binding.addPropertyStreetEdittxt.text.toString(),
+            streetNumber = binding.addPropertyStreetNumberEdittxt.text.toString(),
+            area = binding.addPropertyAreaEdittxt.text.toString().toInt(),
+            rooms = binding.addPropertyRoomsEdittxt.text.toString().toInt(),
+            postalCode = binding.addPropertyPostalCodeEdittxt.text.toString(),
+            city = binding.addPropertyCityEdittxt.text.toString(),
+            sold = binding.addPropertySwitchSoldOrAvailable.isActivated,
+            registerDate = Utils.getTodayDate(),
+            soldDate = binding.addPropertySoldDateEdittxt.text.toString(),
+            school = schoolCheckBoxIsCheckedOrNot(),
+            restaurants = restaurantsCheckBoxIsCheckedOrNot(),
+            playground = playgroundCheckBoxIsCheckedOrNot(),
+            supermarket = supermarketCheckBoxIsCheckedOrNot(),
+            shoppingArea = shoppingAreaCheckBoxIsCheckedOrNot(),
+            cinema = cinemaCheckBoxIsCheckedOrNot(),
+            picturesUri = picturesUriList,
+            numberOfPictures = picturesUriList.size,
+            description = binding.addPropertyDescriptionEditTxt.text.toString(),
+            latLng = convertAddressToLatLng(),
+            agentId = selectedAgent.id,
+            agentName = selectedAgent.name
         )
     }
 
@@ -240,8 +273,10 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
     }
 
     override fun getImage(image: Image) {
+        val pictureUri = image.imageUri
         picturesList.add(image)
         addPropertyAdapter.updatePicturesList(picturesList)
+        picturesUriList.add(pictureUri)
     }
 
     private fun fetchAgentsListIntoSpinner(agents : List<Agent>) {

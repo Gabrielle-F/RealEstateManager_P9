@@ -14,18 +14,18 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.databinding.FragmentAddImageBinding
+import com.openclassrooms.realestatemanager.databinding.BottomSheetDialogFragmentAddImageBinding
 import com.openclassrooms.realestatemanager.model.Image
 import com.vmadalin.easypermissions.EasyPermissions
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.URL
 
 @AndroidEntryPoint
-class AddPicturesFragment : BottomSheetDialogFragment(R.layout.fragment_add_image) {
+class AddPicturesFragment : BottomSheetDialogFragment(R.layout.bottom_sheet_dialog_fragment_add_image) {
 
     private lateinit var context : Context
     private lateinit var listener : OnDataChangeListener
-    private lateinit var binding : FragmentAddImageBinding
+    private lateinit var binding : BottomSheetDialogFragmentAddImageBinding
     private lateinit var imagePath: String
     private lateinit var imageUrl: URL
     private val EXTERNAL_STORAGE_PERMISSION_CODE  : Int = 20
@@ -46,7 +46,7 @@ class AddPicturesFragment : BottomSheetDialogFragment(R.layout.fragment_add_imag
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentAddImageBinding.inflate(inflater, container, false)
+        binding = BottomSheetDialogFragmentAddImageBinding.inflate(inflater, container, false)
         return binding.root
     }
 

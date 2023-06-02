@@ -64,3 +64,30 @@ data class Property(
     }
 
 }
+
+data class PropertyFirestore(
+    var id: String,
+    var type: String,
+    var price: Int,
+    var streetName: String,
+    var streetNumber: String,
+    var area: Int,
+    var rooms: Int,
+    var postalCode: String,
+    var city: String,
+    var sold: Boolean,
+    var registerDate: String,
+    var soldDate: String?,
+    var school: Boolean,
+    var restaurants: Boolean,
+    var playground: Boolean,
+    var supermarket: Boolean,
+    var shoppingArea: Boolean,
+    var cinema: Boolean,
+    var picturesUri: List<String>,
+    var numberOfPictures: Int,
+    var description: String,
+    var latLng: LatLng?,
+    var agentId: Int,
+    var agentName: String
+)
