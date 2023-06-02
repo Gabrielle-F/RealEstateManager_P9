@@ -9,10 +9,11 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
+import com.google.android.material.slider.RangeSlider
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.FragmentSearchPropertiesBinding
 import com.openclassrooms.realestatemanager.model.Agent
@@ -22,7 +23,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @AndroidEntryPoint
-class SearchPropertiesFragment : BottomSheetDialogFragment(R.layout.fragment_search_properties) {
+class SearchPropertiesFragment : Fragment(R.layout.fragment_search_properties) {
 
     private lateinit var context : Context
     private lateinit var binding : FragmentSearchPropertiesBinding
@@ -38,6 +39,7 @@ class SearchPropertiesFragment : BottomSheetDialogFragment(R.layout.fragment_sea
     private var supermarketAmenitie : Boolean = false
     private var cinemaAmenitie : Boolean = false
     private lateinit var selectedAgent : Agent
+    private var onParametersSelectedListener : OnParametersSelected? = null
 
 
     interface OnParametersSelected {
@@ -80,7 +82,9 @@ class SearchPropertiesFragment : BottomSheetDialogFragment(R.layout.fragment_sea
                 rooms: List<Int>?, availability: Boolean?, startDate: String?, endDate: String?,
                 numberOfPictures: List<Int>?, agentId: Int?, school: Boolean, restaurants: Boolean,
                 playground: Boolean, supermarket: Boolean, shoppingArea: Boolean, cinema: Boolean
-            ) { dismiss() }
+            ) {
+                requireActivity().supportFragmentManager.beginTransaction().remove(this@SearchPropertiesFragment).commit()
+            }
         }
 
         binding.searchStartDateEditTxt.setOnClickListener {
@@ -99,24 +103,32 @@ class SearchPropertiesFragment : BottomSheetDialogFragment(R.layout.fragment_sea
             val city : String? = binding.searchCityEditTxt.text.toString()
             val startDate : String? = binding.searchStartDateEditTxt.text.toString()
             val endDate : String?  = binding.searchEndDateEditTxt.text.toString()
-            filterListListener.filterList(minPrice, maxPrice, minArea, maxArea, city, getSelectedTypes(),
+            onParametersSelectedListener?.filterList(minPrice, maxPrice, minArea, maxArea, city, getSelectedTypesList(),
                 getSelectedNumberOfRooms(), getAvailabilityChoice(), startDate, endDate, getSelectedNumberOfPictures(),
                 selectedAgent.id, schoolAmenitie, restaurantsAmenitie, playgroundAmenitie,
                 supermarketAmenitie, shoppingAreaAmenitie, cinemaAmenitie)
         }
     }
 
+    fun setOnParametersSelectedListener(listener: OnParametersSelected) {
+        onParametersSelectedListener = listener
+    }
+
     private fun getMinPrice() : Int {
-        binding.searchRangeSliderPrice.addOnChangeListener { slider, value, fromUser ->
-            minPrice = slider.values[0].toInt()
-        }
+        binding.searchRangeSliderPrice.addOnChangeListener(object : RangeSlider.OnChangeListener {
+            override fun onValueChange(slider: RangeSlider, value: Float, fromUser: Boolean) {
+                minPrice = slider.values[0].toInt()
+            }
+        })
         return minPrice
     }
 
     private fun getMaxPrice() : Int {
-        binding.searchRangeSliderPrice.addOnChangeListener { slider, value, fromUser ->
-            maxPrice = slider.values[1].toInt()
-        }
+        binding.searchRangeSliderPrice.addOnChangeListener(object : RangeSlider.OnChangeListener {
+            override fun onValueChange(slider: RangeSlider, value: Float, fromUser: Boolean) {
+                maxPrice = slider.values[1].toInt()
+            }
+        })
         return maxPrice
     }
 
@@ -134,38 +146,34 @@ class SearchPropertiesFragment : BottomSheetDialogFragment(R.layout.fragment_sea
         return maxArea
     }
 
-    private fun getSelectedTypes() : List<String>? {
-        var selectedTypesList : List<String>? = listOf()
-        binding.searchTypeChipGroup.setOnCheckedChangeListener{ group, checkedId ->
-            val selectedTypes = mutableListOf<String>()
-            for (i in 0 until group.childCount) {
-                val chip = group.getChildAt(i) as? Chip
-                if(chip != null && chip.isSelected) {
-                    selectedTypes.add(chip.text.toString())
-                }
+    private fun getSelectedTypesList() : List<String>? {
+        val selectedTypes = mutableListOf<String>()
+        val chipGroup = binding.searchTypeChipGroup
+
+        for (i in 0 until chipGroup.childCount) {
+            val chip = chipGroup.getChildAt(i) as Chip
+            if(chip.isChecked) {
+                selectedTypes.add(chip.text.toString())
             }
-            selectedTypesList = selectedTypes
         }
-        return selectedTypesList
+        return selectedTypes
     }
 
-    private fun getNumberOfRooms() : List<String>? {
-        var selectedNumberOfRooms : List<String>? = listOf()
-        binding.searchRoomsChipGroup.setOnCheckedChangeListener{ group, checkedId ->
-            val selectedNumOfRooms = mutableListOf<String>()
-            for (i in 0 until group.childCount) {
-                val chip = group.getChildAt(i) as? Chip
-                if(chip != null && chip.isSelected) {
-                    selectedNumOfRooms.add(chip.text.toString())
-                }
+    private fun getSelectedNumberOfRoomsStringList() : List<String>? {
+        val selectedNumbersOfRooms = mutableListOf<String>()
+        val chipGroup = binding.searchRoomsChipGroup
+
+        for (i in 0 until chipGroup.childCount) {
+            val chip = chipGroup.getChildAt(i) as Chip
+            if(chip.isChecked) {
+                selectedNumbersOfRooms.add(chip.text.toString())
             }
-            selectedNumberOfRooms = selectedNumOfRooms
         }
-        return selectedNumberOfRooms
+        return selectedNumbersOfRooms
     }
 
     private fun getSelectedNumberOfRooms(): List<Int>? {
-        val selectedStringRooms: List<String>? = getNumberOfRooms()
+        val selectedStringRooms: List<String>? = getSelectedNumberOfRoomsStringList()
         val selectedIntRooms = mutableListOf<Int>()
 
         selectedStringRooms?.let { rooms ->
@@ -180,17 +188,15 @@ class SearchPropertiesFragment : BottomSheetDialogFragment(R.layout.fragment_sea
         return selectedIntRooms
     }
 
-    private fun getSelectedStringsProximity() : List<String> {
-        var selectedProximityList : List<String> = listOf()
-        binding.searchProximityChipGroup.setOnCheckedChangeListener { group, checkedId ->
-            val selectedTypes = mutableListOf<String>()
-            for (i in 0 until group.childCount) {
-                val chip = group.getChildAt(i) as? Chip
-                if(chip != null && chip.isSelected) {
-                    selectedTypes.add(chip.text.toString())
-                }
+    private fun getSelectedStringsProximity(): List<String> {
+        val selectedProximityList = mutableListOf<String>()
+        val chipGroup = binding.searchProximityChipGroup
+
+        for (i in 0 until chipGroup.childCount) {
+            val chip = chipGroup.getChildAt(i) as Chip
+            if(chip.isChecked) {
+                selectedProximityList.add(chip.text.toString())
             }
-            selectedProximityList = selectedTypes
         }
         return selectedProximityList
     }
@@ -209,23 +215,21 @@ class SearchPropertiesFragment : BottomSheetDialogFragment(R.layout.fragment_sea
         }
     }
 
-    private fun getNumberOfPictures() : List<String>? {
-        var selectedNumberOfPictures : List<String>? = listOf()
-        binding.searchNumberOfPicturesChipGroup.setOnCheckedChangeListener{ group, checkedId ->
-            val selectedNumOfPictures = mutableListOf<String>()
-            for (i in 0 until group.childCount) {
-                val chip = group.getChildAt(i) as? Chip
-                if(chip != null && chip.isSelected) {
-                    selectedNumOfPictures.add(chip.text.toString())
-                }
+    private fun getSelectedNumbersOfPicturesListString() : List<String> {
+        val selectedNumbersOfPictures = mutableListOf<String>()
+        val chipGroup = binding.searchNumberOfPicturesChipGroup
+
+        for (i in 0 until chipGroup.childCount) {
+            val chip = chipGroup.getChildAt(i) as Chip
+            if(chip.isChecked) {
+                selectedNumbersOfPictures.add(chip.text.toString())
             }
-            selectedNumberOfPictures = selectedNumOfPictures
         }
-        return selectedNumberOfPictures
+        return selectedNumbersOfPictures
     }
 
     private fun getSelectedNumberOfPictures(): List<Int>? {
-        val selectedStringsPictures:  List<String>? = getNumberOfPictures()
+        val selectedStringsPictures:  List<String>? = getSelectedNumbersOfPicturesListString()
         val selectedIntPictures = mutableListOf<Int>()
 
         selectedStringsPictures?.let { pictures ->
