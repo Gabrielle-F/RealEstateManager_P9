@@ -6,5 +6,5 @@ import javax.inject.Inject
 
 class CreatePropertyInFirestoreUseCase @Inject constructor(private val propertyRepository: PropertyRepository) {
 
-    suspend fun invoke(property: PropertyFirestore) = propertyRepository.createPropertyInFirestoreDatabase(property)
+    fun invoke(property: PropertyFirestore): String = propertyRepository.createPropertyInFirestoreDatabase(property)
 }

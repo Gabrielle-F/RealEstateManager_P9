@@ -17,7 +17,7 @@ class PropertyDetailsViewModel @Inject constructor(private val getPropertyByIdUs
     val propertyLiveData = object : MutableLiveData<Property>(){}
     val agentLiveData = object : MutableLiveData<Agent>(){}
 
-    fun getPropertyById(id : Int) {
+    fun getPropertyById(id : String) {
         viewModelScope.launch {
             getPropertyByIdUseCase.invoke(id)?.collect { property -> propertyLiveData.postValue(property)
             }

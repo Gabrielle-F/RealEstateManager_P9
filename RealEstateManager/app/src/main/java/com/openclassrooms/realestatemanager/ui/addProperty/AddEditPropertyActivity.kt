@@ -34,7 +34,7 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
     private lateinit var addPropertyAdapter : AddPropertyRecyclerViewAdapter
     private lateinit var selectedAgent : Agent
     private lateinit var propertyRegisterDate : String
-    private var selectedPropertyId : Int = 0
+    private var selectedPropertyId : String = "propertyId"
 
     interface OnPropertyAddedOrUpdatedListener {
         fun onPropertyAddedOrUpdated()
@@ -72,7 +72,7 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
     @Override
     override fun onStart() {
         super.onStart()
-        selectedPropertyId = intent.getIntExtra("selectedPropertyId", 0)
+        selectedPropertyId = intent.getStringExtra("selectedPropertyId").toString()
         viewModel.getPropertyById(selectedPropertyId)
     }
 
@@ -84,9 +84,7 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
             }
         }
         binding.activityAddFab.setOnClickListener {
-            lifecycleScope.launch {
-                createProperty()
-            }
+            createProperty()
             addPropertyAddedOrUpdatedListener.onPropertyAddedOrUpdated()
         }
         binding.cancelAddFab.setOnClickListener {
@@ -117,12 +115,12 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
     }
 
 
-    suspend fun createProperty() {
+    fun createProperty() {
         if(validateFields() && validateFieldsSoldOrAvailable()) {
-            val property : Property = getPropertyToCreate()
             val propertyFirestore : PropertyFirestore = getPropertyFirestore()
-            viewModel.createProperty(property)
-            viewModel.createPropertyInFirestore(propertyFirestore)
+            val propertyCreatedIdString = viewModel.createPropertyInFirestoreDb(propertyFirestore)
+            val property : Property = getPropertyToCreate(propertyCreatedIdString)
+            viewModel.createPropertyInLocalDb(property)
             Toast.makeText(this, "Property create with success !", Toast.LENGTH_SHORT).show()
         }
     }
@@ -133,7 +131,7 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
         Toast.makeText(this, "Property update with success !", Toast.LENGTH_SHORT).show()
     }
 
-    fun getPropertyToCreate(id : Int = 0) : Property {
+    fun getPropertyToCreate(id : String) : Property {
         return Property(
             id = id,
             type = binding.addPropertyTypeEdittxt.text.toString(),
@@ -156,14 +154,14 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
             pictures = picturesList,
             numberOfPictures = picturesList.size,
             description = binding.addPropertyDescriptionEditTxt.text.toString(),
-            latLng = convertAddressToLatLng(),
-            agentId = selectedAgent.id
+            latitude = convertAddressToLatLng().latitude,
+            longitude = convertAddressToLatLng().longitude,
+            agentName = selectedAgent.name
         )
     }
 
-    private fun getPropertyFirestore(firestoreId: String = "id") : PropertyFirestore {
+    private fun getPropertyFirestore() : PropertyFirestore {
         return PropertyFirestore(
-            id = firestoreId,
             type = binding.addPropertyTypeEdittxt.text.toString(),
             price = binding.addPropertyPriceEdittxt.text.toString().toInt(),
             streetName = binding.addPropertyStreetEdittxt.text.toString(),
@@ -186,7 +184,6 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
             description = binding.addPropertyDescriptionEditTxt.text.toString(),
             latLng = convertAddressToLatLng(),
             agentId = selectedAgent.id,
-            agentName = selectedAgent.name
         )
     }
 
@@ -213,8 +210,9 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
             pictures = picturesList,
             numberOfPictures = picturesList.size,
             description = binding.addPropertyDescriptionEditTxt.text.toString(),
-            latLng = convertAddressToLatLng(),
-            agentId = selectedAgent.id
+            latitude = convertAddressToLatLng().latitude,
+            longitude = convertAddressToLatLng().longitude,
+            agentName = selectedAgent.name
         )
     }
 
@@ -243,21 +241,24 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
             propertyRegisterDate = property.registerDate
 
             var propertyLatLng : LatLng? = null
-            val agentId = property.agentId
-            binding.addPropertyAgentSpinner.id = agentId
-            if(property.latLng != null) {
-                propertyLatLng = property.latLng
+            /**val agentId = property.agentName
+            binding.addPropertyAgentSpinner.id = agentId*/
+            val latitude = property.latitude
+            val longitude = property.longitude
+            val latLng = LatLng(latitude, longitude)
+            if(latLng != null) {
+                propertyLatLng = latLng
             }
         }
     }
 
-    fun convertAddressToLatLng() : LatLng? {
+    fun convertAddressToLatLng() : LatLng {
         val streetNumber = binding.addPropertyStreetNumberEdittxt.text.toString()
         val streetName = binding.addPropertyStreetEdittxt.text.toString()
         val postalCode = binding.addPropertyPostalCodeEdittxt.text.toString()
         val city = binding.addPropertyCityEdittxt.text.toString()
         val geocoder = Geocoder(this)
-        var latLng : LatLng? = null
+        var latLng : LatLng
         val addressParts = listOf(streetNumber, streetName, postalCode, city)
         val address = addressParts.joinToString(", ")
         val addressList = geocoder.getFromLocationName(address, 1)
@@ -267,7 +268,7 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
             val longitude = location.longitude
             latLng = LatLng(latitude, longitude)
         } else {
-            latLng = null
+            latLng = LatLng(0.0, 0.0)
         }
         return latLng
     }

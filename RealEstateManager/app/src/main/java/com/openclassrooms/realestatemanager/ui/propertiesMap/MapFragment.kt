@@ -97,9 +97,11 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
         }
         shouldShowMap()
         viewModel.propertiesLiveData.observe(viewLifecycleOwner) { propertiesList ->
+            var latLng : LatLng
             map?.let { map ->
                 propertiesList.forEach { property ->
-                    property.latLng?.let {
+                    latLng = LatLng(property.latitude, property.longitude)
+                    latLng?.let {
                         map.addMarker(
                             MarkerOptions().position(it)
                                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))

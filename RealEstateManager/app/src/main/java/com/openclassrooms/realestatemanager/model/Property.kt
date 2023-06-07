@@ -3,70 +3,62 @@ package com.openclassrooms.realestatemanager.model
 import android.content.ContentValues
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.ForeignKey.Companion.CASCADE
 import androidx.room.PrimaryKey
 import com.google.android.gms.maps.model.LatLng
 import com.openclassrooms.realestatemanager.utils.Converters
 import java.io.Serializable
 
-@Entity(
-    tableName = "property_table",
-    foreignKeys = [ForeignKey(
-        entity = Agent::class,
-        parentColumns = ["id"],
-        childColumns = ["agent_id"],
-        onDelete = CASCADE
-    )]
-)
+@Entity(tableName = "property_table")
 data class Property(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
-    val id: Int,
+    val id: String = "",
     @ColumnInfo(name = "type")
-    var type: String,
+    var type: String = "",
     @ColumnInfo(name = "price")
-    var price: Int,
+    var price: Int = 0,
     @ColumnInfo(name = "address_street")
-    var streetName: String,
+    var streetName: String = "",
     @ColumnInfo(name = "address_street_number")
-    var streetNumber: String,
+    var streetNumber: String = "",
     @ColumnInfo(name = "area")
-    var area: Int,
+    var area: Int = 0,
     @ColumnInfo(name = "rooms")
-    var rooms: Int,
+    var rooms: Int = 0,
     @ColumnInfo(name = "postal_code")
-    var postalCode: String,
+    var postalCode: String = "",
     @ColumnInfo(name = "city")
-    var city: String,
+    var city: String = "",
     @ColumnInfo(name = "sold")
-    var sold: Boolean,
+    var sold: Boolean = false,
     @ColumnInfo(name = "register_date")
-    var registerDate: String,
+    var registerDate: String = "",
     @ColumnInfo(name = "sold_date")
-    var soldDate: String?,
+    var soldDate: String? = "",
     @ColumnInfo(name = "school")
-    var school: Boolean,
+    var school: Boolean = false,
     @ColumnInfo(name = "restaurants")
-    var restaurants: Boolean,
+    var restaurants: Boolean = false,
     @ColumnInfo(name = "playground")
-    var playground: Boolean,
+    var playground: Boolean = false,
     @ColumnInfo(name = "supermarket")
-    var supermarket: Boolean,
+    var supermarket: Boolean = false,
     @ColumnInfo(name = "shopping_area")
-    var shoppingArea: Boolean,
+    var shoppingArea: Boolean = false,
     @ColumnInfo(name = "cinema")
-    var cinema: Boolean,
+    var cinema: Boolean = false,
     @ColumnInfo(name = "pictures")
-    var pictures: List<Image>,
+    var pictures: List<Image>  = emptyList(),
     @ColumnInfo(name = "number_of_pictures")
-    var numberOfPictures: Int,
+    var numberOfPictures: Int = 0,
     @ColumnInfo(name = "description")
-    var description: String,
-    @ColumnInfo(name = "lat_lng")
-    var latLng: LatLng?,
-    @ColumnInfo(name = "agent_id", index = true)
-    val agentId: Int
+    var description: String = "",
+    @ColumnInfo(name = "latitude")
+    var latitude: Double = 0.0,
+    @ColumnInfo(name = "longitude")
+    var longitude: Double = 0.0,
+    @ColumnInfo(name = "agent_name")
+    var agentName: String = ""
 ) : Serializable {
 
     fun getFirstImage(): Image? {
@@ -74,7 +66,7 @@ data class Property(
     }
 
     fun fromContentValues(values: ContentValues): Property {
-        val id = if (values.containsKey("id")) values.getAsInteger("id") else 0
+        val id = if (values.containsKey("id")) values.getAsString("id") else ""
         val type = if (values.containsKey("type")) values.getAsString("type") else ""
         val price = if (values.containsKey("price")) values.getAsInteger("price") else 0
         val streetName =
@@ -105,8 +97,9 @@ data class Property(
             if (values.containsKey("numberOfPictures")) values.getAsInteger("numberOfPictures") else 0
         val description =
             if (values.containsKey("description")) values.getAsString("description") else ""
-        val latLng = if (values.containsKey("latLng")) values.getAsString("latLng") else ""
-        val agentId = if (values.containsKey("agentId")) values.getAsInteger("agentId") else 0
+        val latitude = if (values.containsKey("latitude")) values.getAsDouble("latitude") else 0.0
+        val longitude = if (values.containsKey("longitude")) values.getAsDouble("longitude") else 0.0
+        val agentName = if (values.containsKey("agentName")) values.getAsString("agentId") else ""
 
         return Property(
             id,
@@ -130,15 +123,14 @@ data class Property(
             Converters().toImages(pictures),
             numberOfPictures,
             description,
-            Converters().fromStringToLatLng(latLng),
-            agentId
+            latitude,
+            longitude,
+            agentName
         )
     }
-
 }
 
 data class PropertyFirestore(
-    var id: String,
     var type: String,
     var price: Int,
     var streetName: String,
@@ -161,5 +153,5 @@ data class PropertyFirestore(
     var description: String,
     var latLng: LatLng?,
     var agentId: Int,
-    var agentName: String
 )
+

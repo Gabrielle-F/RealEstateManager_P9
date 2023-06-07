@@ -23,11 +23,13 @@ class AddEditPropertyViewModel @Inject constructor(private val createPropertyUse
 
     suspend fun createProperty(property : Property) = createPropertyUseCase.createProperty(property)
 
-    fun createPropertyInFirestore(property: PropertyFirestore) {
+    fun createPropertyInLocalDb(property: Property) {
         viewModelScope.launch {
-            createPropertyInFirestoreUseCase.invoke(property)
+            createPropertyUseCase.createProperty(property)
         }
     }
+
+    fun createPropertyInFirestoreDb(property: PropertyFirestore): String = createPropertyInFirestoreUseCase.invoke(property)
 
     suspend fun updateProperty(property : Property) = updatePropertyUseCase.invoke(property)
 
@@ -37,7 +39,7 @@ class AddEditPropertyViewModel @Inject constructor(private val createPropertyUse
         }
     }
 
-    fun getPropertyById(id : Int) {
+    fun getPropertyById(id : String) {
         viewModelScope.launch {
             getPropertyByIdUseCase.invoke(id)?.collect { property -> propertyLiveData.postValue(property)
             }

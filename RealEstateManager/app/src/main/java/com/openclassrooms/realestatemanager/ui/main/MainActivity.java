@@ -222,10 +222,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void filterList(int minPrice, int maxPrice, int minArea, int maxArea, @Nullable String city, @Nullable List<String> types,
                            @Nullable List<Integer> rooms, @Nullable Boolean availability, @Nullable String startDate, @Nullable String endDate,
-                           @Nullable List<Integer> numberOfPictures, @Nullable Integer agentId, boolean school, boolean restaurants,
+                           @Nullable List<Integer> numberOfPictures, @Nullable String agentName, boolean school, boolean restaurants,
                            boolean playground, boolean supermarket, boolean shoppingArea, boolean cinema) {
         propertiesListFragment.getFilteredList(minPrice, maxPrice, minArea, maxArea, city, types, rooms, availability, startDate, endDate, numberOfPictures,
-                agentId, school, restaurants, playground, supermarket, shoppingArea, cinema);
+                agentName, school, restaurants, playground, supermarket, shoppingArea, cinema);
         getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_fragment_container_view, propertiesListFragment).commit();
     }
 }

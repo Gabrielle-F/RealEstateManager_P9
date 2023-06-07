@@ -20,7 +20,7 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
     private lateinit var binding : FragmentPropertyDetailsBinding
     private val viewModel : PropertyDetailsViewModel by viewModels()
     private lateinit var picturesAdapter : PropertyDetailsRecyclerViewAdapter
-    private var selectedPropertyId : Int = 0
+    private var selectedPropertyId : String = "propertyId"
 
     @Override
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -38,9 +38,6 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
         viewModel.propertyLiveData.observe(viewLifecycleOwner) {property ->
             fetchPropertyDetails(property)
         }
-        viewModel.agentLiveData.observe(viewLifecycleOwner) { agent ->
-            fetchAgent(agent)
-        }
 
         binding.propertyDetailsEditPropertyMaterialBtn.setOnClickListener {
             val intent = Intent(requireActivity(), AddEditPropertyActivity::class.java)
@@ -54,7 +51,7 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
         super.onStart()
         val bundle = arguments
         if (bundle != null) {
-            selectedPropertyId = bundle.getInt("selectedPropertyId")
+            selectedPropertyId = bundle.getString("selectedPropertyId").toString()
         }
         viewModel.getPropertyById(selectedPropertyId)
     }
@@ -76,8 +73,7 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
             } else {
                 binding.propertyDetailsSoldDateInfo.setText("?")
             }
-            val agentId = property.agentId
-            viewModel.getAgentById(agentId)
+            binding.propertyDetailsAgentInfo.setText(property.agentName)
 
             if(property.sold) {
                 binding.propertyDetailsAvailableInfo.visibility = View.INVISIBLE

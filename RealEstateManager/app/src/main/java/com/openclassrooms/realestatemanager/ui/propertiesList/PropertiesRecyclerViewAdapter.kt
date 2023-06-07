@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.ui.propertiesList
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,12 +47,12 @@ class PropertiesRecyclerViewAdapter(private val onItemClickListener: OnItemClick
         } else if (sharedPreferences == "Dollar") {
             Utils.convertEuroToDollar(item.price)
         }
-        /**
+
         val firstPicture = item.getFirstImage()
-        val uri = Uri.parse(firstPicture?.imageUri)
+        val uri = Uri.parse(firstPicture?.imageUri ?: "")
         if(uri != null) {
             holder.propertyImage.setImageURI(uri)
-        } */
+        }
     }
 
     override fun getItemCount(): Int {

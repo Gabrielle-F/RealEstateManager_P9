@@ -45,7 +45,7 @@ class SearchPropertiesFragment : Fragment(R.layout.fragment_search_properties) {
     interface OnParametersSelected {
         fun filterList(minPrice: Int, maxPrice: Int, minArea: Int, maxArea: Int, city: String?,
                        types: List<String>?, rooms: List<Int>?, availability: Boolean?, startDate: String?,
-                       endDate: String?, numberOfPictures: List<Int>?, agentId: Int?, school: Boolean, restaurants: Boolean,
+                       endDate: String?, numberOfPictures: List<Int>?, agentName: String?, school: Boolean, restaurants: Boolean,
                        playground: Boolean, supermarket: Boolean, shoppingArea: Boolean, cinema: Boolean)
     }
     @Override
@@ -80,7 +80,7 @@ class SearchPropertiesFragment : Fragment(R.layout.fragment_search_properties) {
             override fun filterList(
                 minPrice: Int, maxPrice: Int, minArea: Int, maxArea: Int, city: String?, types: List<String>?,
                 rooms: List<Int>?, availability: Boolean?, startDate: String?, endDate: String?,
-                numberOfPictures: List<Int>?, agentId: Int?, school: Boolean, restaurants: Boolean,
+                numberOfPictures: List<Int>?, agentName: String?, school: Boolean, restaurants: Boolean,
                 playground: Boolean, supermarket: Boolean, shoppingArea: Boolean, cinema: Boolean
             ) {
                 requireActivity().supportFragmentManager.beginTransaction().remove(this@SearchPropertiesFragment).commit()
@@ -105,7 +105,7 @@ class SearchPropertiesFragment : Fragment(R.layout.fragment_search_properties) {
             val endDate : String?  = binding.searchEndDateEditTxt.text.toString()
             onParametersSelectedListener?.filterList(minPrice, maxPrice, minArea, maxArea, city, getSelectedTypesList(),
                 getSelectedNumberOfRooms(), getAvailabilityChoice(), startDate, endDate, getSelectedNumberOfPictures(),
-                selectedAgent.id, schoolAmenitie, restaurantsAmenitie, playgroundAmenitie,
+                selectedAgent.name, schoolAmenitie, restaurantsAmenitie, playgroundAmenitie,
                 supermarketAmenitie, shoppingAreaAmenitie, cinemaAmenitie)
         }
     }

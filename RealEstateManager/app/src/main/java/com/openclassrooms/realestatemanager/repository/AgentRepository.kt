@@ -12,11 +12,13 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.openclassrooms.realestatemanager.database.AgentDao
 import com.openclassrooms.realestatemanager.model.Agent
 import com.openclassrooms.realestatemanager.model.AgentFirestore
 import com.openclassrooms.realestatemanager.ui.main.MainActivity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import org.w3c.dom.Document
@@ -89,4 +91,18 @@ class AgentRepository @Inject constructor(private val agentDao : AgentDao) {
     fun getAllAgents() : Flow<List<Agent>> = agentDao.getAllAgents()
 
     fun getAgentById(id : Int) : Flow<Agent> = agentDao.getAgentById(id)
+
+    fun getAgentsList() : Flow<List<Agent>> = flow {
+        val agentsList = mutableListOf<Agent>()
+        val querySnapshot = getAgentsCollection().get().await()
+        querySnapshot.let {
+            it?.let {
+                for (document : QueryDocumentSnapshot in it) {
+                    val agent = document.toObject(Agent::class.java)
+                    agentsList.add(agent)
+                }
+            }
+        }
+        emit(agentsList)
+    }
 }

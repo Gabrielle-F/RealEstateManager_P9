@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class GetPropertyByIdUseCase @Inject constructor(private val propertyRepository: PropertyRepository) {
 
-    fun invoke(id : Int) : Flow<Property>? {
+    fun invoke(id : String) : Flow<Property>? {
         return propertyRepository.getPropertyById(id)
     }
 }
