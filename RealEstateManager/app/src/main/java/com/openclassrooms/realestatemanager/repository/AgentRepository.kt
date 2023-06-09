@@ -53,7 +53,7 @@ class AgentRepository @Inject constructor(private val agentDao : AgentDao) {
     suspend fun createUserWithEmailAndPassword(email: String, password: String, name: String) : Boolean {
         val task : AuthResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
         return if(task.user != null) {
-            createAgentInFirestoreDatabase(task.user)
+            createAgentInFirestoreDatabase(task.user, name)
             true
         } else {
             Log.e(TAG_ERROR_SIGN_IN, "Error during authentication")
@@ -61,11 +61,10 @@ class AgentRepository @Inject constructor(private val agentDao : AgentDao) {
         }
     }
 
-    fun createAgentInFirestoreDatabase(firebaseUser : FirebaseUser?) {
+    fun createAgentInFirestoreDatabase(firebaseUser : FirebaseUser?, name: String) {
         if (firebaseUser != null) {
             val id : String = firebaseUser.uid
             val email : String = firebaseUser.email.toString()
-            val name : String = firebaseUser.displayName.toString()
 
             val userData : Task<DocumentSnapshot>? = getUserData()
             val agent = AgentFirestore(id, email, name)

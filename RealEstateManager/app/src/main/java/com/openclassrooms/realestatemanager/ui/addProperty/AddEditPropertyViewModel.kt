@@ -21,8 +21,6 @@ class AddEditPropertyViewModel @Inject constructor(private val createPropertyUse
     val agentsLiveData = object : MutableLiveData<List<Agent>>(){}
     val propertyLiveData = object : MutableLiveData<Property>(){}
 
-    suspend fun createProperty(property : Property) = createPropertyUseCase.createProperty(property)
-
     fun createPropertyInLocalDb(property: Property) {
         viewModelScope.launch {
             createPropertyUseCase.createProperty(property)

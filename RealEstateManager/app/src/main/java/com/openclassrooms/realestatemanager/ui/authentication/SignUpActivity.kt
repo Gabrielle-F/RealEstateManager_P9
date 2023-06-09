@@ -42,7 +42,7 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun configureListeners(id : Int = 0) {
+    private fun configureListeners(id: Int = 0) {
         viewModel.liveDataUserSignUp.observe(this) { signUpSuccess ->
             if(signUpSuccess) {
                 if(currentUser == CurrentUser.AGENT) {

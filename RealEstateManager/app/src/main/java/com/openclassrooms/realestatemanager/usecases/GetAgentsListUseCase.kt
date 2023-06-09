@@ -6,6 +6,5 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetAgentsListUseCase @Inject constructor(private val agentRepository: AgentRepository) {
-
     fun invoke() : Flow<List<Agent>> = agentRepository.getAllAgents()
 }
