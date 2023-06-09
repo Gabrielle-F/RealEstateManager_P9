@@ -51,6 +51,10 @@ class PropertiesListFragment : Fragment(R.layout.fragment_list_properties), Prop
             Log.d("TAG", "Properties list size: ${propertiesList.size}")
             propertiesAdapter.updatePropertiesList(propertiesList)
         }
+        propertiesListViewModel.searchProperties.observe(viewLifecycleOwner) { searchPropertiesList ->
+            Log.d("TAG", "SearchProperties list size : ${searchPropertiesList.size}")
+            propertiesAdapter.updatePropertiesList(searchPropertiesList)
+        }
     }
 
     @Override
@@ -61,28 +65,13 @@ class PropertiesListFragment : Fragment(R.layout.fragment_list_properties), Prop
         } else {
             propertiesListViewModel.getPropertiesList()
         }
-        propertiesListViewModel.searchProperties.observe(viewLifecycleOwner) { searchPropertiesList ->
-            Log.d("TAG", "SearchProperties list size : ${searchPropertiesList.size}")
-            propertiesAdapter.updatePropertiesList(searchPropertiesList)
-        }
     }
-
-    /**
-    fun updatePropertiesList() {
-        lifecycleScope.launch {
-            propertiesListViewModel.getProperties()
-            propertiesListViewModel.propertiesLiveData.observe(viewLifecycleOwner) { propertiesList ->
-                Log.d("TAG", "Properties list size: ${propertiesList.size}")
-                propertiesAdapter.updatePropertiesList(propertiesList)
-            }
-        }
-    } */
 
     fun getFilteredList(minPrice: Int, maxPrice: Int, minArea: Int, maxArea:Int, city: String?,
                         types: List<String>?, rooms: List<Int>?, availability: Boolean?, startDate:
                         String?, endDate: String?, numberOfPictures: List<Int>, agentName: String?,
                         school: Boolean, restaurants: Boolean, playground: Boolean, supermarket: Boolean, shoppingArea: Boolean, cinema: Boolean) {
-        propertiesListViewModel.updateFilteredList(minPrice, maxPrice, minArea, maxArea, city, types, rooms, availability, startDate, endDate,
+        propertiesListViewModel.getFilteredList(minPrice, maxPrice, minArea, maxArea, city, types, rooms, availability, startDate, endDate,
             numberOfPictures, agentName, school, restaurants, playground, supermarket, shoppingArea, cinema)
     }
 
@@ -102,5 +91,9 @@ class PropertiesListFragment : Fragment(R.layout.fragment_list_properties), Prop
         val daggerHilt = requireActivity().application as DaggerHiltApplication
         var selectedCurrency : String = daggerHilt.appPreferences.getSelectedCurrency()
         return selectedCurrency
+    }
+
+    fun updateCurrency(currency: String) {
+        propertiesAdapter.updateSelectedCurrency(currency)
     }
 }

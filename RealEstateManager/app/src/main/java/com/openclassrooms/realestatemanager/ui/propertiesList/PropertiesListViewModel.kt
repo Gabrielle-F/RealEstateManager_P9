@@ -36,11 +36,11 @@ class PropertiesListViewModel @Inject constructor(private val getAllPropertiesLi
         }
     }
 
-    fun updateFilteredList(minPrice : Int, maxPrice : Int, minArea : Int, maxArea : Int, city: String?,
-                           types : List<String>?, rooms : List<Int>?,
-                           availability : Boolean?, startDate : String?, endDate : String?, numberOfPictures: List<Int>,
-                           agentName : String?, school : Boolean, restaurants : Boolean, playground : Boolean,
-                           supermarket : Boolean, shoppingArea : Boolean, cinema : Boolean) {
+    fun getFilteredList(minPrice : Int, maxPrice : Int, minArea : Int, maxArea : Int, city: String?,
+                        types : List<String>?, rooms : List<Int>?,
+                        availability : Boolean?, startDate : String?, endDate : String?, numberOfPictures: List<Int>,
+                        agentName : String?, school : Boolean, restaurants : Boolean, playground : Boolean,
+                        supermarket : Boolean, shoppingArea : Boolean, cinema : Boolean) {
         coroutineScope.launch {
             getSearchPropertiesUseCase.invoke(minPrice, maxPrice, minArea, maxArea, city, types, rooms, availability, startDate, endDate, numberOfPictures, agentName, school,
                 restaurants, playground, supermarket, shoppingArea, cinema).collect {

@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.openclassrooms.realestatemanager.DaggerHiltApplication
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.utils.Utils
@@ -17,7 +16,7 @@ class PropertiesRecyclerViewAdapter(private val onItemClickListener: OnItemClick
     RecyclerView.Adapter<PropertiesRecyclerViewAdapter.PropertiesViewHolder>() {
 
     private val list = mutableListOf<Property>()
-    private var selectedCurrency : String = "Dollar"
+    private var selectedCurrency: String = ""
 
     interface OnItemClickListener {
         fun onClick(property: Property)
@@ -36,17 +35,28 @@ class PropertiesRecyclerViewAdapter(private val onItemClickListener: OnItemClick
         notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateSelectedCurrency(currency: String) {
+        selectedCurrency = currency
+        notifyDataSetChanged()
+    }
+
     override fun onBindViewHolder(holder: PropertiesViewHolder, position: Int) {
         val item = list[position]
-        val sharedPreferences = onItemClickListener.getSharedPreferences()
+        selectedCurrency = onItemClickListener.getSharedPreferences()
         holder.property = item
         holder.propertyType.text = item.type
-        holder.propertyPrice.text = item.price.toString()
-        if(sharedPreferences == "Euro") {
-            Utils.convertEuroToDollar(item.price)
-        } else if (sharedPreferences == "Dollar") {
-            Utils.convertEuroToDollar(item.price)
+        val price = item.price
+        if(selectedCurrency == "Euro") {
+            holder.propertyPriceEuro.visibility = View.VISIBLE
+            holder.propertyPriceDollar.visibility = View.GONE
+            Utils.convertDollarToEuro(price)
+        } else if (selectedCurrency == "Dollar") {
+            holder.propertyPriceDollar.visibility = View.VISIBLE
+            holder.propertyPriceEuro.visibility = View.GONE
+            Utils.convertEuroToDollar(price)
         }
+        holder.propertyPrice.text = item.price.toString()
 
         val firstPicture = item.getFirstImage()
         val uri = Uri.parse(firstPicture?.imageUri ?: "")
@@ -63,6 +73,8 @@ class PropertiesRecyclerViewAdapter(private val onItemClickListener: OnItemClick
         val propertyImage : ImageView = itemView.findViewById(R.id.property_item_image)
         val propertyType : TextView = itemView.findViewById(R.id.property_item_type)
         val propertyPrice : TextView = itemView.findViewById(R.id.property_item_price)
+        val propertyPriceDollar : ImageView = itemView.findViewById(R.id.property_item_dollar_icon)
+        val propertyPriceEuro : ImageView = itemView.findViewById(R.id.property_item_euro_icon)
         var property: Property? = null
 
         init {

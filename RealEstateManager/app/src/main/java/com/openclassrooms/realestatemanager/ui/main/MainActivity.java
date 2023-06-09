@@ -1,8 +1,6 @@
 package com.openclassrooms.realestatemanager.ui.main;
 
-import android.app.Application;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -44,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         AddEditPropertyActivity.OnPropertyAddedOrUpdatedListener, SearchPropertiesFragment.OnParametersSelected {
 
     public enum CurrentFragment {
-        PROPERTIES_LIST, CURRENCY_EXCHANGE
+        PROPERTIES_LIST
     }
 
     private CurrentFragment currentFragment = CurrentFragment.PROPERTIES_LIST;
@@ -188,23 +186,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dialog.setTitle("Choisissez une devise");
         final String[] currencies = {"Dollar", "Euro"};
         final DaggerHiltApplication daggerHilt = (DaggerHiltApplication) getApplication();
-        dialog.setItems(currencies, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String selectedCurrency = currencies[which];
-                if(Objects.equals(selectedCurrency, "Euro")) {
-                    daggerHilt.appPreferences.setSelectedCurrency("Euro");
-                } else {
-                    daggerHilt.appPreferences.setSelectedCurrency("Dollar");
-                }
+        dialog.setItems(currencies, (dialog1, which) -> {
+            String selectedCurrency = currencies[which];
+            if(Objects.equals(selectedCurrency, "Euro")) {
+                daggerHilt.appPreferences.setSelectedCurrency("Euro");
+            } else {
+                daggerHilt.appPreferences.setSelectedCurrency("Dollar");
             }
+            propertiesListFragment.updateCurrency(selectedCurrency);
         });
-        dialog.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        dialog.setNegativeButton("Annuler", (dialog12, which) -> dialog12.dismiss());
         dialog.create().show();
     }
 

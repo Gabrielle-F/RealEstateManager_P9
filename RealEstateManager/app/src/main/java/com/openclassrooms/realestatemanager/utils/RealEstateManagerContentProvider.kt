@@ -12,7 +12,6 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class RealEstateManagerContentProvider @Inject constructor(
-    private val propertyRepository: PropertyRepository,
     private val databaseModule: DatabaseModule, private val property: Property
 ) : ContentProvider() {
 

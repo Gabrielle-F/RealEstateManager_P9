@@ -38,7 +38,7 @@ class SearchPropertiesFragment : Fragment(R.layout.fragment_search_properties) {
     private var shoppingAreaAmenitie : Boolean = false
     private var supermarketAmenitie : Boolean = false
     private var cinemaAmenitie : Boolean = false
-    private lateinit var selectedAgent : Agent
+    private var selectedAgent : Agent? = null
     private var onParametersSelectedListener : OnParametersSelected? = null
 
 
@@ -95,55 +95,23 @@ class SearchPropertiesFragment : Fragment(R.layout.fragment_search_properties) {
         }
 
         binding.searchMaterialBtn.setOnClickListener {
-            getMinPrice()
-            getMaxPrice()
-            getMinArea()
-            getMaxArea()
             getSelectedAmenities()
-            val city : String? = binding.searchCityEditTxt.text.toString()
-            val startDate : String? = binding.searchStartDateEditTxt.text.toString()
-            val endDate : String?  = binding.searchEndDateEditTxt.text.toString()
+            val city : String = binding.searchCityEditTxt.text.toString()
+            val startDate : String = binding.searchStartDateEditTxt.text.toString()
+            val endDate : String = binding.searchEndDateEditTxt.text.toString()
+            minPrice = binding.searchRangeSliderPrice.values[0].toInt()
+            maxPrice = binding.searchRangeSliderPrice.values[1].toInt()
+            minArea = binding.searchRangeSliderArea.values[0].toInt()
+            maxArea = binding.searchRangeSliderArea.values[1].toInt()
             onParametersSelectedListener?.filterList(minPrice, maxPrice, minArea, maxArea, city, getSelectedTypesList(),
                 getSelectedNumberOfRooms(), getAvailabilityChoice(), startDate, endDate, getSelectedNumberOfPictures(),
-                selectedAgent.name, schoolAmenitie, restaurantsAmenitie, playgroundAmenitie,
+                selectedAgent?.name, schoolAmenitie, restaurantsAmenitie, playgroundAmenitie,
                 supermarketAmenitie, shoppingAreaAmenitie, cinemaAmenitie)
         }
     }
 
     fun setOnParametersSelectedListener(listener: OnParametersSelected) {
         onParametersSelectedListener = listener
-    }
-
-    private fun getMinPrice() : Int {
-        binding.searchRangeSliderPrice.addOnChangeListener(object : RangeSlider.OnChangeListener {
-            override fun onValueChange(slider: RangeSlider, value: Float, fromUser: Boolean) {
-                minPrice = slider.values[0].toInt()
-            }
-        })
-        return minPrice
-    }
-
-    private fun getMaxPrice() : Int {
-        binding.searchRangeSliderPrice.addOnChangeListener(object : RangeSlider.OnChangeListener {
-            override fun onValueChange(slider: RangeSlider, value: Float, fromUser: Boolean) {
-                maxPrice = slider.values[1].toInt()
-            }
-        })
-        return maxPrice
-    }
-
-    private fun getMinArea() : Int {
-        binding.searchRangeSliderArea.addOnChangeListener { slider, value, fromUser ->
-            minArea = slider.values[0].toInt()
-        }
-        return minArea
-    }
-
-    private fun getMaxArea() : Int {
-        binding.searchRangeSliderArea.addOnChangeListener { slider, value, fromUser ->
-            maxArea = slider.values[1].toInt()
-        }
-        return maxArea
     }
 
     private fun getSelectedTypesList() : List<String>? {
@@ -293,7 +261,7 @@ class SearchPropertiesFragment : Fragment(R.layout.fragment_search_properties) {
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
-
+                    selectedAgent = null
                 }
             }
         }
