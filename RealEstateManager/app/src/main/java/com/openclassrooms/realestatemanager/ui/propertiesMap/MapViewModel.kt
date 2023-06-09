@@ -13,11 +13,20 @@ import javax.inject.Inject
 class MapViewModel @Inject constructor(private val getPropertiesListUseCase: GetPropertiesListUseCase) : ViewModel() {
 
     val propertiesLiveData = object : MutableLiveData<List<Property>>(){}
+    val propertiesLD = object : MutableLiveData<List<Property>>(){}
 
     fun getPropertiesList() {
         viewModelScope.launch {
             getPropertiesListUseCase.invoke().collect {
                     properties -> propertiesLiveData.postValue(properties)
+            }
+        }
+    }
+
+    fun getAllProperties() {
+        viewModelScope.launch {
+            getPropertiesListUseCase.invokePropertiesList().collect {
+                    properties -> propertiesLD.postValue(properties)
             }
         }
     }

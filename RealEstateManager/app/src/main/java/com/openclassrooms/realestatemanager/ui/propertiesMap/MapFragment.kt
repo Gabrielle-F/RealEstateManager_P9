@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.tasks.CancellationToken
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.FragmentMapBinding
 import com.openclassrooms.realestatemanager.ui.propertyDetails.PropertyDetailsFragment
@@ -34,8 +34,8 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
     private val ACCESS_WIFI_STATE_CODE = 115
     private val viewModel: MapViewModel by viewModels()
     private lateinit var binding: FragmentMapBinding
-    private var map: GoogleMap? = null
-    private lateinit var cancellationToken: CancellationToken
+    private lateinit var map: GoogleMap
+    private var internetAvailable : Boolean = true
     private val locationPermissions = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
@@ -58,10 +58,10 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        internetAvailable = Utils.isInternetAvailable(requireContext())
         mapView = childFragmentManager.findFragmentById(R.id.map_view) as SupportMapFragment
         mapView.getMapAsync(this)
 
-        viewModel.getPropertiesList()
         checkAccessFineAndCoarseLocationPermission()
         checkAccessWifiStatePermission()
     }
@@ -72,7 +72,7 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
         val propertyDetailsFragment = PropertyDetailsFragment()
         val fragmentManager = requireActivity().supportFragmentManager
         val bundle = Bundle()
-        map?.setOnMarkerClickListener {
+        map.setOnMarkerClickListener {
             bundle.putInt("selectedPropertyId", it.tag.toString().toInt())
             propertyDetailsFragment.arguments = bundle
             fragmentManager.beginTransaction()
@@ -84,10 +84,10 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
     }
 
     private fun setMarkersOnMap() {
-        map?.clear()
+        map.clear()
         val latLng = getUserLocation()
         if (latLng != null) {
-            map?.let { map ->
+            map.let { map ->
                 latLng.let {
                     map.addMarker(MarkerOptions().position(latLng)).also { marker ->
                         map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13F))
@@ -96,22 +96,8 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
             }
         }
         shouldShowMap()
-        viewModel.propertiesLiveData.observe(viewLifecycleOwner) { propertiesList ->
-            var latLng : LatLng
-            map?.let { map ->
-                propertiesList.forEach { property ->
-                    latLng = LatLng(property.latitude, property.longitude)
-                    latLng?.let {
-                        map.addMarker(
-                            MarkerOptions().position(it)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
-                        ).also { marker ->
-                            marker?.tag = property.id
-                        }
-                    }
-                }
-            }
-        }
+        observePropertiesFromLocalDb()
+        observePropertiesListFromFirestoreDb()
     }
 
     private fun shouldShowMap() {
@@ -128,7 +114,7 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
             checkAccessFineAndCoarseLocationPermission()
             checkAccessWifiStatePermission()
         } else {
-            map?.isMyLocationEnabled = true
+            map.isMyLocationEnabled = true
             showMap = true
         }
 
@@ -164,6 +150,48 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
             getString(R.string.wifi_state),
             ACCESS_WIFI_STATE_CODE, *internetPermission
         )
+    }
+
+    private fun observePropertiesListFromFirestoreDb() {
+        if(internetAvailable) {
+            viewModel.getAllProperties()
+            viewModel.propertiesLD.observe(viewLifecycleOwner) { propertiesList ->
+                Log.d("TAG", "Properties list size: ${propertiesList.size}")
+                map.let { map ->
+                    propertiesList.forEach { property ->
+                        val latLng = LatLng(property.latitude, property.longitude)
+                        latLng.let {
+                            map.addMarker(MarkerOptions().position(it)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+                            ).also { marker ->
+                                marker?.tag = property.id
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observePropertiesFromLocalDb() {
+        if(!internetAvailable) {
+            viewModel.getPropertiesList()
+            viewModel.propertiesLiveData.observe(viewLifecycleOwner) { propertiesList ->
+                map.let { map ->
+                    propertiesList.forEach { property ->
+                        val latLng = LatLng(property.latitude, property.longitude)
+                        latLng.let {
+                            map.addMarker(
+                                MarkerOptions().position(it)
+                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+                            ).also { marker ->
+                                marker?.tag = property.id
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun getUserLocation(): LatLng? {
