@@ -37,6 +37,9 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    //MOCKITO//
+    testImplementation "org.mockito:mockito-core:4.3.1"
+    androidTestImplementation "org.mockito:mockito-core:4.3.1"
 
     constraints {
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {

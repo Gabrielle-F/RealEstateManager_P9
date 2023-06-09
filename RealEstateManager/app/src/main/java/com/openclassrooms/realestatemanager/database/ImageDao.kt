@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ImageDao {
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertImages(image : Image)
 
