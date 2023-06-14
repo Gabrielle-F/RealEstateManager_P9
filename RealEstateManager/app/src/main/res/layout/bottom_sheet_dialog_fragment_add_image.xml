@@ -46,20 +46,6 @@
                     android:paddingEnd="10dp"
                     android:background="@drawable/edit_text_custom_add_picture_fragment"/>
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/add_picture_fragment_define_as_first_picture_checkbox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/first_picture"
-                    android:textAlignment="viewStart"
-                    android:checked="false"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/add_picture_fragment_describe_picture"
-                    android:layout_marginTop="20dp"
-                    android:paddingStart="10dp"
-                    />
-
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/add_picture_fragment_choose_in_album_btn"
                     android:layout_width="wrap_content"
@@ -69,7 +55,6 @@
                     android:textColor="@color/white"
                     android:backgroundTint="@color/secondaryLightColor"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/add_picture_fragment_define_as_first_picture_checkbox"
                     app:layout_constraintBottom_toTopOf="@+id/add_picture_fragment_save_btn"
                     android:layout_marginTop="10dp"
                     android:layout_marginStart="5dp"
@@ -84,7 +69,6 @@
                     android:textColor="@color/white"
                     android:backgroundTint="@color/secondaryLightColor"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/add_picture_fragment_define_as_first_picture_checkbox"
                     app:layout_constraintBottom_toTopOf="@+id/add_picture_fragment_save_btn"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="20dp"

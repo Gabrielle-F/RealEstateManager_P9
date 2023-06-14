@@ -1,10 +1,10 @@
 package com.openclassrooms.realestatemanager.repository
 
 import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.openclassrooms.realestatemanager.database.PropertyDao
+import com.openclassrooms.realestatemanager.model.PictureFirestore
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.model.PropertyFirestore
 import kotlinx.coroutines.flow.Flow
@@ -12,8 +12,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 @Singleton
 class PropertyRepository @Inject constructor(private val propertyDao: PropertyDao) {
@@ -43,13 +41,14 @@ class PropertyRepository @Inject constructor(private val propertyDao: PropertyDa
             val supermarket = property.supermarket
             val shoppingArea = property.shoppingArea
             val cinema = property.cinema
+            val pictures = property.pictures
             val numberOfPictures = property.numberOfPictures
             val agentId = property.agentId
             val sold = property.sold
             val soldDate = property.soldDate
             val registerDate = property.registerDate
-            val latLng = property.latLng
-            val pictures = property.picturesUri
+            val latitude = property.latitude
+            val longitude = property.longitude
 
             val property = PropertyFirestore(
                 type,
@@ -72,11 +71,15 @@ class PropertyRepository @Inject constructor(private val propertyDao: PropertyDa
                 pictures,
                 numberOfPictures,
                 description,
-                latLng,
+                latitude,
+                longitude,
                 agentId,
             )
             newPropertyRef.set(property).addOnSuccessListener {
                 createdId = newPropertyRef.id
+            }
+            pictures.forEach {
+                getPropertiesCollection().document(createdId).collection("photos").add(PictureFirestore(it.imageUrl, it.imageTitle, it.imageDescription))
             }
         }
         return createdId

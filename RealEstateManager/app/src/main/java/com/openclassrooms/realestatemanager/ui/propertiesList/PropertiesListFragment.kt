@@ -17,7 +17,7 @@ import com.openclassrooms.realestatemanager.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PropertiesListFragment : Fragment(R.layout.fragment_list_properties), PropertiesRecyclerViewAdapter.OnItemClickListener {
+class PropertiesListFragment : Fragment(R.layout.activity_main), PropertiesRecyclerViewAdapter.OnItemClickListener {
 
 
     private lateinit var binding : FragmentListPropertiesBinding

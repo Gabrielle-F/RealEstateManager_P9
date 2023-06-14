@@ -2,12 +2,18 @@ package com.openclassrooms.realestatemanager.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.net.URL
 
 @Entity
-data class Image(
+data class LocalPicture(
     @PrimaryKey
-    var imageUri: String,
+    var imageUrl: String,
     var imageTitle: String?,
     var imageDescription: String?,
-    var firstPicture: Boolean?,
+)
+
+data class PictureFirestore(
+    var imageUrl: URL,
+    var imageTitle: String?,
+    var imageDescription: String?
 )

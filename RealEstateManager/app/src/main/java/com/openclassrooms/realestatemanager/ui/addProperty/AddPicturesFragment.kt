@@ -9,13 +9,14 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.BottomSheetDialogFragmentAddImageBinding
-import com.openclassrooms.realestatemanager.model.Image
+import com.openclassrooms.realestatemanager.model.LocalPicture
+import com.openclassrooms.realestatemanager.model.PictureFirestore
+import com.openclassrooms.realestatemanager.utils.Converters
 import com.vmadalin.easypermissions.EasyPermissions
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.URL
@@ -28,6 +29,7 @@ class AddPicturesFragment : BottomSheetDialogFragment(R.layout.bottom_sheet_dial
     private lateinit var binding : BottomSheetDialogFragmentAddImageBinding
     private lateinit var imagePath: String
     private lateinit var imageUrl: URL
+    private lateinit var urlToStringPath: String
     private val EXTERNAL_STORAGE_PERMISSION_CODE  : Int = 20
     private val CAMERA_PERMISSION_CODE : Int = 10
     private val REQUEST_IMAGE_CAPTURE_CODE : Int = 100
@@ -42,7 +44,8 @@ class AddPicturesFragment : BottomSheetDialogFragment(R.layout.bottom_sheet_dial
     )
 
     interface OnDataChangeListener {
-        fun getImage(image: Image)
+        fun getImage(localPicture: LocalPicture)
+        fun getPictureFirestore(picture: PictureFirestore)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -94,6 +97,8 @@ class AddPicturesFragment : BottomSheetDialogFragment(R.layout.bottom_sheet_dial
                         val imageView = binding.addPictureFragmentSeeResult
                         Glide.with(this).load(imageUri).into(imageView)
                         imagePath = imageUri.toString()
+                        imageUrl = Converters().fromUriToUrl(imagePath)
+                        urlToStringPath = imageUrl.toString()
                     }
                 }
                 REQUEST_IMAGE_SELECT_CODE -> {
@@ -102,6 +107,8 @@ class AddPicturesFragment : BottomSheetDialogFragment(R.layout.bottom_sheet_dial
                         val imageView = binding.addPictureFragmentSeeResult
                         Glide.with(this).load(imageUri).into(imageView)
                         imagePath = imageUri.toString()
+                        imageUrl = Converters().fromUriToUrl(imagePath)
+                        urlToStringPath = imageUrl.toString()
                     }
                 }
             }
@@ -128,22 +135,13 @@ class AddPicturesFragment : BottomSheetDialogFragment(R.layout.bottom_sheet_dial
         if(validateFields()) {
             val imageName = binding.addPictureFragmentNamePicture.text.toString()
             val imageDescription = binding.addPictureFragmentDescribePicture.text.toString()
-            val firstPicture = defineAsFirstPictureCheckboxIsCheckedOrNot()
 
-            val imageToCreate = Image(imagePath, imageName, imageDescription, firstPicture)
+            val localPictureToCreate = LocalPicture(urlToStringPath, imageName, imageDescription)
+            val pictureFirestoreToCreate = PictureFirestore(imageUrl, imageName, imageDescription)
 
-            listener.getImage(imageToCreate)
+            listener.getImage(localPictureToCreate)
+            listener.getPictureFirestore(pictureFirestoreToCreate)
         }
-    }
-
-    private fun defineAsFirstPictureCheckboxIsCheckedOrNot() : Boolean {
-        val bundle = arguments
-        val hasFirstPicture = bundle?.getBoolean("hasFirstPicture") ?: false
-        val firstPicture : Boolean
-        val firstPictureCheckbox : CheckBox = binding.addPictureFragmentDefineAsFirstPictureCheckbox
-        firstPictureCheckbox.isEnabled = !hasFirstPicture
-        firstPicture = firstPictureCheckbox.isChecked
-        return firstPicture
     }
 
     private fun validateFields() : Boolean {

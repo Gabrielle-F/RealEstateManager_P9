@@ -8,12 +8,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.model.Image
+import com.openclassrooms.realestatemanager.model.LocalPicture
 
 class AddPropertyRecyclerViewAdapter :
     RecyclerView.Adapter<AddPropertyRecyclerViewAdapter.PicturesViewHolder>() {
 
-    private val picturesList = mutableListOf<Image>()
+    private val picturesList = mutableListOf<LocalPicture>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PicturesViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_pictures_add_property_activity, parent, false)
@@ -25,7 +25,7 @@ class AddPropertyRecyclerViewAdapter :
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updatePicturesList(pictures: List<Image>) {
+    fun updatePicturesList(pictures: List<LocalPicture>) {
         picturesList.clear()
         picturesList.addAll(pictures)
         notifyDataSetChanged()
@@ -33,7 +33,7 @@ class AddPropertyRecyclerViewAdapter :
 
     override fun onBindViewHolder(holder: PicturesViewHolder, position: Int) {
         val pictureItem = picturesList[position]
-        val uri = Uri.parse(pictureItem.imageUri)
+        val uri = Uri.parse(pictureItem.imageUrl)
         holder.imageView.setImageURI(uri)
     }
 

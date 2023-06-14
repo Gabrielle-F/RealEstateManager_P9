@@ -15,10 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.model.LatLng
 import com.openclassrooms.realestatemanager.databinding.ActivityAddEditPropertyBinding
-import com.openclassrooms.realestatemanager.model.Agent
-import com.openclassrooms.realestatemanager.model.Image
-import com.openclassrooms.realestatemanager.model.Property
-import com.openclassrooms.realestatemanager.model.PropertyFirestore
+import com.openclassrooms.realestatemanager.model.*
 import com.openclassrooms.realestatemanager.ui.main.MainActivity
 import com.openclassrooms.realestatemanager.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +26,8 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
 
     private lateinit var binding : ActivityAddEditPropertyBinding
     private val viewModel : AddEditPropertyViewModel by viewModels()
-    private val picturesList = ArrayList<Image>()
+    private val picturesList = ArrayList<LocalPicture>()
+    private val picturesFirestoreList = ArrayList<PictureFirestore>()
     private val picturesUriList = ArrayList<String>()
     private lateinit var addPropertyAdapter : AddPropertyRecyclerViewAdapter
     private lateinit var selectedAgent : Agent
@@ -100,15 +98,7 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
         binding.addPropertyAddPicturesMaterialBtn.setOnClickListener {
             val addPicturesFragment = AddPicturesFragment()
             val fragmentManager = supportFragmentManager
-            var hasFirstPicture = false
-            for (image in picturesList) {
-                if (image.firstPicture == true) {
-                    hasFirstPicture == true
-                    break
-                }
-            }
             val bundle = Bundle()
-            bundle.putBoolean("hasFirstPicture", hasFirstPicture)
             addPicturesFragment.arguments = bundle
             addPicturesFragment.show(fragmentManager, "Show AddPicturesFragment")
         }
@@ -179,10 +169,11 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
             supermarket = supermarketCheckBoxIsCheckedOrNot(),
             shoppingArea = shoppingAreaCheckBoxIsCheckedOrNot(),
             cinema = cinemaCheckBoxIsCheckedOrNot(),
-            picturesUri = picturesUriList,
-            numberOfPictures = picturesUriList.size,
+            pictures = picturesFirestoreList,
+            numberOfPictures = picturesFirestoreList.size,
             description = binding.addPropertyDescriptionEditTxt.text.toString(),
-            latLng = convertAddressToLatLng(),
+            latitude = convertAddressToLatLng().latitude,
+            longitude = convertAddressToLatLng().longitude,
             agentId = selectedAgent.id,
         )
     }
@@ -273,11 +264,15 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
         return latLng
     }
 
-    override fun getImage(image: Image) {
-        val pictureUri = image.imageUri
-        picturesList.add(image)
+    override fun getImage(localPicture: LocalPicture) {
+        val pictureUri = localPicture.imageUrl
+        picturesList.add(localPicture)
         addPropertyAdapter.updatePicturesList(picturesList)
         picturesUriList.add(pictureUri)
+    }
+
+    override fun getPictureFirestore(picture: PictureFirestore) {
+        picturesFirestoreList.add(picture)
     }
 
     private fun fetchAgentsListIntoSpinner(agents : List<Agent>) {

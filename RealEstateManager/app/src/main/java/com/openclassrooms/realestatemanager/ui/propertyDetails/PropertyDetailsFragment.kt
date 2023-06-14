@@ -60,7 +60,7 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
         if (property != null) {
             binding.propertyDetailsTypeInfo.setText(property.type)
             binding.propertyDetailsCityInfo.setText(property.city)
-            binding.propertyDetailsSurfaceInfo.setText(property.area.toString())
+            binding.propertyDetailsAreaInfo.setText(property.area.toString())
             binding.propertyDetailsNumberOfRoomsInfo.setText(property.rooms.toString())
             val address = getString(R.string.details_address_with_number, property.streetNumber, property.streetName, property.postalCode)
             binding.propertyDetailsLocationAddress.setText(address)

@@ -4,7 +4,6 @@ import android.content.ContentValues
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.android.gms.maps.model.LatLng
 import com.openclassrooms.realestatemanager.utils.Converters
 import java.io.Serializable
 
@@ -48,7 +47,7 @@ data class Property(
     @ColumnInfo(name = "cinema")
     var cinema: Boolean = false,
     @ColumnInfo(name = "pictures")
-    var pictures: List<Image>  = emptyList(),
+    var pictures: List<LocalPicture>  = emptyList(),
     @ColumnInfo(name = "number_of_pictures")
     var numberOfPictures: Int = 0,
     @ColumnInfo(name = "description")
@@ -60,10 +59,6 @@ data class Property(
     @ColumnInfo(name = "agent_name")
     var agentName: String = ""
 ) : Serializable {
-
-    fun getFirstImage(): Image? {
-        return pictures.find { it.firstPicture == true }
-    }
 
     fun fromContentValues(values: ContentValues): Property {
         val id = if (values.containsKey("id")) values.getAsString("id") else ""
@@ -148,10 +143,11 @@ data class PropertyFirestore(
     var supermarket: Boolean,
     var shoppingArea: Boolean,
     var cinema: Boolean,
-    var picturesUri: List<String>,
+    var pictures: List<PictureFirestore>,
     var numberOfPictures: Int,
     var description: String,
-    var latLng: LatLng?,
+    var latitude: Double,
+    var longitude: Double,
     var agentId: Int,
 )
 

@@ -9,11 +9,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.model.Image
+import com.openclassrooms.realestatemanager.model.LocalPicture
 
 class PropertyDetailsRecyclerViewAdapter : RecyclerView.Adapter<PropertyDetailsRecyclerViewAdapter.PropertyViewHolder>() {
 
-    private val list = mutableListOf<Image>()
+    private val list = mutableListOf<LocalPicture>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PropertyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_pictures_property_details_fragment, parent, false)
@@ -21,7 +21,7 @@ class PropertyDetailsRecyclerViewAdapter : RecyclerView.Adapter<PropertyDetailsR
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updatePicturesList(pictures: List<Image>) {
+    fun updatePicturesList(pictures: List<LocalPicture>) {
         list.clear()
         list.addAll(pictures)
         notifyDataSetChanged()
@@ -30,7 +30,7 @@ class PropertyDetailsRecyclerViewAdapter : RecyclerView.Adapter<PropertyDetailsR
     override fun onBindViewHolder(holder: PropertyViewHolder, position: Int) {
         val item = list[position]
         holder.picture = item
-        holder.pictureView.setImageURI(Uri.parse(item.imageUri))
+        holder.pictureView.setImageURI(Uri.parse(item.imageUrl))
         holder.pictureTitle.setText(item.imageTitle)
     }
 
@@ -41,6 +41,6 @@ class PropertyDetailsRecyclerViewAdapter : RecyclerView.Adapter<PropertyDetailsR
     class PropertyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val pictureView : ImageView = itemView.findViewById(R.id.property_details_picture_item)
         val pictureTitle : TextView = itemView.findViewById(R.id.property_details_picture_title)
-        var picture : Image? = null
+        var picture : LocalPicture? = null
     }
 }

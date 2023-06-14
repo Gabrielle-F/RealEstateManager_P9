@@ -96,8 +96,7 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
             }
         }
         shouldShowMap()
-        observePropertiesFromLocalDb()
-        observePropertiesListFromFirestoreDb()
+        observePropertiesList()
     }
 
     private fun shouldShowMap() {
@@ -152,7 +151,7 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
         )
     }
 
-    private fun observePropertiesListFromFirestoreDb() {
+    private fun observePropertiesList() {
         if(internetAvailable) {
             viewModel.getAllProperties()
             viewModel.propertiesLD.observe(viewLifecycleOwner) { propertiesList ->
@@ -163,27 +162,6 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
                         latLng.let {
                             map.addMarker(MarkerOptions().position(it)
                                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
-                            ).also { marker ->
-                                marker?.tag = property.id
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private fun observePropertiesFromLocalDb() {
-        if(!internetAvailable) {
-            viewModel.getPropertiesList()
-            viewModel.propertiesLiveData.observe(viewLifecycleOwner) { propertiesList ->
-                map.let { map ->
-                    propertiesList.forEach { property ->
-                        val latLng = LatLng(property.latitude, property.longitude)
-                        latLng.let {
-                            map.addMarker(
-                                MarkerOptions().position(it)
-                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
                             ).also { marker ->
                                 marker?.tag = property.id
                             }

@@ -3,13 +3,11 @@ package com.openclassrooms.realestatemanager.database
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import com.openclassrooms.realestatemanager.model.Image
-import kotlinx.coroutines.flow.Flow
+import com.openclassrooms.realestatemanager.model.LocalPicture
 
 @Dao
 interface ImageDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertImages(image : Image)
+    suspend fun insertImages(localPicture : LocalPicture)
 
 }
