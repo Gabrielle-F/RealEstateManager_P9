@@ -15,11 +15,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.BottomSheetDialogFragmentAddImageBinding
 import com.openclassrooms.realestatemanager.model.LocalPicture
-import com.openclassrooms.realestatemanager.model.PictureFirestore
-import com.openclassrooms.realestatemanager.utils.Converters
 import com.vmadalin.easypermissions.EasyPermissions
 import dagger.hilt.android.AndroidEntryPoint
-import java.net.URL
 
 @AndroidEntryPoint
 class AddPicturesFragment : BottomSheetDialogFragment(R.layout.bottom_sheet_dialog_fragment_add_image) {
@@ -28,8 +25,6 @@ class AddPicturesFragment : BottomSheetDialogFragment(R.layout.bottom_sheet_dial
     private lateinit var listener : OnDataChangeListener
     private lateinit var binding : BottomSheetDialogFragmentAddImageBinding
     private lateinit var imagePath: String
-    private lateinit var imageUrl: URL
-    private lateinit var urlToStringPath: String
     private val EXTERNAL_STORAGE_PERMISSION_CODE  : Int = 20
     private val CAMERA_PERMISSION_CODE : Int = 10
     private val REQUEST_IMAGE_CAPTURE_CODE : Int = 100
@@ -45,7 +40,6 @@ class AddPicturesFragment : BottomSheetDialogFragment(R.layout.bottom_sheet_dial
 
     interface OnDataChangeListener {
         fun getImage(localPicture: LocalPicture)
-        fun getPictureFirestore(picture: PictureFirestore)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -97,8 +91,6 @@ class AddPicturesFragment : BottomSheetDialogFragment(R.layout.bottom_sheet_dial
                         val imageView = binding.addPictureFragmentSeeResult
                         Glide.with(this).load(imageUri).into(imageView)
                         imagePath = imageUri.toString()
-                        imageUrl = Converters().fromUriToUrl(imagePath)
-                        urlToStringPath = imageUrl.toString()
                     }
                 }
                 REQUEST_IMAGE_SELECT_CODE -> {
@@ -107,8 +99,6 @@ class AddPicturesFragment : BottomSheetDialogFragment(R.layout.bottom_sheet_dial
                         val imageView = binding.addPictureFragmentSeeResult
                         Glide.with(this).load(imageUri).into(imageView)
                         imagePath = imageUri.toString()
-                        imageUrl = Converters().fromUriToUrl(imagePath)
-                        urlToStringPath = imageUrl.toString()
                     }
                 }
             }
@@ -136,11 +126,9 @@ class AddPicturesFragment : BottomSheetDialogFragment(R.layout.bottom_sheet_dial
             val imageName = binding.addPictureFragmentNamePicture.text.toString()
             val imageDescription = binding.addPictureFragmentDescribePicture.text.toString()
 
-            val localPictureToCreate = LocalPicture(urlToStringPath, imageName, imageDescription)
-            val pictureFirestoreToCreate = PictureFirestore(imageUrl, imageName, imageDescription)
+            val localPictureToCreate = LocalPicture(imagePath, imageName, imageDescription)
 
             listener.getImage(localPictureToCreate)
-            listener.getPictureFirestore(pictureFirestoreToCreate)
         }
     }
 

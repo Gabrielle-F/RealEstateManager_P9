@@ -27,7 +27,6 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
     private lateinit var binding : ActivityAddEditPropertyBinding
     private val viewModel : AddEditPropertyViewModel by viewModels()
     private val picturesList = ArrayList<LocalPicture>()
-    private val picturesFirestoreList = ArrayList<PictureFirestore>()
     private val picturesUriList = ArrayList<String>()
     private lateinit var addPropertyAdapter : AddPropertyRecyclerViewAdapter
     private lateinit var selectedAgent : Agent
@@ -55,13 +54,11 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
         configureListeners()
 
 
-        lifecycleScope.launch {
-            viewModel.getAgentsListLD()
-        }
+        viewModel.getAllAgents()
         viewModel.propertyLiveData.observe(this) { property ->
             fetchPropertyData(property)
         }
-        viewModel.agentsLiveData.observe(this) { agentsList ->
+        viewModel.agentsLD.observe(this) { agentsList ->
             Log.d("TAG", "Agents list size: ${agentsList.size}")
             fetchAgentsListIntoSpinner(agentsList)
         }
@@ -169,8 +166,8 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
             supermarket = supermarketCheckBoxIsCheckedOrNot(),
             shoppingArea = shoppingAreaCheckBoxIsCheckedOrNot(),
             cinema = cinemaCheckBoxIsCheckedOrNot(),
-            pictures = picturesFirestoreList,
-            numberOfPictures = picturesFirestoreList.size,
+            pictures = picturesList,
+            numberOfPictures = picturesList.size,
             description = binding.addPropertyDescriptionEditTxt.text.toString(),
             latitude = convertAddressToLatLng().latitude,
             longitude = convertAddressToLatLng().longitude,
@@ -269,10 +266,6 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
         picturesList.add(localPicture)
         addPropertyAdapter.updatePicturesList(picturesList)
         picturesUriList.add(pictureUri)
-    }
-
-    override fun getPictureFirestore(picture: PictureFirestore) {
-        picturesFirestoreList.add(picture)
     }
 
     private fun fetchAgentsListIntoSpinner(agents : List<Agent>) {

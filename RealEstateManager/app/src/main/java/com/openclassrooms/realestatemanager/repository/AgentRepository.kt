@@ -50,10 +50,9 @@ class AgentRepository @Inject constructor(private val agentDao : AgentDao) {
         }
     }
 
-    suspend fun createUserWithEmailAndPassword(email: String, password: String, name: String) : Boolean {
+    suspend fun createUserWithEmailAndPassword(email: String, password: String) : Boolean {
         val task : AuthResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
         return if(task.user != null) {
-            createAgentInFirestoreDatabase(task.user, name)
             true
         } else {
             Log.e(TAG_ERROR_SIGN_IN, "Error during authentication")
@@ -61,17 +60,23 @@ class AgentRepository @Inject constructor(private val agentDao : AgentDao) {
         }
     }
 
-    fun createAgentInFirestoreDatabase(firebaseUser : FirebaseUser?, name: String) {
+    fun createAgentInFirestoreDatabase(firebaseUser : FirebaseUser?, name: String) : String {
+        val newAgentRef = getAgentsCollection().document()
+        var createdId = "agentId"
         if (firebaseUser != null) {
-            val id : String = firebaseUser.uid
             val email : String = firebaseUser.email.toString()
 
             val userData : Task<DocumentSnapshot>? = getUserData()
-            val agent = AgentFirestore(id, email, name)
+            val agent = AgentFirestore(email, name)
             if (userData != null) {
-                userData.addOnSuccessListener { getAgentsCollection().document(id).set(agent) }
+                userData.addOnSuccessListener {
+                    newAgentRef.set(agent).addOnSuccessListener {
+                        createdId = newAgentRef.id
+                    }
+                }
             }
         }
+        return createdId
     }
 
     fun getUserData() : Task<DocumentSnapshot>? {

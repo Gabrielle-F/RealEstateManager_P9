@@ -6,6 +6,8 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.openclassrooms.realestatemanager.databinding.ActivitySignUpBinding
 import com.openclassrooms.realestatemanager.model.Agent
 import com.openclassrooms.realestatemanager.model.Client
@@ -42,7 +44,7 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun configureListeners(id: Int = 0) {
+    private fun configureListeners() {
         viewModel.liveDataUserSignUp.observe(this) { signUpSuccess ->
             if(signUpSuccess) {
                 if(currentUser == CurrentUser.AGENT) {
@@ -64,15 +66,17 @@ class SignUpActivity : AppCompatActivity() {
             val name = binding.editTxtNameAgentAuthentication.text.toString()
             val password = binding.editTxtPasswordAgentAuthentication.text.toString()
 
-            val agent = Agent(id, email, name)
+            val id : String = "clientId"
             val client = Client(id, email, name)
             if(email.isNotEmpty() && password.isNotEmpty() && name.isNotEmpty()) {
                 if(currentUser == CurrentUser.CLIENT) {
                     createClientWithEmailAndPassword(email, password, name)
                     createClientInLocalDatabase(client)
                 } else if (currentUser == CurrentUser.AGENT) {
-                    createAgentWithEmailAndPassword(email, password, name)
-                    createAgentInLocalDatabase(agent)
+                    createAgentWithEmailAndPassword(email, password)
+                    val createdId = getCreatedId(name)
+                    val agent = Agent(createdId, email, name)
+                    createAgent(agent)
                 }
             } else {
                 Toast.makeText(applicationContext, "Please enter your informations !", Toast.LENGTH_LONG).show()
@@ -80,10 +84,18 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun createAgentInLocalDatabase(agent: Agent) {
-        lifecycleScope.launch {
-            viewModel.createAgent(agent)
-        }
+    private fun getCreatedId(name: String) : String {
+        val firebaseUser = getCurrentFirebaseUser()
+        val createdId = viewModel.createAgentInFirestoreDatabase(firebaseUser, name)
+        return createdId
+    }
+
+    private fun createAgent(agent: Agent) {
+        viewModel.createAgent(agent)
+    }
+
+    private fun createAgentWithEmailAndPassword(email: String, password: String) {
+        viewModel.createAgentWithEmailAndPassword(email, password)
     }
 
     private fun createClientInLocalDatabase(client: Client) {
@@ -99,15 +111,13 @@ class SignUpActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun createAgentWithEmailAndPassword(email: String, password: String, name: String) {
-        lifecycleScope.launch {
-            viewModel.createAgentWithEmailAndPassword(email, password, name)
-        }
-    }
-
     private fun createClientWithEmailAndPassword(email: String, password: String, name: String) {
         lifecycleScope.launch {
             viewModel.createClientWithEmailAndPassword(email, password, name)
         }
+    }
+
+    private fun getCurrentFirebaseUser() : FirebaseUser? {
+        return FirebaseAuth.getInstance().currentUser
     }
 }

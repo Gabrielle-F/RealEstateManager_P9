@@ -1,10 +1,12 @@
 package com.openclassrooms.realestatemanager.repository
 
+import android.net.Uri
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QueryDocumentSnapshot
+import com.google.firebase.storage.FirebaseStorage
 import com.openclassrooms.realestatemanager.database.PropertyDao
-import com.openclassrooms.realestatemanager.model.PictureFirestore
+import com.openclassrooms.realestatemanager.model.LocalPicture
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.model.PropertyFirestore
 import kotlinx.coroutines.flow.Flow
@@ -17,6 +19,9 @@ import javax.inject.Singleton
 class PropertyRepository @Inject constructor(private val propertyDao: PropertyDao) {
 
     private val propertiesCollectionName: String = "properties"
+    private val storageRef  = FirebaseStorage.getInstance().reference
+    private val picturesStorageRef = storageRef.child("photos/photo_${System.currentTimeMillis()}.jpg")
+
 
     private fun getPropertiesCollection(): CollectionReference {
         return FirebaseFirestore.getInstance().collection(propertiesCollectionName)
@@ -78,8 +83,14 @@ class PropertyRepository @Inject constructor(private val propertyDao: PropertyDa
             newPropertyRef.set(property).addOnSuccessListener {
                 createdId = newPropertyRef.id
             }
-            pictures.forEach {
-                getPropertiesCollection().document(createdId).collection("photos").add(PictureFirestore(it.imageUrl, it.imageTitle, it.imageDescription))
+            pictures.forEach {localPicture ->
+                val uploadTask = picturesStorageRef.putFile(Uri.parse(localPicture.imageUrl))
+                uploadTask.addOnSuccessListener {
+                    picturesStorageRef.downloadUrl.addOnSuccessListener {
+                        val photoUrl = it.toString()
+                        getPropertiesCollection().document(createdId).collection("photos").add(LocalPicture(photoUrl, localPicture.imageTitle, localPicture.imageDescription))
+                    }
+                }
             }
         }
         return createdId

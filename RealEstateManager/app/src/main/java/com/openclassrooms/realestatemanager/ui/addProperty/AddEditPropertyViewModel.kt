@@ -20,6 +20,7 @@ class AddEditPropertyViewModel @Inject constructor(private val createPropertyUse
 
     val agentsLiveData = object : MutableLiveData<List<Agent>>(){}
     val propertyLiveData = object : MutableLiveData<Property>(){}
+    val agentsLD = object : MutableLiveData<List<Agent>>(){}
 
     fun createPropertyInLocalDb(property: Property) {
         viewModelScope.launch {
@@ -34,6 +35,14 @@ class AddEditPropertyViewModel @Inject constructor(private val createPropertyUse
     suspend fun getAgentsListLD() {
         getAgentsListUseCase.invoke().collect { agents ->
             agentsLiveData.value = agents
+        }
+    }
+
+    fun getAllAgents() {
+        viewModelScope.launch {
+            getAgentsListUseCase.invokeAgentsList().collect {
+                agents -> agentsLD.postValue(agents)
+            }
         }
     }
 

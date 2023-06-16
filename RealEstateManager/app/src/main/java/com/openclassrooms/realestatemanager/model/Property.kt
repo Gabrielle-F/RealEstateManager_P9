@@ -143,11 +143,11 @@ data class PropertyFirestore(
     var supermarket: Boolean,
     var shoppingArea: Boolean,
     var cinema: Boolean,
-    var pictures: List<PictureFirestore>,
+    var pictures: List<LocalPicture>,
     var numberOfPictures: Int,
     var description: String,
     var latitude: Double,
     var longitude: Double,
-    var agentId: Int,
+    var agentId: String,
 )
 
