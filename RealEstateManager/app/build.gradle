@@ -83,6 +83,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore'
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
+    implementation 'com.google.firebase:firebase-storage:20.0.0'
+    implementation 'com.google.firebase:firebase-core:20.0.0'
 
     //DAGGER HILT//
     implementation 'com.google.dagger:hilt-android:2.43.2'
