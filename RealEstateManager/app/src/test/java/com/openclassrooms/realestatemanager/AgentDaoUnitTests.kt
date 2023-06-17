@@ -15,11 +15,11 @@ import org.mockito.Mockito
 class AgentDaoUnitTests {
 
     val mockContext = Mockito.mock(Context::class.java)
-    private lateinit var database : RealEstateManagerDatabase
+    private lateinit var database: RealEstateManagerDatabase
 
-    private val FIRST_DUMMY_AGENT = Agent(0, "firstDummyAgent@email.com", "First Agent")
-    private val SECOND_DUMMY_AGENT = Agent(1, "secondDummyAgent@email.com", "Second Agent")
-    private val THIRD_DUMMY_AGENT = Agent(2, "thirdDummyAgent@email.com", "Third Agent")
+    private val FIRST_DUMMY_AGENT = Agent("0", "firstDummyAgent@email.com", "First Agent")
+    private val SECOND_DUMMY_AGENT = Agent("1", "secondDummyAgent@email.com", "Second Agent")
+    private val THIRD_DUMMY_AGENT = Agent("2", "thirdDummyAgent@email.com", "Third Agent")
 
     @Before
     fun setup() {

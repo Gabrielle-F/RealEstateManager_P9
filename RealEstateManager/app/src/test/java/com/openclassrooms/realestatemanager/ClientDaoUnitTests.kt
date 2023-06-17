@@ -15,11 +15,11 @@ import org.mockito.Mockito
 class ClientDaoUnitTests {
 
     val mockContext = Mockito.mock(Context::class.java)
-    private lateinit var database : RealEstateManagerDatabase
+    private lateinit var database: RealEstateManagerDatabase
 
-    private val FIRST_DUMMY_CLIENT = Client(0, "firstClient@email.com", "First Client")
-    private val SECOND_DUMMY_CLIENT = Client(1, "secondClient@email.com", "Second Client")
-    private val THIRD_DUMMY_CLIENT = Client(2, "thirdClient@email.com", "Third Client")
+    private val FIRST_DUMMY_CLIENT = Client("0", "firstClient@email.com", "First Client")
+    private val SECOND_DUMMY_CLIENT = Client("1", "secondClient@email.com", "Second Client")
+    private val THIRD_DUMMY_CLIENT = Client("2", "thirdClient@email.com", "Third Client")
 
     @Before
     fun setup() {
