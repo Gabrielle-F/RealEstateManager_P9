@@ -41,33 +41,24 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         AddEditPropertyActivity.OnPropertyAddedOrUpdatedListener, SearchPropertiesFragment.OnParametersSelected {
 
-    public enum CurrentFragment {
-        PROPERTIES_LIST
-    }
-
-    private CurrentFragment currentFragment = CurrentFragment.PROPERTIES_LIST;
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle toggle;
     private Toolbar toolbar;
-
-    private PropertiesListFragment propertiesListFragment = new PropertiesListFragment();
-
+    private final PropertiesListFragment propertiesListFragment = new PropertiesListFragment();
     private final SearchPropertiesFragment searchPropertiesFragment = new SearchPropertiesFragment();
-
     private Boolean userClient;
 
     private Boolean userAgent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        if(user == null) {
+        if (user == null) {
             Intent intent = new Intent(this, LogInActivity.class);
             startActivity(intent);
             finish();
         } else {
-            super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
             getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_fragment_container_view, propertiesListFragment).commit();
@@ -85,11 +76,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    protected void onStart() { super.onStart(); }
+    protected void onStart() {
+        super.onStart();
+    }
 
     @Override
     public void onBackPressed() {
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)) {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
@@ -122,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void configureNavDrawer() {
         drawerLayout = findViewById(R.id.activity_main_drawer_layout);
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.nav_open, R.string.nav_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.nav_open, R.string.nav_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
     }
@@ -151,11 +144,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-                if(id == R.id.bottom_bar_properties_list) {
+                if (id == R.id.bottom_bar_properties_list) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_fragment_container_view, propertiesListFragment).commit();
                     return true;
                 }
-                if(id == R.id.bottom_bar_add_property) {
+                if (id == R.id.bottom_bar_add_property) {
                     Intent intent = new Intent(getApplicationContext(), AddEditPropertyActivity.class);
                     startActivity(intent);
                 }
@@ -168,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         AuthUI.getInstance().signOut(context).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()) {
+                if (task.isSuccessful()) {
                     startLogInActivity();
                     Toast.makeText(getApplicationContext(), "Logout successful", Toast.LENGTH_LONG).show();
                 }
@@ -188,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         final DaggerHiltApplication daggerHilt = (DaggerHiltApplication) getApplication();
         dialog.setItems(currencies, (dialog1, which) -> {
             String selectedCurrency = currencies[which];
-            if(Objects.equals(selectedCurrency, "Euro")) {
+            if (Objects.equals(selectedCurrency, "Euro")) {
                 daggerHilt.appPreferences.setSelectedCurrency("Euro");
             } else {
                 daggerHilt.appPreferences.setSelectedCurrency("Dollar");

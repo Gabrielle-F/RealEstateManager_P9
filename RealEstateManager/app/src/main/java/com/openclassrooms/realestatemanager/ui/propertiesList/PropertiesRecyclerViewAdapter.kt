@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.model.Property
-import com.openclassrooms.realestatemanager.utils.Converters
 import com.openclassrooms.realestatemanager.utils.Utils
 
 class PropertiesRecyclerViewAdapter(private val onItemClickListener: OnItemClickListener) :
@@ -59,9 +58,9 @@ class PropertiesRecyclerViewAdapter(private val onItemClickListener: OnItemClick
         }
         holder.propertyPrice.text = item.price.toString()
 
-        val picture = item.pictures.get(0)
-        val pictureUri = Uri.parse(picture.imageUrl)
-        if(pictureUri != null) {
+        if(item.pictures.isNotEmpty()) {
+            val picture = item.pictures.get(0)
+            val pictureUri = Uri.parse(picture.imageUrl)
             holder.propertyImage.setImageURI(pictureUri)
         }
     }

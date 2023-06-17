@@ -39,12 +39,10 @@ class ClientRepository @Inject constructor(private val clientDao: ClientDao) {
 
     suspend fun createUserWithEmailAndPassword(
         email: String,
-        password: String,
-        name: String
+        password: String
     ): Boolean {
         val task = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
         return if (task.user != null) {
-            createClientInFirestoreDatabase(task.user)
             true
         } else {
             Log.e(TAG_ERROR_SIGN_IN, "Error during authentication")
@@ -52,17 +50,23 @@ class ClientRepository @Inject constructor(private val clientDao: ClientDao) {
         }
     }
 
-    fun createClientInFirestoreDatabase(firebaseUser: FirebaseUser?) {
+    fun createClientInFirestoreDatabase(firebaseUser: FirebaseUser?, name: String): String {
+        val newClientRef = getClientsCollection().document()
+        var createdId = "clientId"
         if (firebaseUser != null) {
-            val id: String = firebaseUser.uid
             val email: String = firebaseUser.email.toString()
 
             val userData: Task<DocumentSnapshot>? = getUserData()
-            val client = ClientFirestore(id, email)
+            val client = ClientFirestore(email, name)
             if (userData != null) {
-                userData.addOnCompleteListener { getClientsCollection().document(id).set(client) }
+                userData.addOnCompleteListener {
+                    newClientRef.set(client).addOnSuccessListener {
+                        createdId = newClientRef.id
+                    }
+                }
             }
         }
+        return createdId
     }
 
     fun getUserData(): Task<DocumentSnapshot>? {

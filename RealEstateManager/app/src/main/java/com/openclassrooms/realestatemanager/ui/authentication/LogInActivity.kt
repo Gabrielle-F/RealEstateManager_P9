@@ -15,8 +15,8 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class LogInActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityLoginBinding
-    private val viewModel : LogInViewModel by viewModels()
+    private lateinit var binding: ActivityLoginBinding
+    private val viewModel: LogInViewModel by viewModels()
 
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,15 +30,15 @@ class LogInActivity : AppCompatActivity() {
         var client = false
         var agent = false
         viewModel.liveDataUserLogIn.observe(this) { logInSuccess ->
-            if(logInSuccess) {
+            if (logInSuccess) {
                 startMainActivity(client, agent)
             } else {
                 Toast.makeText(this, "Log In failed ! Please retry later", Toast.LENGTH_LONG).show()
             }
         }
 
-        binding.loginActivityRadioGroup.setOnCheckedChangeListener{ group, checkedId ->
-            if(R.id.agent_radio_btn == checkedId) {
+        binding.loginActivityRadioGroup.setOnCheckedChangeListener { group, checkedId ->
+            if (R.id.agent_radio_btn == checkedId) {
                 agent = true
                 client = false
             } else if (R.id.client_radio_btn == checkedId) {
@@ -50,20 +50,28 @@ class LogInActivity : AppCompatActivity() {
         binding.logInBtn.setOnClickListener {
             val email = binding.editTxtEmailAgentConnection.text.toString()
             val password = binding.editTxtPasswordAgentConnection.text.toString()
-            if(email.isNotEmpty() && password.isNotEmpty()) {
-                if(agent) {
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                if (agent) {
                     logInAgent(email, password)
-                } else if(client) {
+                } else if (client) {
                     logInClient(email, password)
                 }
             } else {
-                Toast.makeText(applicationContext, "Please enter your email and password !", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    applicationContext,
+                    "Please enter your email and password !",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
 
         binding.activityLoginSignUpBtn.setOnClickListener {
-            if(!client && !agent) {
-                Toast.makeText(this, "Please tell us if you are client or agent !", Toast.LENGTH_LONG).show()
+            if (!client && !agent) {
+                Toast.makeText(
+                    this,
+                    "Please tell us if you are client or agent !",
+                    Toast.LENGTH_LONG
+                ).show()
             } else {
                 startSignUpActivity(client, agent)
             }
@@ -71,15 +79,11 @@ class LogInActivity : AppCompatActivity() {
     }
 
     private fun logInAgent(email: String, password: String) {
-        lifecycleScope.launch {
-            viewModel.logIn(email, password)
-        }
+        viewModel.logInAgent(email, password)
     }
 
     private fun logInClient(email: String, password: String) {
-        lifecycleScope.launch {
-            viewModel.logInClient(email, password)
-        }
+        viewModel.logInClient(email, password)
     }
 
     private fun startMainActivity(client: Boolean, agent: Boolean) {

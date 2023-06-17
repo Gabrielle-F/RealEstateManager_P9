@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class GetAgentByIdUseCase @Inject constructor(private val agentRepository: AgentRepository) {
 
-    fun invoke(id : Int) : Flow<Agent> {
+    fun invoke(id: String): Flow<Agent> {
         return agentRepository.getAgentById(id)
     }
 }

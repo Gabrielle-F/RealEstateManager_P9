@@ -1,8 +1,6 @@
 package com.openclassrooms.realestatemanager.ui.propertiesMap
 
 import android.Manifest
-import android.content.Context
-import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,7 +10,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -35,7 +32,7 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
     private val viewModel: MapViewModel by viewModels()
     private lateinit var binding: FragmentMapBinding
     private lateinit var map: GoogleMap
-    private var internetAvailable : Boolean = true
+    private var internetAvailable: Boolean = true
     private val locationPermissions = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
@@ -68,7 +65,12 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        setMarkersOnMap()
+        showUserLocation()
+        setPropertiesMarkers()
+        setMarkersOnClickListeners()
+    }
+
+    private fun setMarkersOnClickListeners() {
         val propertyDetailsFragment = PropertyDetailsFragment()
         val fragmentManager = requireActivity().supportFragmentManager
         val bundle = Bundle()
@@ -83,23 +85,8 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
         }
     }
 
-    private fun setMarkersOnMap() {
+    private fun showUserLocation() {
         map.clear()
-        val latLng = getUserLocation()
-        if (latLng != null) {
-            map.let { map ->
-                latLng.let {
-                    map.addMarker(MarkerOptions().position(latLng)).also { marker ->
-                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13F))
-                    }
-                }
-            }
-        }
-        shouldShowMap()
-        observePropertiesList()
-    }
-
-    private fun shouldShowMap() {
         var showMap = false
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
@@ -151,8 +138,8 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
         )
     }
 
-    private fun observePropertiesList() {
-        if(internetAvailable) {
+    private fun setPropertiesMarkers() {
+        if (internetAvailable) {
             viewModel.getAllProperties()
             viewModel.propertiesLD.observe(viewLifecycleOwner) { propertiesList ->
                 Log.d("TAG", "Properties list size: ${propertiesList.size}")
@@ -160,8 +147,13 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
                     propertiesList.forEach { property ->
                         val latLng = LatLng(property.latitude, property.longitude)
                         latLng.let {
-                            map.addMarker(MarkerOptions().position(it)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+                            map.addMarker(
+                                MarkerOptions().position(it)
+                                    .icon(
+                                        BitmapDescriptorFactory.defaultMarker(
+                                            BitmapDescriptorFactory.HUE_ORANGE
+                                        )
+                                    )
                             ).also { marker ->
                                 marker?.tag = property.id
                             }
@@ -170,28 +162,5 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
                 }
             }
         }
-    }
-
-    private fun getUserLocation(): LatLng? {
-        var latLng: LatLng? = null
-        val locationManager =
-            requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PermissionChecker.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PermissionChecker.PERMISSION_GRANTED
-        ) {
-            val location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-            if (location != null) {
-                val latitude = location.latitude
-                val longitude = location.longitude
-                latLng = LatLng(latitude, longitude)
-            }
-        }
-        return latLng
     }
 }

@@ -13,5 +13,6 @@ class CreateAgentUseCase @Inject constructor(private val agentRepository: AgentR
     suspend fun createAgentWithEmailAndPassword(email: String, password: String): Boolean =
         agentRepository.createUserWithEmailAndPassword(email, password)
 
-    fun createAgentInFirestoreDatabase(firebaseUser: FirebaseUser?, name: String): String = agentRepository.createAgentInFirestoreDatabase(firebaseUser, name)
+    fun createAgentInFirestoreDatabase(firebaseUser: FirebaseUser?, name: String): String =
+        agentRepository.createAgentInFirestoreDatabase(firebaseUser, name)
 }

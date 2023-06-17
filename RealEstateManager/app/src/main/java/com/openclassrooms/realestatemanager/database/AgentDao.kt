@@ -11,12 +11,12 @@ import kotlinx.coroutines.flow.Flow
 interface AgentDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertAgent(agent : Agent)
+    suspend fun insertAgent(agent: Agent)
 
     @Query("SELECT * FROM agent_table")
-    fun getAllAgents() : Flow<List<Agent>>
+    fun getAllAgents(): Flow<List<Agent>>
 
     @Query("SELECT * FROM agent_table WHERE id = :id")
-    fun getAgentById(id : Int) : Flow<Agent>
+    fun getAgentById(id: String): Flow<Agent>
 
 }

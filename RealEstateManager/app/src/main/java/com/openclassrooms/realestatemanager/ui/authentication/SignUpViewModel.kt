@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.ktx.Firebase
 import com.openclassrooms.realestatemanager.model.Agent
 import com.openclassrooms.realestatemanager.model.Client
 import com.openclassrooms.realestatemanager.usecases.CreateAgentUseCase
@@ -14,7 +13,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor(private val createAgentUseCase: CreateAgentUseCase, private val createClientUseCase: CreateClientUseCase) : ViewModel() {
+class SignUpViewModel @Inject constructor(
+    private val createAgentUseCase: CreateAgentUseCase,
+    private val createClientUseCase: CreateClientUseCase
+) : ViewModel() {
 
     val liveDataUserSignUp = MutableLiveData<Boolean>()
 
@@ -23,6 +25,7 @@ class SignUpViewModel @Inject constructor(private val createAgentUseCase: Create
             createAgentUseCase.createAgent(agent)
         }
     }
+
     fun createAgentWithEmailAndPassword(email: String, password: String) {
         viewModelScope.launch {
             val success = createAgentUseCase.createAgentWithEmailAndPassword(email, password)
@@ -30,7 +33,8 @@ class SignUpViewModel @Inject constructor(private val createAgentUseCase: Create
         }
     }
 
-    fun createAgentInFirestoreDatabase(firebaseUser: FirebaseUser?, name: String) : String = createAgentUseCase.createAgentInFirestoreDatabase(firebaseUser, name)
+    fun createAgentInFirestoreDatabase(firebaseUser: FirebaseUser?, name: String): String =
+        createAgentUseCase.createAgentInFirestoreDatabase(firebaseUser, name)
 
     fun createClient(client: Client) {
         viewModelScope.launch {
@@ -38,10 +42,13 @@ class SignUpViewModel @Inject constructor(private val createAgentUseCase: Create
         }
     }
 
-    fun createClientWithEmailAndPassword(email: String, password: String, name: String) {
+    fun createClientWithEmailAndPassword(email: String, password: String) {
         viewModelScope.launch {
-            val success = createClientUseCase.invoke(email, password, name)
+            val success = createClientUseCase.invoke(email, password)
             liveDataUserSignUp.postValue(success)
         }
     }
+
+    fun createClientInFirestoreDatabase(firebaseUser: FirebaseUser?, name: String): String =
+        createClientUseCase.createClientInFirestoreDatabase(firebaseUser, name)
 }
