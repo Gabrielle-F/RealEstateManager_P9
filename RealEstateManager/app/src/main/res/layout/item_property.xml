@@ -6,12 +6,12 @@
 
     <ImageView
         android:id="@+id/property_item_image"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="@dimen/img_view_item_property_width_height"
+        android:layout_height="@dimen/img_view_item_property_width_height"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginTop="@dimen/img_view_item_property_margin_top_start"
+        android:layout_marginStart="@dimen/img_view_item_property_margin_top_start"
         android:scaleType="centerCrop"/>
 
     <TextView
@@ -20,9 +20,9 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/property_item_image"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:textSize="20sp"
+        android:layout_marginStart="@dimen/txt_view_item_property_type_margin_start"
+        android:layout_marginTop="@dimen/txt_view_item_property_type_margin_top"
+        android:textSize="@dimen/txt_view_item_property_type_text_size"
         android:textStyle="bold"/>
 
     <TextView
@@ -31,30 +31,30 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/property_item_type"
         app:layout_constraintStart_toEndOf="@+id/property_item_image"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="15dp"
-        android:textSize="18sp"/>
+        android:layout_marginStart="@dimen/txt_view_item_property_price_margin_start"
+        android:layout_marginTop="@dimen/txt_view_item_property_price_margin_top"
+        android:textSize="@dimen/txt_view_item_property_price_text_size"/>
 
     <ImageView
         android:id="@+id/property_item_dollar_icon"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/img_view_item_property_currency_icons_width_height"
+        android:layout_height="@dimen/img_view_item_property_currency_icons_width_height"
         app:layout_constraintStart_toEndOf="@+id/property_item_price"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginStart="15dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginStart="@dimen/img_view_item_property_currency_icons_margin_start"
+        android:layout_marginBottom="@dimen/img_view_item_property_currency_icons_margin_bottom"
         android:src="@drawable/ic_dollar"
         android:visibility="invisible"
         app:tint="@color/secondaryLightColor"/>
 
     <ImageView
         android:id="@+id/property_item_euro_icon"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/img_view_item_property_currency_icons_width_height"
+        android:layout_height="@dimen/img_view_item_property_currency_icons_width_height"
         app:layout_constraintStart_toEndOf="@+id/property_item_price"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginStart="15dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginStart="@dimen/img_view_item_property_currency_icons_margin_start"
+        android:layout_marginBottom="@dimen/img_view_item_property_currency_icons_margin_bottom"
         android:src="@drawable/ic_euro"
         android:visibility="invisible"
         app:tint="@color/secondaryLightColor" />

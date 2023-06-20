@@ -18,12 +18,12 @@
 
     <FrameLayout
         android:id="@+id/properties_list_map_container"
-        android:layout_width="165dp"
-        android:layout_height="165dp"
+        android:layout_width="@dimen/frame_layout_properties_list_map_container_width"
+        android:layout_height="@dimen/frame_layout_properties_list_map_container_height"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="30dp"
-        android:layout_marginEnd="30dp"/>
+        android:layout_marginBottom="@dimen/frame_layout_properties_list_map_container_margin_bottom_end"
+        android:layout_marginEnd="@dimen/frame_layout_properties_list_map_container_margin_bottom_end"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

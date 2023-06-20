@@ -21,10 +21,10 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="15dp"
-                android:layout_marginStart="5dp"
+                android:layout_marginTop="@dimen/txt_view_type_title_margin_top"
+                android:layout_marginStart="@dimen/txt_view_type_title_margin_start"
                 android:text="@string/details_type"
-                android:textSize="20sp"
+                android:textSize="@dimen/txt_view_type_media_description_title_text_size"
                 android:textStyle="bold"
                 android:textColor="@color/variantNeutralLightColor"/>
 
@@ -34,10 +34,10 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/property_details_type_title"
-                android:textSize="15sp"
+                android:textSize="@dimen/txt_view_type_description_content_text_size"
                 android:textColor="@color/neutralDarkColor"
-                android:layout_marginTop="17dp"
-                android:layout_marginStart="6dp"/>
+                android:layout_marginTop="@dimen/txt_view_type_content_margin_top"
+                android:layout_marginStart="@dimen/txt_view_type_content_margin_start"/>
 
             <TextView
                 android:id="@+id/property_details_media_title_txt"
@@ -45,21 +45,22 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/property_details_type_title"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginStart="@dimen/txt_view_media_description_title_margin_start"
+                android:layout_marginTop="@dimen/txt_view_media_description_title_margin_top"
                 android:text="@string/details_media"
-                android:textSize="20sp"
+                android:textSize="@dimen/txt_view_type_media_description_title_text_size"
                 android:textStyle="bold"
                 android:textColor="@color/variantNeutralLightColor"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/property_details_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="@dimen/recycler_view_pictures_property_details_height"
                 android:orientation="horizontal"
                 android:scrollbars="horizontal"
                 app:layout_constraintTop_toBottomOf="@+id/property_details_media_title_txt"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_pictures_property_details_fragment"/>
 
             <TextView
@@ -68,10 +69,10 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/property_details_recycler_view"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="15dp"
-                android:layout_marginStart="5dp"
+                android:layout_marginTop="@dimen/txt_view_media_description_title_margin_top"
+                android:layout_marginStart="@dimen/txt_view_media_description_title_margin_start"
                 android:text="@string/details_description"
-                android:textSize="20sp"
+                android:textSize="@dimen/txt_view_type_media_description_title_text_size"
                 android:textStyle="bold"
                 android:textColor="@color/variantNeutralLightColor"/>
 
@@ -82,9 +83,9 @@
                 app:layout_constraintTop_toBottomOf="@+id/property_details_description_title_txt"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="10dp"
-                android:padding="7dp"
-                android:textSize="12sp"
+                android:layout_marginTop="@dimen/txt_view_description_content_margin_top"
+                android:padding="@dimen/txt_view_description_content_padding"
+                android:textSize="@dimen/txt_view_type_description_content_text_size"
                 android:textStyle="bold"
                 android:textColor="@color/neutralDarkColor"/>
 
@@ -96,13 +97,13 @@
 
             <ImageView
                 android:id="@+id/property_details_number_of_rooms_icon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/img_view_rooms_area_status_width_height"
+                android:layout_height="@dimen/img_view_rooms_area_status_width_height"
                 android:src="@drawable/ic_number_of_rooms"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginTop="@dimen/img_view_rooms_area_status_margin_top"
+                android:layout_marginStart="@dimen/img_view_rooms_area_status_margin_start"
                 app:tint="@color/neutralColor"/>
 
             <TextView
@@ -112,9 +113,9 @@
                 android:text="@string/details_number_of_rooms"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/property_details_number_of_rooms_info"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="8dp"
-                android:textSize="15sp"/>
+                android:layout_marginTop="@dimen/txt_view_rooms_title_content_margin_top"
+                android:layout_marginStart="@dimen/txt_view_rooms_title_content_margin_start"
+                android:textSize="@dimen/txt_view_rooms_area_availability_location_title_text_size"/>
 
             <TextView
                 android:id="@+id/property_details_number_of_rooms_info"
@@ -122,54 +123,54 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/property_details_number_of_rooms_icon"
-                android:textSize="14sp"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="8dp"
+                android:textSize="@dimen/txt_view_rooms_area_availability_location_content_text_size"
+                android:layout_marginTop="@dimen/txt_view_rooms_title_content_margin_top"
+                android:layout_marginStart="@dimen/txt_view_rooms_title_content_margin_start"
                 android:textColor="@color/neutralDarkColor"
                 android:textStyle="bold"/>
 
             <ImageView
                 android:id="@+id/property_details_surface_icon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/img_view_rooms_area_status_width_height"
+                android:layout_height="@dimen/img_view_rooms_area_status_width_height"
                 android:src="@drawable/ic_surface"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/property_details_number_of_rooms_icon"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="@dimen/img_view_rooms_area_status_margin_start"
+                android:layout_marginTop="@dimen/img_view_rooms_area_status_margin_top"
                 app:tint="@color/neutralColor"/>
 
             <TextView
-                android:id="@+id/property_details_surface_title"
+                android:id="@+id/property_details_area_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/details_area"
-                android:textSize="15sp"
+                android:textSize="@dimen/txt_view_rooms_area_availability_location_title_text_size"
                 app:layout_constraintTop_toBottomOf="@+id/property_details_number_of_rooms_info"
-                app:layout_constraintStart_toEndOf="@+id/property_details_surface_info"
-                android:layout_marginTop="13dp"
-                android:layout_marginStart="8dp"/>
+                app:layout_constraintStart_toEndOf="@+id/property_details_area_info"
+                android:layout_marginTop="@dimen/txt_view_area_title_margin_top"
+                android:layout_marginStart="@dimen/txt_view_area_title_margin_start"/>
 
             <TextView
-                android:id="@+id/property_details_surface_info"
+                android:id="@+id/property_details_area_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:textSize="@dimen/txt_view_rooms_area_availability_location_content_text_size"
                 app:layout_constraintStart_toEndOf="@+id/property_details_surface_icon"
                 app:layout_constraintTop_toBottomOf="@+id/property_details_number_of_rooms_info"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginTop="@dimen/txt_view_area_content_margin_top"
+                android:layout_marginStart="@dimen/txt_view_area_content_margin_start"
                 android:textColor="@color/neutralDarkColor"
                 android:textStyle="bold"/>
 
             <ImageView
                 android:id="@+id/property_details_available_or_sold_icon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/img_view_rooms_area_status_width_height"
+                android:layout_height="@dimen/img_view_rooms_area_status_width_height"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/property_details_surface_icon"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginTop="@dimen/img_view_rooms_area_status_margin_top"
+                android:layout_marginStart="@dimen/img_view_rooms_area_status_margin_start"
                 android:src="@drawable/ic_info"
                 app:tint="@color/neutralColor"/>
 
@@ -178,48 +179,48 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toEndOf="@+id/property_details_available_or_sold_title"
-                app:layout_constraintTop_toBottomOf="@+id/property_details_surface_title"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
+                app:layout_constraintTop_toBottomOf="@+id/property_details_area_title"
+                android:layout_marginStart="@dimen/txt_view_availability_title_content_margin_start"
+                android:layout_marginTop="@dimen/txt_view_availability_title_content_margin_top"
                 android:text="@string/details_available"
                 android:textStyle="bold"
                 android:textColor="@color/accentDarkColor"
                 android:visibility="visible"
-                android:textSize="14sp"/>
+                android:textSize="@dimen/txt_view_rooms_area_availability_location_content_text_size"/>
 
             <TextView
                 android:id="@+id/property_details_sold_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toEndOf="@+id/property_details_available_or_sold_title"
-                app:layout_constraintTop_toBottomOf="@+id/property_details_surface_title"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="11dp"
+                app:layout_constraintTop_toBottomOf="@+id/property_details_area_title"
+                android:layout_marginStart="@dimen/txt_view_availability_title_content_margin_start"
+                android:layout_marginTop="@dimen/txt_view_availability_title_content_margin_top"
                 android:text="@string/details_sold"
                 android:textColor="@color/onErrorColor"
                 android:visibility="invisible"
-                android:textSize="13sp"/>
+                android:textSize="@dimen/txt_view_rooms_area_availability_location_content_text_size"/>
 
             <TextView
                 android:id="@+id/property_details_available_or_sold_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/details_status"
-                android:textSize="15sp"
+                android:textSize="@dimen/txt_view_rooms_area_availability_location_title_text_size"
                 app:layout_constraintStart_toEndOf="@+id/property_details_available_or_sold_icon"
-                app:layout_constraintTop_toBottomOf="@+id/property_details_surface_title"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="11dp"/>
+                app:layout_constraintTop_toBottomOf="@+id/property_details_area_title"
+                android:layout_marginStart="@dimen/txt_view_availability_title_content_margin_start"
+                android:layout_marginTop="@dimen/txt_view_availability_title_content_margin_top"/>
 
             <ImageView
                 android:id="@+id/property_details_location_icon"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="@dimen/img_view_location_width_height"
+                android:layout_height="@dimen/img_view_location_width_height"
                 android:src="@drawable/ic_location"
                 app:layout_constraintEnd_toStartOf="@+id/property_details_location_title"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginTop="@dimen/img_view_location_margin_top"
+                android:layout_marginEnd="@dimen/img_view_location_margin_end"
                 app:tint="@color/neutralColor"/>
 
             <TextView
@@ -228,10 +229,10 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="7dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginTop="@dimen/txt_view_location_title_margin_top"
+                android:layout_marginEnd="@dimen/txt_view_location_title_margin_end"
                 android:text="@string/details_location"
-                android:textSize="15sp"/>
+                android:textSize="@dimen/txt_view_rooms_area_availability_location_title_text_size"/>
 
             <TextView
                 android:id="@+id/property_details_location_address"
@@ -239,10 +240,10 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/property_details_location_title"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginTop="@dimen/txt_view_address_city_margin_top"
+                android:layout_marginEnd="@dimen/txt_view_address_city_margin_end"
                 android:text="@string/details_address_with_number"
-                android:textSize="14sp"
+                android:textSize="@dimen/txt_view_rooms_area_availability_location_content_text_size"
                 android:textColor="@color/neutralDarkColor"/>
 
             <TextView
@@ -251,9 +252,9 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/property_details_location_address"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="10dp"
-                android:textSize="14sp"
+                android:layout_marginTop="@dimen/txt_view_address_city_margin_top"
+                android:layout_marginEnd="@dimen/txt_view_address_city_margin_end"
+                android:textSize="@dimen/txt_view_rooms_area_availability_location_content_text_size"
                 android:text="@string/details_city"
                 android:textColor="@color/neutralDarkColor"/>
 
@@ -262,7 +263,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp">
+            android:layout_marginTop="@dimen/constraint_layout_amenities_margin_top">
 
             <TextView
                 android:id="@+id/property_details_near_title"
@@ -271,31 +272,31 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:text="@string/details_near"
-                android:textSize="17sp"
+                android:textSize="@dimen/txt_view_near_title_text_size"
                 android:textStyle="bold"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp"/>
+                android:layout_marginTop="@dimen/txt_view_near_title_margin_top"
+                android:layout_marginStart="@dimen/txt_view_near_title_margin_start"/>
 
             <ImageView
                 android:id="@+id/property_details_positive_icon_school"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="@dimen/img_view_amenities_positive_negative_icons_width_height"
+                android:layout_height="@dimen/img_view_amenities_positive_negative_icons_width_height"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/property_details_near_title"
                 android:src="@drawable/ic_circle_outline_positive"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginStart="@dimen/img_view_amenities_positive_negative_icons_margin_start_end"
+                android:layout_marginTop="@dimen/img_view_amenities_positive_negative_icons_margin_top"
                 android:visibility="visible"/>
 
             <ImageView
                 android:id="@+id/property_details_negative_icon_school"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="@dimen/img_view_amenities_positive_negative_icons_width_height"
+                android:layout_height="@dimen/img_view_amenities_positive_negative_icons_width_height"
                 app:layout_constraintTop_toBottomOf="@+id/property_details_near_title"
                 app:layout_constraintStart_toStartOf="parent"
                 android:src="@drawable/ic_circle_outline_negative"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginStart="@dimen/img_view_amenities_positive_negative_icons_margin_start_end"
+                android:layout_marginTop="@dimen/img_view_amenities_positive_negative_icons_margin_top"
                 android:visibility="visible"/>
 
             <TextView
@@ -307,29 +308,29 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="8dp"
                 android:text="@string/details_school"
-                android:textSize="14sp"
+                android:textSize="@dimen/txt_view_amenities_names_text_size"
                 android:textColor="@color/variantNeutralDarkColor"
                 />
 
             <ImageView
                 android:id="@+id/property_details_positive_icon_restaurants"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="@dimen/img_view_amenities_positive_negative_icons_width_height"
+                android:layout_height="@dimen/img_view_amenities_positive_negative_icons_width_height"
                 app:layout_constraintTop_toBottomOf="@+id/property_details_negative_icon_school"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginStart="@dimen/img_view_amenities_positive_negative_icons_margin_start_end"
+                android:layout_marginTop="@dimen/img_view_amenities_positive_negative_icons_margin_top"
                 android:src="@drawable/ic_circle_outline_positive"
                 android:visibility="visible"/>
 
             <ImageView
                 android:id="@+id/property_details_negative_icon_restaurants"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="@dimen/img_view_amenities_positive_negative_icons_width_height"
+                android:layout_height="@dimen/img_view_amenities_positive_negative_icons_width_height"
                 app:layout_constraintTop_toBottomOf="@+id/property_details_negative_icon_school"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="12dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginTop="@dimen/img_view_amenities_positive_negative_icons_margin_top"
+                android:layout_marginStart="@dimen/img_view_amenities_positive_negative_icons_margin_start_end"
                 android:src="@drawable/ic_circle_outline_negative"
                 android:visibility="visible"/>
 
@@ -342,28 +343,28 @@
                 android:layout_marginTop="9dp"
                 android:layout_marginStart="8dp"
                 android:text="@string/details_restaurants"
-                android:textSize="14sp"
+                android:textSize="@dimen/txt_view_amenities_names_text_size"
                 android:textColor="@color/variantNeutralDarkColor"/>
 
             <ImageView
                 android:id="@+id/property_details_positive_icon_supermarket"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="@dimen/img_view_amenities_positive_negative_icons_width_height"
+                android:layout_height="@dimen/img_view_amenities_positive_negative_icons_width_height"
                 app:layout_constraintTop_toBottomOf="@+id/property_details_negative_icon_restaurants"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginStart="@dimen/img_view_amenities_positive_negative_icons_margin_start_end"
+                android:layout_marginTop="@dimen/img_view_amenities_positive_negative_icons_margin_top"
                 android:src="@drawable/ic_circle_outline_positive"
                 android:visibility="visible"/>
 
             <ImageView
                 android:id="@+id/property_details_negative_icon_supermarket"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="@dimen/img_view_amenities_positive_negative_icons_width_height"
+                android:layout_height="@dimen/img_view_amenities_positive_negative_icons_width_height"
                 app:layout_constraintTop_toBottomOf="@+id/property_details_negative_icon_restaurants"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginStart="@dimen/img_view_amenities_positive_negative_icons_margin_start_end"
+                android:layout_marginTop="@dimen/img_view_amenities_positive_negative_icons_margin_top"
                 android:src="@drawable/ic_circle_outline_negative"
                 android:visibility="visible"/>
 
@@ -376,29 +377,29 @@
                 android:layout_marginTop="9dp"
                 android:layout_marginStart="8dp"
                 android:text="@string/details_supermarket"
-                android:textSize="14sp"
+                android:textSize="@dimen/txt_view_amenities_names_text_size"
                 android:textColor="@color/variantNeutralDarkColor"/>
 
             <ImageView
                 android:id="@+id/property_details_positive_icon_shopping_area"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="@dimen/img_view_amenities_positive_negative_icons_width_height"
+                android:layout_height="@dimen/img_view_amenities_positive_negative_icons_width_height"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/property_details_near_title"
                 android:src="@drawable/ic_circle_outline_positive"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginEnd="@dimen/img_view_amenities_positive_negative_icons_margin_start_end"
+                android:layout_marginTop="@dimen/img_view_amenities_positive_negative_icons_margin_top"
                 android:visibility="visible"/>
 
             <ImageView
                 android:id="@+id/property_details_negative_icon_shopping_area"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="@dimen/img_view_amenities_positive_negative_icons_width_height"
+                android:layout_height="@dimen/img_view_amenities_positive_negative_icons_width_height"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/property_details_near_title"
                 android:src="@drawable/ic_circle_outline_negative"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginEnd="@dimen/img_view_amenities_positive_negative_icons_margin_start_end"
+                android:layout_marginTop="@dimen/img_view_amenities_positive_negative_icons_margin_top"
                 android:visibility="visible"/>
 
             <TextView
@@ -410,29 +411,29 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="@string/details_shopping_area"
-                android:textSize="14sp"
+                android:textSize="@dimen/txt_view_amenities_names_text_size"
                 android:textColor="@color/variantNeutralDarkColor"/>
 
             <ImageView
                 android:id="@+id/property_details_positive_icon_playground"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="@dimen/img_view_amenities_positive_negative_icons_width_height"
+                android:layout_height="@dimen/img_view_amenities_positive_negative_icons_width_height"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/property_details_negative_icon_shopping_area"
                 android:src="@drawable/ic_circle_outline_positive"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginEnd="@dimen/img_view_amenities_positive_negative_icons_margin_start_end"
+                android:layout_marginTop="@dimen/img_view_amenities_positive_negative_icons_margin_top"
                 android:visibility="visible"/>
 
             <ImageView
                 android:id="@+id/property_details_negative_icon_playground"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="@dimen/img_view_amenities_positive_negative_icons_width_height"
+                android:layout_height="@dimen/img_view_amenities_positive_negative_icons_width_height"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/property_details_negative_icon_shopping_area"
                 android:src="@drawable/ic_circle_outline_negative"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginEnd="@dimen/img_view_amenities_positive_negative_icons_margin_start_end"
+                android:layout_marginTop="@dimen/img_view_amenities_positive_negative_icons_margin_top"
                 android:visibility="visible"/>
 
             <TextView
@@ -444,29 +445,29 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="@string/details_playground"
-                android:textSize="14sp"
+                android:textSize="@dimen/txt_view_amenities_names_text_size"
                 android:textColor="@color/variantNeutralDarkColor"/>
 
             <ImageView
                 android:id="@+id/property_details_positive_icon_cinema"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="@dimen/img_view_amenities_positive_negative_icons_width_height"
+                android:layout_height="@dimen/img_view_amenities_positive_negative_icons_width_height"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/property_details_negative_icon_playground"
                 android:src="@drawable/ic_circle_outline_positive"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginEnd="@dimen/img_view_amenities_positive_negative_icons_margin_start_end"
+                android:layout_marginTop="@dimen/img_view_amenities_positive_negative_icons_margin_top"
                 android:visibility="visible"/>
 
             <ImageView
                 android:id="@+id/property_details_negative_icon_cinema"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="@dimen/img_view_amenities_positive_negative_icons_width_height"
+                android:layout_height="@dimen/img_view_amenities_positive_negative_icons_width_height"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/property_details_negative_icon_playground"
                 android:src="@drawable/ic_circle_outline_negative"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginEnd="@dimen/img_view_amenities_positive_negative_icons_margin_start_end"
+                android:layout_marginTop="@dimen/img_view_amenities_positive_negative_icons_margin_top"
                 android:visibility="visible"/>
 
             <TextView
@@ -478,7 +479,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="@string/details_cinema"
-                android:textSize="14sp"
+                android:textSize="@dimen/txt_view_amenities_names_text_size"
                 android:textColor="@color/variantNeutralDarkColor"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -486,8 +487,8 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_margin="10dp"
+            android:layout_marginTop="@dimen/cardview_details_margin_top"
+            android:layout_margin="@dimen/cardview_details_margin"
             android:elevation="5dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -500,10 +501,10 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="@dimen/cardview_details_titles_contents_margin_top"
+                    android:layout_marginStart="@dimen/cardview_details_titles_contents_margin_start"
                     android:text="@string/details_agent"
-                    android:textSize="17sp"
+                    android:textSize="@dimen/cardview_details_titles_contents_text_size"
                     android:textColor="@color/variantNeutralLightColor"
                     android:textStyle="bold"/>
 
@@ -513,9 +514,9 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/property_details_agent_title"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginStart="10dp"
-                    android:textSize="17sp"
+                    android:layout_marginTop="@dimen/cardview_details_agent_title_content_margin_top"
+                    android:layout_marginStart="@dimen/cardview_details_titles_contents_margin_start"
+                    android:textSize="@dimen/cardview_details_titles_contents_text_size"
                     android:textColor="@color/neutralDarkColor"/>
 
                 <TextView
@@ -524,10 +525,10 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/property_details_agent_title"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="@dimen/cardview_details_titles_contents_margin_start"
+                    android:layout_marginTop="@dimen/cardview_details_titles_contents_margin_top"
                     android:textColor="@color/variantNeutralLightColor"
-                    android:textSize="17sp"
+                    android:textSize="@dimen/cardview_details_titles_contents_text_size"
                     android:text="@string/details_price"
                     android:textStyle="bold"
                     />
@@ -538,10 +539,10 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toEndOf="@+id/property_details_price_title"
                     app:layout_constraintTop_toBottomOf="@+id/property_details_agent_info"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="@dimen/cardview_details_titles_contents_margin_start"
+                    android:layout_marginTop="@dimen/cardview_details_titles_contents_margin_top"
                     android:textColor="@color/neutralDarkColor"
-                    android:textSize="17sp"/>
+                    android:textSize="@dimen/cardview_details_titles_contents_text_size"/>
 
                 <TextView
                     android:id="@+id/property_details_register_date_title"
@@ -549,10 +550,10 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/property_details_price_title"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="@dimen/cardview_details_titles_contents_margin_start"
+                    android:layout_marginTop="@dimen/cardview_details_titles_contents_margin_top"
                     android:text="@string/details_register_date"
-                    android:textSize="17sp"
+                    android:textSize="@dimen/cardview_details_titles_contents_text_size"
                     android:textColor="@color/variantNeutralLightColor"
                     android:textStyle="bold"/>
 
@@ -562,10 +563,10 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toEndOf="@+id/property_details_register_date_title"
                     app:layout_constraintTop_toBottomOf="@+id/property_details_price_info"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="@dimen/cardview_details_titles_contents_margin_start"
+                    android:layout_marginTop="@dimen/cardview_details_titles_contents_margin_top"
                     android:textColor="@color/neutralDarkColor"
-                    android:textSize="17sp"/>
+                    android:textSize="@dimen/cardview_details_titles_contents_text_size"/>
 
                 <TextView
                     android:id="@+id/property_details_sold_date_title"
@@ -573,9 +574,9 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/property_details_register_date_title"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="8dp"
-                    android:textSize="17sp"
+                    android:layout_marginStart="@dimen/cardview_details_titles_contents_margin_start"
+                    android:layout_marginTop="@dimen/cardview_details_titles_contents_margin_top"
+                    android:textSize="@dimen/cardview_details_titles_contents_text_size"
                     android:text="@string/details_sold_date"
                     android:textStyle="bold"
                     android:textColor="@color/variantNeutralLightColor"/>
@@ -586,9 +587,9 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@+id/property_details_register_date_info"
                     app:layout_constraintStart_toEndOf="@+id/property_details_sold_date_title"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="8dp"
-                    android:textSize="17sp"
+                    android:layout_marginStart="@dimen/cardview_details_titles_contents_margin_start"
+                    android:layout_marginTop="@dimen/cardview_details_titles_contents_margin_top"
+                    android:textSize="@dimen/cardview_details_titles_contents_text_size"
                     android:textColor="@color/neutralDarkColor"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -601,9 +602,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/details_edit_property"
-            android:textSize="13sp"
+            android:textSize="@dimen/material_btn_property_details_text_size"
             android:textStyle="bold"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="@dimen/material_btn_property_details_margin_top"/>
 
     </LinearLayout>
 

@@ -9,6 +9,6 @@
         android:id="@+id/properties_list"
         android:label="fragment_properties_list_view"
         android:name="com.openclassrooms.realestatemanager.ui.propertiesList.PropertiesListFragment"
-        tools:layout="@layout/fragment_list_properties"/>
+        tools:layout="@layout/activity_main"/>
 
 </navigation>
