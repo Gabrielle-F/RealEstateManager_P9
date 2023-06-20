@@ -58,11 +58,8 @@ class PropertiesRecyclerViewAdapter(private val onItemClickListener: OnItemClick
         }
         holder.propertyPrice.text = item.price.toString()
 
-        if(item.pictures.isNotEmpty()) {
-            val picture = item.pictures.get(0)
-            val pictureUri = Uri.parse(picture.imageUrl)
-            holder.propertyImage.setImageURI(pictureUri)
-        }
+        item.pictures.firstOrNull()?.let {
+            holder.propertyImage.setImageURI(Uri.parse(it.imageUrl)) }
     }
 
     override fun getItemCount(): Int {

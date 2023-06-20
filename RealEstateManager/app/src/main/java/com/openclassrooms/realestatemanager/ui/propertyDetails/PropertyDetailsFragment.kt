@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.FragmentPropertyDetailsBinding
-import com.openclassrooms.realestatemanager.model.Agent
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.ui.addProperty.AddEditPropertyActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,7 +50,7 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
         super.onStart()
         val bundle = arguments
         if (bundle != null) {
-            selectedPropertyId = bundle.getString("selectedPropertyId").toString()
+            selectedPropertyId = bundle.getString("selectedPropertyId", "")
         }
         viewModel.getPropertyById(selectedPropertyId)
     }
@@ -67,6 +66,9 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
             binding.propertyDetailsPriceInfo.setText(property.price.toString())
             binding.propertyDetailsRegisterDateInfo.setText(property.registerDate)
             binding.propertyDetailsDescriptionContent.setText(property.description)
+            property.pictures.let { picturesList ->
+                picturesAdapter.updatePicturesList(picturesList)
+            }
             picturesAdapter.updatePicturesList(property.pictures)
             if(property.sold) {
                 binding.propertyDetailsSoldDateInfo.setText(property.soldDate)
@@ -110,9 +112,5 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
                 binding.propertyDetailsPositiveIconCinema.visibility = View.INVISIBLE
             }
         }
-    }
-
-    private fun fetchAgent(agent : Agent) {
-        binding.propertyDetailsAgentInfo.setText(agent.name)
     }
 }

@@ -43,10 +43,6 @@ class PropertiesListFragment : Fragment(R.layout.activity_main), PropertiesRecyc
         propertiesAdapter = PropertiesRecyclerViewAdapter(this)
         binding.propertiesListRecyclerView.adapter = propertiesAdapter
 
-        propertiesListViewModel.propertiesLiveData.observe(viewLifecycleOwner) { propertiesList ->
-            Log.d("TAG", "Properties list size: ${propertiesList.size}")
-            propertiesAdapter.updatePropertiesList(propertiesList)
-        }
         propertiesListViewModel.propertiesLD.observe(viewLifecycleOwner) { propertiesList ->
             Log.d("TAG", "Properties list size: ${propertiesList.size}")
             propertiesAdapter.updatePropertiesList(propertiesList)
@@ -60,11 +56,7 @@ class PropertiesListFragment : Fragment(R.layout.activity_main), PropertiesRecyc
     @Override
     override fun onStart() {
         super.onStart()
-        if(internetAvailable) {
-            propertiesListViewModel.getAllProperties()
-        } else {
-            propertiesListViewModel.getPropertiesList()
-        }
+        propertiesListViewModel.getAllProperties()
     }
 
     fun getFilteredList(minPrice: Int, maxPrice: Int, minArea: Int, maxArea:Int, city: String?,

@@ -1,9 +1,7 @@
 package com.openclassrooms.realestatemanager.repository
 
-import android.net.Uri
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.storage.FirebaseStorage
 import com.openclassrooms.realestatemanager.database.PropertyDao
 import com.openclassrooms.realestatemanager.model.LocalPicture
@@ -19,8 +17,7 @@ import javax.inject.Singleton
 class PropertyRepository @Inject constructor(private val propertyDao: PropertyDao) {
 
     private val propertiesCollectionName: String = "properties"
-    private val storageRef  = FirebaseStorage.getInstance().reference
-    private val picturesStorageRef = storageRef.child("photos/photo_${System.currentTimeMillis()}.jpg")
+    private val storageRef = FirebaseStorage.getInstance().reference
 
 
     private fun getPropertiesCollection(): CollectionReference {
@@ -29,7 +26,7 @@ class PropertyRepository @Inject constructor(private val propertyDao: PropertyDa
 
     fun createPropertyInFirestoreDatabase(property: PropertyFirestore): String {
         val newPropertyRef = getPropertiesCollection().document()
-        var createdId = "propertyId"
+        val createdId = newPropertyRef.id
         if (property != null) {
             val type = property.type
             val price = property.price
@@ -80,16 +77,18 @@ class PropertyRepository @Inject constructor(private val propertyDao: PropertyDa
                 longitude,
                 agentId,
             )
-            newPropertyRef.set(property).addOnSuccessListener {
-                createdId = newPropertyRef.id
-            }
-            pictures.forEach {localPicture ->
-                val uploadTask = picturesStorageRef.putFile(Uri.parse(localPicture.imageUrl))
-                uploadTask.addOnSuccessListener {
-                    picturesStorageRef.downloadUrl.addOnSuccessListener {
-                        val photoUrl = it.toString()
-                        getPropertiesCollection().document(createdId).collection("photos").add(LocalPicture(photoUrl, localPicture.imageTitle, localPicture.imageDescription))
-                    }
+            newPropertyRef.set(property)
+            pictures.forEach { localPicture ->
+                val picturesStorageRef = storageRef.child("photos/photo" + localPicture.imageUrl + ".jpg")
+                picturesStorageRef.downloadUrl.addOnSuccessListener {
+                    val photoUrl = it.toString()
+                    getPropertiesCollection().document(createdId).collection("photos").add(
+                        LocalPicture(
+                            photoUrl,
+                            localPicture.imageTitle,
+                            localPicture.imageDescription
+                        )
+                    )
                 }
             }
         }
@@ -131,17 +130,11 @@ class PropertyRepository @Inject constructor(private val propertyDao: PropertyDa
         cinema
     )
 
-    fun getPropertiesList() : Flow<List<Property>> = flow {
-        val propertiesList = mutableListOf<Property>()
-        val querySnapshot = getPropertiesCollection().get().await()
-        querySnapshot.let {
-            it?.let {
-                for (document: QueryDocumentSnapshot in it) {
-                    val property = document.toObject(Property::class.java)
-                    propertiesList.add(property)
-                }
-            }
+    fun getPropertiesList(): Flow<List<Property>> = flow {
+        getPropertiesCollection().get().await().map {
+            it.toObject(Property::class.java)
+        }.let { propertiesList ->
+            emit(propertiesList)
         }
-        emit(propertiesList)
     }
 }

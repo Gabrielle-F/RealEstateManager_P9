@@ -75,7 +75,7 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
         val fragmentManager = requireActivity().supportFragmentManager
         val bundle = Bundle()
         map.setOnMarkerClickListener {
-            bundle.putInt("selectedPropertyId", it.tag.toString().toInt())
+            bundle.putString("selectedPropertyId", it.tag.toString())
             propertyDetailsFragment.arguments = bundle
             fragmentManager.beginTransaction()
                 .replace(R.id.activity_main_fragment_container_view, propertyDetailsFragment)
