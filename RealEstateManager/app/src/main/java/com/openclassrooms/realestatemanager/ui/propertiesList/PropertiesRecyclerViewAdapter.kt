@@ -24,12 +24,13 @@ class PropertiesRecyclerViewAdapter(private val onItemClickListener: OnItemClick
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PropertiesViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_property, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_property, parent, false)
         return PropertiesViewHolder(view, onItemClickListener)
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updatePropertiesList(properties : List<Property>) {
+    fun updatePropertiesList(properties: List<Property>) {
         list.clear()
         list.addAll(properties)
         notifyDataSetChanged()
@@ -47,7 +48,7 @@ class PropertiesRecyclerViewAdapter(private val onItemClickListener: OnItemClick
         holder.property = item
         holder.propertyType.text = item.type
         val price = item.price
-        if(selectedCurrency == "Euro") {
+        if (selectedCurrency == "Euro") {
             holder.propertyPriceEuro.visibility = View.VISIBLE
             holder.propertyPriceDollar.visibility = View.GONE
             Utils.convertDollarToEuro(price)
@@ -59,25 +60,29 @@ class PropertiesRecyclerViewAdapter(private val onItemClickListener: OnItemClick
         holder.propertyPrice.text = item.price.toString()
 
         item.pictures.firstOrNull()?.let {
-            holder.propertyImage.setImageURI(Uri.parse(it.imageUrl)) }
+            holder.propertyImage.setImageURI(Uri.parse(it.imageUrl))
+        }
     }
 
     override fun getItemCount(): Int {
         return list.size
     }
 
-    class PropertiesViewHolder(itemView: View, private val onItemClickListener: OnItemClickListener) : RecyclerView.ViewHolder(itemView) {
-        val propertyImage : ImageView = itemView.findViewById(R.id.property_item_image)
-        val propertyType : TextView = itemView.findViewById(R.id.property_item_type)
-        val propertyPrice : TextView = itemView.findViewById(R.id.property_item_price)
-        val propertyPriceDollar : ImageView = itemView.findViewById(R.id.property_item_dollar_icon)
-        val propertyPriceEuro : ImageView = itemView.findViewById(R.id.property_item_euro_icon)
+    class PropertiesViewHolder(
+        itemView: View,
+        private val onItemClickListener: OnItemClickListener
+    ) : RecyclerView.ViewHolder(itemView) {
+        val propertyImage: ImageView = itemView.findViewById(R.id.property_item_image)
+        val propertyType: TextView = itemView.findViewById(R.id.property_item_type)
+        val propertyPrice: TextView = itemView.findViewById(R.id.property_item_price)
+        val propertyPriceDollar: ImageView = itemView.findViewById(R.id.property_item_dollar_icon)
+        val propertyPriceEuro: ImageView = itemView.findViewById(R.id.property_item_euro_icon)
         var property: Property? = null
 
         init {
             itemView.setOnClickListener {
                 val property = property
-                if(property != null) {
+                if (property != null) {
                     onItemClickListener.onClick(property)
                 }
             }

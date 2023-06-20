@@ -79,7 +79,8 @@ class PropertyRepository @Inject constructor(private val propertyDao: PropertyDa
             )
             newPropertyRef.set(property)
             pictures.forEach { localPicture ->
-                val picturesStorageRef = storageRef.child("photos/photo" + localPicture.imageUrl + ".jpg")
+                val picturesStorageRef =
+                    storageRef.child("photos/photo" + localPicture.imageUrl + ".jpg")
                 picturesStorageRef.downloadUrl.addOnSuccessListener {
                     val photoUrl = it.toString()
                     getPropertiesCollection().document(createdId).collection("photos").add(
@@ -98,8 +99,6 @@ class PropertyRepository @Inject constructor(private val propertyDao: PropertyDa
     suspend fun createProperty(property: Property) = propertyDao.insertProperty(property)
 
     suspend fun updateProperty(property: Property) = propertyDao.updateProperty(property)
-
-    fun getAllProperties(): Flow<List<Property>> = propertyDao.getAllProperties()
 
     fun getPropertyById(id: String): Flow<Property>? = propertyDao.getPropertyById(id)
 

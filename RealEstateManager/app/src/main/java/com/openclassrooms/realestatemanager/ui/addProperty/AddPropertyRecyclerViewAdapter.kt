@@ -16,7 +16,8 @@ class AddPropertyRecyclerViewAdapter :
     private val picturesList = mutableListOf<LocalPicture>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PicturesViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_pictures_add_property_activity, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_pictures_add_property_activity, parent, false)
         return PicturesViewHolder(view)
     }
 

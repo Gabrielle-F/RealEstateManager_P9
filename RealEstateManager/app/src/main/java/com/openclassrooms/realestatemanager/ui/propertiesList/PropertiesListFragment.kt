@@ -17,17 +17,22 @@ import com.openclassrooms.realestatemanager.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PropertiesListFragment : Fragment(R.layout.activity_main), PropertiesRecyclerViewAdapter.OnItemClickListener {
+class PropertiesListFragment : Fragment(R.layout.activity_main),
+    PropertiesRecyclerViewAdapter.OnItemClickListener {
 
 
-    private lateinit var binding : FragmentListPropertiesBinding
-    private val propertiesListViewModel : PropertiesListViewModel by viewModels()
+    private lateinit var binding: FragmentListPropertiesBinding
+    private val propertiesListViewModel: PropertiesListViewModel by viewModels()
     private lateinit var propertiesAdapter: PropertiesRecyclerViewAdapter
-    private lateinit var mapFragment : MapFragment
-    private var internetAvailable : Boolean = true
+    private lateinit var mapFragment: MapFragment
+    private var internetAvailable: Boolean = true
 
     @Override
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = FragmentListPropertiesBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -38,7 +43,8 @@ class PropertiesListFragment : Fragment(R.layout.activity_main), PropertiesRecyc
 
         internetAvailable = Utils.isInternetAvailable(requireContext())
         mapFragment = MapFragment()
-        childFragmentManager.beginTransaction().add(binding.propertiesListMapContainer.id, mapFragment).commit()
+        childFragmentManager.beginTransaction()
+            .add(binding.propertiesListMapContainer.id, mapFragment).commit()
 
         propertiesAdapter = PropertiesRecyclerViewAdapter(this)
         binding.propertiesListRecyclerView.adapter = propertiesAdapter
@@ -59,12 +65,47 @@ class PropertiesListFragment : Fragment(R.layout.activity_main), PropertiesRecyc
         propertiesListViewModel.getAllProperties()
     }
 
-    fun getFilteredList(minPrice: Int, maxPrice: Int, minArea: Int, maxArea:Int, city: String?,
-                        types: List<String>?, rooms: List<Int>?, availability: Boolean?, startDate:
-                        String?, endDate: String?, numberOfPictures: List<Int>, agentName: String?,
-                        school: Boolean, restaurants: Boolean, playground: Boolean, supermarket: Boolean, shoppingArea: Boolean, cinema: Boolean) {
-        propertiesListViewModel.getFilteredList(minPrice, maxPrice, minArea, maxArea, city, types, rooms, availability, startDate, endDate,
-            numberOfPictures, agentName, school, restaurants, playground, supermarket, shoppingArea, cinema)
+    fun getFilteredList(
+        minPrice: Int,
+        maxPrice: Int,
+        minArea: Int,
+        maxArea: Int,
+        city: String?,
+        types: List<String>?,
+        rooms: List<Int>?,
+        availability: Boolean?,
+        startDate:
+        String?,
+        endDate: String?,
+        numberOfPictures: List<Int>,
+        agentName: String?,
+        school: Boolean,
+        restaurants: Boolean,
+        playground: Boolean,
+        supermarket: Boolean,
+        shoppingArea: Boolean,
+        cinema: Boolean
+    ) {
+        propertiesListViewModel.getFilteredList(
+            minPrice,
+            maxPrice,
+            minArea,
+            maxArea,
+            city,
+            types,
+            rooms,
+            availability,
+            startDate,
+            endDate,
+            numberOfPictures,
+            agentName,
+            school,
+            restaurants,
+            playground,
+            supermarket,
+            shoppingArea,
+            cinema
+        )
     }
 
     override fun onClick(property: Property) {
@@ -81,7 +122,7 @@ class PropertiesListFragment : Fragment(R.layout.activity_main), PropertiesRecyc
 
     override fun getSharedPreferences(): String {
         val daggerHilt = requireActivity().application as DaggerHiltApplication
-        var selectedCurrency : String = daggerHilt.appPreferences.getSelectedCurrency()
+        var selectedCurrency: String = daggerHilt.appPreferences.getSelectedCurrency()
         return selectedCurrency
     }
 

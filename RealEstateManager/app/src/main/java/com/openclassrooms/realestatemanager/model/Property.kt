@@ -47,7 +47,7 @@ data class Property(
     @ColumnInfo(name = "cinema")
     var cinema: Boolean = false,
     @ColumnInfo(name = "pictures")
-    var pictures: List<LocalPicture>  = emptyList(),
+    var pictures: List<LocalPicture> = emptyList(),
     @ColumnInfo(name = "number_of_pictures")
     var numberOfPictures: Int = 0,
     @ColumnInfo(name = "description")
@@ -93,7 +93,8 @@ data class Property(
         val description =
             if (values.containsKey("description")) values.getAsString("description") else ""
         val latitude = if (values.containsKey("latitude")) values.getAsDouble("latitude") else 0.0
-        val longitude = if (values.containsKey("longitude")) values.getAsDouble("longitude") else 0.0
+        val longitude =
+            if (values.containsKey("longitude")) values.getAsDouble("longitude") else 0.0
         val agentName = if (values.containsKey("agentName")) values.getAsString("agentId") else ""
 
         return Property(

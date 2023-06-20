@@ -11,12 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.model.LocalPicture
 
-class PropertyDetailsRecyclerViewAdapter : RecyclerView.Adapter<PropertyDetailsRecyclerViewAdapter.PropertyViewHolder>() {
+class PropertyDetailsRecyclerViewAdapter :
+    RecyclerView.Adapter<PropertyDetailsRecyclerViewAdapter.PropertyViewHolder>() {
 
     private val list = mutableListOf<LocalPicture>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PropertyViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_pictures_property_details_fragment, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_pictures_property_details_fragment, parent, false)
         return PropertyViewHolder(view)
     }
 
@@ -39,8 +41,8 @@ class PropertyDetailsRecyclerViewAdapter : RecyclerView.Adapter<PropertyDetailsR
     }
 
     class PropertyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val pictureView : ImageView = itemView.findViewById(R.id.property_details_picture_item)
-        val pictureTitle : TextView = itemView.findViewById(R.id.property_details_picture_title)
-        var picture : LocalPicture? = null
+        val pictureView: ImageView = itemView.findViewById(R.id.property_details_picture_item)
+        val pictureTitle: TextView = itemView.findViewById(R.id.property_details_picture_title)
+        var picture: LocalPicture? = null
     }
 }

@@ -17,7 +17,7 @@ class MapViewModel @Inject constructor(private val getPropertiesListUseCase: Get
 
     fun getAllProperties() {
         viewModelScope.launch {
-            getPropertiesListUseCase.invokePropertiesList().collect { properties ->
+            getPropertiesListUseCase.invoke().collect { properties ->
                 propertiesLD.postValue(properties)
             }
         }

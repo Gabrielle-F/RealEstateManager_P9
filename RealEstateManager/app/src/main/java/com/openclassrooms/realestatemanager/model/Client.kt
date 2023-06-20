@@ -8,14 +8,14 @@ import androidx.room.PrimaryKey
 data class Client(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
-    val id : String,
+    val id: String,
     @ColumnInfo(name = "email")
-    val email : String,
+    val email: String,
     @ColumnInfo(name = "name")
-    val name : String
+    val name: String
 )
 
 data class ClientFirestore(
-    val email : String,
-    val name : String
+    val email: String,
+    val name: String
 )

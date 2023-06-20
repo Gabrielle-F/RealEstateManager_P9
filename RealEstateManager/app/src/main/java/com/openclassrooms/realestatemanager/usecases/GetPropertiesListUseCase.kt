@@ -8,16 +8,11 @@ import javax.inject.Inject
 
 class GetPropertiesListUseCase @Inject constructor(private val propertyRepository: PropertyRepository) {
 
-    fun invoke() : Flow<List<Property>> {
-        return propertyRepository.getAllProperties()
-    }
-
-    fun invokePropertiesList(): Flow<List<Property>> {
+    fun invoke(): Flow<List<Property>> {
         return propertyRepository.getPropertiesList().onEach {
             for (property: Property in it) {
                 propertyRepository.createProperty(property)
             }
         }
     }
-
 }

@@ -16,13 +16,17 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
 
-    private lateinit var binding : FragmentPropertyDetailsBinding
-    private val viewModel : PropertyDetailsViewModel by viewModels()
-    private lateinit var picturesAdapter : PropertyDetailsRecyclerViewAdapter
-    private var selectedPropertyId : String = "propertyId"
+    private lateinit var binding: FragmentPropertyDetailsBinding
+    private val viewModel: PropertyDetailsViewModel by viewModels()
+    private lateinit var picturesAdapter: PropertyDetailsRecyclerViewAdapter
+    private var selectedPropertyId: String = "propertyId"
 
     @Override
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = FragmentPropertyDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -34,7 +38,7 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
         picturesAdapter = PropertyDetailsRecyclerViewAdapter()
         binding.propertyDetailsRecyclerView.adapter = picturesAdapter
 
-        viewModel.propertyLiveData.observe(viewLifecycleOwner) {property ->
+        viewModel.propertyLiveData.observe(viewLifecycleOwner) { property ->
             fetchPropertyDetails(property)
         }
 
@@ -55,13 +59,18 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
         viewModel.getPropertyById(selectedPropertyId)
     }
 
-    private fun fetchPropertyDetails(property : Property?) {
+    private fun fetchPropertyDetails(property: Property?) {
         if (property != null) {
             binding.propertyDetailsTypeInfo.setText(property.type)
             binding.propertyDetailsCityInfo.setText(property.city)
             binding.propertyDetailsAreaInfo.setText(property.area.toString())
             binding.propertyDetailsNumberOfRoomsInfo.setText(property.rooms.toString())
-            val address = getString(R.string.details_address_with_number, property.streetNumber, property.streetName, property.postalCode)
+            val address = getString(
+                R.string.details_address_with_number,
+                property.streetNumber,
+                property.streetName,
+                property.postalCode
+            )
             binding.propertyDetailsLocationAddress.setText(address)
             binding.propertyDetailsPriceInfo.setText(property.price.toString())
             binding.propertyDetailsRegisterDateInfo.setText(property.registerDate)
@@ -70,43 +79,43 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
                 picturesAdapter.updatePicturesList(picturesList)
             }
             picturesAdapter.updatePicturesList(property.pictures)
-            if(property.sold) {
+            if (property.sold) {
                 binding.propertyDetailsSoldDateInfo.setText(property.soldDate)
             } else {
                 binding.propertyDetailsSoldDateInfo.setText("?")
             }
             binding.propertyDetailsAgentInfo.setText(property.agentName)
 
-            if(property.sold) {
+            if (property.sold) {
                 binding.propertyDetailsAvailableInfo.visibility = View.INVISIBLE
                 binding.propertyDetailsSoldInfo.visibility = View.VISIBLE
             }
-            if(property.school) {
+            if (property.school) {
                 binding.propertyDetailsNegativeIconSchool.visibility = View.INVISIBLE
             } else {
                 binding.propertyDetailsPositiveIconSchool.visibility = View.INVISIBLE
             }
-            if(property.restaurants) {
+            if (property.restaurants) {
                 binding.propertyDetailsNegativeIconRestaurants.visibility = View.INVISIBLE
             } else {
                 binding.propertyDetailsPositiveIconRestaurants.visibility = View.INVISIBLE
             }
-            if(property.supermarket) {
+            if (property.supermarket) {
                 binding.propertyDetailsNegativeIconSupermarket.visibility = View.INVISIBLE
             } else {
                 binding.propertyDetailsPositiveIconSupermarket.visibility = View.INVISIBLE
             }
-            if(property.shoppingArea) {
+            if (property.shoppingArea) {
                 binding.propertyDetailsNegativeIconShoppingArea.visibility = View.INVISIBLE
             } else {
                 binding.propertyDetailsPositiveIconShoppingArea.visibility = View.INVISIBLE
             }
-            if(property.playground) {
+            if (property.playground) {
                 binding.propertyDetailsNegativeIconPlayground.visibility = View.INVISIBLE
             } else {
                 binding.propertyDetailsPositiveIconPlayground.visibility = View.INVISIBLE
             }
-            if(property.cinema) {
+            if (property.cinema) {
                 binding.propertyDetailsNegativeIconCinema.visibility = View.INVISIBLE
             } else {
                 binding.propertyDetailsPositiveIconCinema.visibility = View.INVISIBLE

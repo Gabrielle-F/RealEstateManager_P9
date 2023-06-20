@@ -6,7 +6,6 @@ import com.openclassrooms.realestatemanager.database.ImageDao
 import com.openclassrooms.realestatemanager.database.PropertyDao
 import com.openclassrooms.realestatemanager.repository.AgentRepository
 import com.openclassrooms.realestatemanager.repository.ClientRepository
-import com.openclassrooms.realestatemanager.repository.ImageRepository
 import com.openclassrooms.realestatemanager.repository.PropertyRepository
 import dagger.Module
 import dagger.Provides

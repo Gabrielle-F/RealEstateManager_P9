@@ -12,14 +12,16 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddEditPropertyViewModel @Inject constructor(private val createPropertyUseCase : CreatePropertyUseCase,
-                                                   private val getAgentsListUseCase: GetAgentsListUseCase,
-                                                   private val getPropertyByIdUseCase: GetPropertyByIdUseCase,
-                                                   private val updatePropertyUseCase: UpdatePropertyUseCase,
-                                                   private val createPropertyInFirestoreUseCase: CreatePropertyInFirestoreUseCase) : ViewModel() {
+class AddEditPropertyViewModel @Inject constructor(
+    private val createPropertyUseCase: CreatePropertyUseCase,
+    private val getAgentsListUseCase: GetAgentsListUseCase,
+    private val getPropertyByIdUseCase: GetPropertyByIdUseCase,
+    private val updatePropertyUseCase: UpdatePropertyUseCase,
+    private val createPropertyInFirestoreUseCase: CreatePropertyInFirestoreUseCase
+) : ViewModel() {
 
-    val propertyLiveData = object : MutableLiveData<Property>(){}
-    val agentsLD = object : MutableLiveData<List<Agent>>(){}
+    val propertyLiveData = object : MutableLiveData<Property>() {}
+    val agentsLD = object : MutableLiveData<List<Agent>>() {}
 
     fun createPropertyInLocalDb(property: Property) {
         viewModelScope.launch {
@@ -27,21 +29,23 @@ class AddEditPropertyViewModel @Inject constructor(private val createPropertyUse
         }
     }
 
-    fun createPropertyInFirestoreDb(property: PropertyFirestore): String = createPropertyInFirestoreUseCase.invoke(property)
+    fun createPropertyInFirestoreDb(property: PropertyFirestore): String =
+        createPropertyInFirestoreUseCase.invoke(property)
 
-    suspend fun updateProperty(property : Property) = updatePropertyUseCase.invoke(property)
+    suspend fun updateProperty(property: Property) = updatePropertyUseCase.invoke(property)
 
     fun getAllAgents() {
         viewModelScope.launch {
-            getAgentsListUseCase.invokeAgentsList().collect {
-                agents -> agentsLD.postValue(agents)
+            getAgentsListUseCase.invokeAgentsList().collect { agents ->
+                agentsLD.postValue(agents)
             }
         }
     }
 
-    fun getPropertyById(id : String) {
+    fun getPropertyById(id: String) {
         viewModelScope.launch {
-            getPropertyByIdUseCase.invoke(id)?.collect { property -> propertyLiveData.postValue(property)
+            getPropertyByIdUseCase.invoke(id)?.collect { property ->
+                propertyLiveData.postValue(property)
             }
         }
     }

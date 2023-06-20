@@ -19,16 +19,17 @@ import com.vmadalin.easypermissions.EasyPermissions
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AddPicturesFragment : BottomSheetDialogFragment(R.layout.bottom_sheet_dialog_fragment_add_image) {
+class AddPicturesFragment :
+    BottomSheetDialogFragment(R.layout.bottom_sheet_dialog_fragment_add_image) {
 
-    private lateinit var context : Context
-    private lateinit var listener : OnDataChangeListener
-    private lateinit var binding : BottomSheetDialogFragmentAddImageBinding
+    private lateinit var context: Context
+    private lateinit var listener: OnDataChangeListener
+    private lateinit var binding: BottomSheetDialogFragmentAddImageBinding
     private lateinit var imagePath: String
-    private val EXTERNAL_STORAGE_PERMISSION_CODE  : Int = 20
-    private val CAMERA_PERMISSION_CODE : Int = 10
-    private val REQUEST_IMAGE_CAPTURE_CODE : Int = 100
-    private val REQUEST_IMAGE_SELECT_CODE : Int = 200
+    private val EXTERNAL_STORAGE_PERMISSION_CODE: Int = 20
+    private val CAMERA_PERMISSION_CODE: Int = 10
+    private val REQUEST_IMAGE_CAPTURE_CODE: Int = 100
+    private val REQUEST_IMAGE_SELECT_CODE: Int = 200
     private val cameraPermissions = arrayOf(
         Manifest.permission.CAMERA,
         Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -42,7 +43,11 @@ class AddPicturesFragment : BottomSheetDialogFragment(R.layout.bottom_sheet_dial
         fun getImage(localPicture: LocalPicture)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = BottomSheetDialogFragmentAddImageBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -60,7 +65,7 @@ class AddPicturesFragment : BottomSheetDialogFragment(R.layout.bottom_sheet_dial
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if(context is OnDataChangeListener) {
+        if (context is OnDataChangeListener) {
             listener = context
         }
     }
@@ -71,7 +76,8 @@ class AddPicturesFragment : BottomSheetDialogFragment(R.layout.bottom_sheet_dial
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE_CODE)
         }
         binding.addPictureFragmentChooseInAlbumBtn.setOnClickListener {
-            val selectPictureIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            val selectPictureIntent =
+                Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(selectPictureIntent, REQUEST_IMAGE_SELECT_CODE)
         }
         binding.addPictureFragmentSaveBtn.setOnClickListener {
@@ -83,10 +89,10 @@ class AddPicturesFragment : BottomSheetDialogFragment(R.layout.bottom_sheet_dial
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK) {
-            when(requestCode) {
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
                 REQUEST_IMAGE_CAPTURE_CODE -> {
-                    if(data != null) {
+                    if (data != null) {
                         val imageUri = data.data
                         val imageView = binding.addPictureFragmentSeeResult
                         Glide.with(this).load(imageUri).into(imageView)
@@ -94,7 +100,7 @@ class AddPicturesFragment : BottomSheetDialogFragment(R.layout.bottom_sheet_dial
                     }
                 }
                 REQUEST_IMAGE_SELECT_CODE -> {
-                    if(data != null) {
+                    if (data != null) {
                         val imageUri = data.data
                         val imageView = binding.addPictureFragmentSeeResult
                         Glide.with(this).load(imageUri).into(imageView)
@@ -122,7 +128,7 @@ class AddPicturesFragment : BottomSheetDialogFragment(R.layout.bottom_sheet_dial
     }
 
     private fun sendDataToAddPropertyActivity() {
-        if(validateFields()) {
+        if (validateFields()) {
             val imageName = binding.addPictureFragmentNamePicture.text.toString()
             val imageDescription = binding.addPictureFragmentDescribePicture.text.toString()
 
@@ -132,18 +138,18 @@ class AddPicturesFragment : BottomSheetDialogFragment(R.layout.bottom_sheet_dial
         }
     }
 
-    private fun validateFields() : Boolean {
+    private fun validateFields(): Boolean {
         val imageName = binding.addPictureFragmentNamePicture.text.toString()
         val imageDescription = binding.addPictureFragmentDescribePicture.text.toString()
-        if(imageName.isBlank()) {
+        if (imageName.isBlank()) {
             Toast.makeText(context, "Please enter a name !", Toast.LENGTH_SHORT).show()
             return false
         }
-        if(imageDescription.isBlank()) {
+        if (imageDescription.isBlank()) {
             Toast.makeText(context, "Please enter a description !", Toast.LENGTH_SHORT).show()
             return false
         }
-        if(imagePath.isBlank()) {
+        if (imagePath.isBlank()) {
             Toast.makeText(context, "Please select a picture to add !", Toast.LENGTH_SHORT).show()
             return false
         }

@@ -24,14 +24,14 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataChangeListener {
 
-    private lateinit var binding : ActivityAddEditPropertyBinding
-    private val viewModel : AddEditPropertyViewModel by viewModels()
+    private lateinit var binding: ActivityAddEditPropertyBinding
+    private val viewModel: AddEditPropertyViewModel by viewModels()
     private val picturesList = ArrayList<LocalPicture>()
     private val picturesUriList = ArrayList<String>()
-    private lateinit var addPropertyAdapter : AddPropertyRecyclerViewAdapter
-    private lateinit var selectedAgent : Agent
-    private lateinit var propertyRegisterDate : String
-    private var selectedPropertyId : String = "propertyId"
+    private lateinit var addPropertyAdapter: AddPropertyRecyclerViewAdapter
+    private lateinit var selectedAgent: Agent
+    private lateinit var propertyRegisterDate: String
+    private var selectedPropertyId: String = "propertyId"
 
     interface OnPropertyAddedOrUpdatedListener {
         fun onPropertyAddedOrUpdated()
@@ -72,7 +72,7 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
     }
 
     fun configureListeners() {
-        val addPropertyAddedOrUpdatedListener = object : OnPropertyAddedOrUpdatedListener{
+        val addPropertyAddedOrUpdatedListener = object : OnPropertyAddedOrUpdatedListener {
             override fun onPropertyAddedOrUpdated() {
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 startActivity(intent)
@@ -103,22 +103,22 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
 
 
     fun createProperty() {
-        if(validateFields() && validateFieldsSoldOrAvailable()) {
-            val propertyFirestore : PropertyFirestore = getPropertyFirestore()
+        if (validateFields() && validateFieldsSoldOrAvailable()) {
+            val propertyFirestore: PropertyFirestore = getPropertyFirestore()
             val propertyCreatedIdString = viewModel.createPropertyInFirestoreDb(propertyFirestore)
-            val property : Property = getPropertyToCreate(propertyCreatedIdString)
+            val property: Property = getPropertyToCreate(propertyCreatedIdString)
             viewModel.createPropertyInLocalDb(property)
             Toast.makeText(this, "Property create with success !", Toast.LENGTH_SHORT).show()
         }
     }
 
     suspend fun updateProperty() {
-        val property : Property = getUpdateProperty()
+        val property: Property = getUpdateProperty()
         viewModel.updateProperty(property)
         Toast.makeText(this, "Property update with success !", Toast.LENGTH_SHORT).show()
     }
 
-    fun getPropertyToCreate(id : String) : Property {
+    fun getPropertyToCreate(id: String): Property {
         return Property(
             id = id,
             type = binding.addPropertyTypeEdittxt.text.toString(),
@@ -147,7 +147,7 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
         )
     }
 
-    private fun getPropertyFirestore() : PropertyFirestore {
+    private fun getPropertyFirestore(): PropertyFirestore {
         return PropertyFirestore(
             type = binding.addPropertyTypeEdittxt.text.toString(),
             price = binding.addPropertyPriceEdittxt.text.toString().toInt(),
@@ -205,7 +205,7 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
     }
 
     private fun fetchPropertyData(property: Property?) {
-        if(property != null) {
+        if (property != null) {
             binding.addPropertyTypeEdittxt.setText(property.type)
             binding.addPropertyRoomsEdittxt.setText(property.rooms.toString())
             binding.addPropertyCityEdittxt.setText(property.city)
@@ -228,29 +228,30 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
             binding.addPropertySoldDateEdittxt.setText(property.soldDate)
             propertyRegisterDate = property.registerDate
 
-            var propertyLatLng : LatLng? = null
+            var propertyLatLng: LatLng? = null
+
             /**val agentId = property.agentName
             binding.addPropertyAgentSpinner.id = agentId*/
             val latitude = property.latitude
             val longitude = property.longitude
             val latLng = LatLng(latitude, longitude)
-            if(latLng != null) {
+            if (latLng != null) {
                 propertyLatLng = latLng
             }
         }
     }
 
-    fun convertAddressToLatLng() : LatLng {
+    fun convertAddressToLatLng(): LatLng {
         val streetNumber = binding.addPropertyStreetNumberEdittxt.text.toString()
         val streetName = binding.addPropertyStreetEdittxt.text.toString()
         val postalCode = binding.addPropertyPostalCodeEdittxt.text.toString()
         val city = binding.addPropertyCityEdittxt.text.toString()
         val geocoder = Geocoder(this)
-        var latLng : LatLng
+        var latLng: LatLng
         val addressParts = listOf(streetNumber, streetName, postalCode, city)
         val address = addressParts.joinToString(", ")
         val addressList = geocoder.getFromLocationName(address, 1)
-        if(addressList != null && addressList.isNotEmpty()) {
+        if (addressList != null && addressList.isNotEmpty()) {
             val location = addressList[0]
             val latitude = location.latitude
             val longitude = location.longitude
@@ -268,16 +269,23 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
         picturesUriList.add(pictureUri)
     }
 
-    private fun fetchAgentsListIntoSpinner(agents : List<Agent>) {
+    private fun fetchAgentsListIntoSpinner(agents: List<Agent>) {
         val spinner = binding.addPropertyAgentSpinner
-        val adapter : ArrayAdapter<String> = ArrayAdapter(this, android.R.layout.simple_spinner_item, agents.map { it.name })
+        val adapter: ArrayAdapter<String> =
+            ArrayAdapter(this, android.R.layout.simple_spinner_item, agents.map { it.name })
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        if(spinner != null) {
+        if (spinner != null) {
             spinner.adapter = adapter
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
                     selectedAgent = agents[position]
                 }
+
                 override fun onNothingSelected(p0: AdapterView<*>?) {
 
                 }
@@ -285,49 +293,49 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
         }
     }
 
-    private fun schoolCheckBoxIsCheckedOrNot() : Boolean {
-        val school : Boolean
-        val schoolCheckbox : CheckBox = binding.schoolCheckbox
+    private fun schoolCheckBoxIsCheckedOrNot(): Boolean {
+        val school: Boolean
+        val schoolCheckbox: CheckBox = binding.schoolCheckbox
         school = schoolCheckbox.isChecked
         return school
     }
 
-    private fun restaurantsCheckBoxIsCheckedOrNot() : Boolean {
-        val restaurants : Boolean
-        val restaurantsCheckbox : CheckBox = binding.restaurantsCheckbox
+    private fun restaurantsCheckBoxIsCheckedOrNot(): Boolean {
+        val restaurants: Boolean
+        val restaurantsCheckbox: CheckBox = binding.restaurantsCheckbox
         restaurants = restaurantsCheckbox.isChecked
         return restaurants
     }
 
-    private fun playgroundCheckBoxIsCheckedOrNot() : Boolean {
-        val playground : Boolean
-        val playgroundCheckbox : CheckBox = binding.playgroundCheckbox
+    private fun playgroundCheckBoxIsCheckedOrNot(): Boolean {
+        val playground: Boolean
+        val playgroundCheckbox: CheckBox = binding.playgroundCheckbox
         playground = playgroundCheckbox.isChecked
         return playground
     }
 
-    private fun supermarketCheckBoxIsCheckedOrNot() : Boolean {
-        val supermarket : Boolean
-        val supermarketCheckbox : CheckBox = binding.supermarketCheckbox
+    private fun supermarketCheckBoxIsCheckedOrNot(): Boolean {
+        val supermarket: Boolean
+        val supermarketCheckbox: CheckBox = binding.supermarketCheckbox
         supermarket = supermarketCheckbox.isChecked
         return supermarket
     }
 
-    private fun shoppingAreaCheckBoxIsCheckedOrNot() : Boolean {
-        val shoppingArea : Boolean
-        val shoppingAreaCheckbox : CheckBox = binding.shoppingAreaCheckbox
+    private fun shoppingAreaCheckBoxIsCheckedOrNot(): Boolean {
+        val shoppingArea: Boolean
+        val shoppingAreaCheckbox: CheckBox = binding.shoppingAreaCheckbox
         shoppingArea = shoppingAreaCheckbox.isChecked
         return shoppingArea
     }
 
-    private fun cinemaCheckBoxIsCheckedOrNot() : Boolean {
-        val cinema : Boolean
-        val cinemaCheckbox : CheckBox = binding.cinemaCheckbox
+    private fun cinemaCheckBoxIsCheckedOrNot(): Boolean {
+        val cinema: Boolean
+        val cinemaCheckbox: CheckBox = binding.cinemaCheckbox
         cinema = cinemaCheckbox.isChecked
         return cinema
     }
 
-    private fun validateFields() : Boolean {
+    private fun validateFields(): Boolean {
         val type = binding.addPropertyTypeEdittxt.text.toString()
         val rooms = binding.addPropertyRoomsEdittxt.text.toString()
         val price = binding.addPropertyPriceEdittxt.text.toString()
@@ -379,11 +387,11 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
         }
     }
 
-    private fun validateFieldsSoldOrAvailable() : Boolean {
+    private fun validateFieldsSoldOrAvailable(): Boolean {
         val sold = binding.addPropertySwitchSoldOrAvailable.isActivated
         val soldDate = binding.addPropertySoldDateEdittxt.text.toString()
 
-        if(sold){
+        if (sold) {
             if (soldDate.isEmpty()) {
                 binding.addPropertySoldDateEdittxt.error = "Sold date cannot be empty"
                 return false
