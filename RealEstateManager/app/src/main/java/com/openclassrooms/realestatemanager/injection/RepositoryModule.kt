@@ -2,7 +2,6 @@ package com.openclassrooms.realestatemanager.injection
 
 import com.openclassrooms.realestatemanager.database.AgentDao
 import com.openclassrooms.realestatemanager.database.ClientDao
-import com.openclassrooms.realestatemanager.database.ImageDao
 import com.openclassrooms.realestatemanager.database.PropertyDao
 import com.openclassrooms.realestatemanager.repository.AgentRepository
 import com.openclassrooms.realestatemanager.repository.ClientRepository
@@ -29,10 +28,5 @@ class RepositoryModule {
     @Provides
     fun provideClientRepository(clientDao: ClientDao) : ClientRepository {
         return ClientRepository(clientDao)
-    }
-
-    @Provides
-    fun provideImageRepository(imageDao : ImageDao) : ImageRepository {
-        return ImageRepository(imageDao)
     }
 }
