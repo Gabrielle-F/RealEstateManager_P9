@@ -1,5 +1,8 @@
 package com.openclassrooms.realestatemanager.repository
 
+import android.net.Uri
+import android.util.Log
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -8,6 +11,7 @@ import com.openclassrooms.realestatemanager.model.LocalPicture
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.model.PropertyFirestore
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -18,12 +22,14 @@ class PropertyRepository @Inject constructor(private val propertyDao: PropertyDa
 
     private val propertiesCollectionName: String = "properties"
     private val storageRef = FirebaseStorage.getInstance().reference
+    private val TAG = "Property Firestore ID"
 
 
     private fun getPropertiesCollection(): CollectionReference {
         return FirebaseFirestore.getInstance().collection(propertiesCollectionName)
     }
 
+    /**
     fun createPropertyInFirestoreDatabase(property: PropertyFirestore): String {
         val newPropertyRef = getPropertiesCollection().document()
         val createdId = newPropertyRef.id
@@ -94,6 +100,37 @@ class PropertyRepository @Inject constructor(private val propertyDao: PropertyDa
             }
         }
         return createdId
+    } */
+
+    fun createPropertyFirestore(property: PropertyFirestore, callback: (String) -> Unit) {
+        val newPropertyRef = getPropertiesCollection().document()
+        val createdId = newPropertyRef.id
+
+        if(property != null) {
+            val pictures = property.pictures
+            val picturesUrls = mutableListOf<String>()
+            val pictureUploadTask = pictures.map { localPicture ->
+                val pictureRef = storageRef.child("photos/photo${localPicture.imageUrl}.jpg")
+                pictureRef.putFile(Uri.parse(localPicture.imageUrl)).continueWithTask { task ->
+                    if(task.isSuccessful) {
+                        task.exception?.let { throw it }
+                    }
+                    pictureRef.downloadUrl
+                }.addOnSuccessListener { uri ->
+                    picturesUrls.add(uri.toString())
+                }
+            }
+            
+            Tasks.whenAllComplete(pictureUploadTask).addOnCompleteListener {
+                picturesUrls.forEachIndexed { index, imageUrl ->
+                    val localPicture = pictures[index]
+                    val photo = LocalPicture(imageUrl, localPicture.imageTitle, localPicture.imageDescription)
+                    getPropertiesCollection().document(createdId).collection("photos").add(photo)
+                }
+            }.addOnFailureListener { exception ->
+
+            }
+        }
     }
 
     suspend fun createProperty(property: Property) = propertyDao.insertProperty(property)

@@ -22,6 +22,7 @@ class AddEditPropertyViewModel @Inject constructor(
 
     val propertyLiveData = object : MutableLiveData<Property>() {}
     val agentsLD = object : MutableLiveData<List<Agent>>() {}
+    var createdPropertyId: String? = null
 
     fun createPropertyInLocalDb(property: Property) {
         viewModelScope.launch {
@@ -29,8 +30,15 @@ class AddEditPropertyViewModel @Inject constructor(
         }
     }
 
-    fun createPropertyInFirestoreDb(property: PropertyFirestore): String =
-        createPropertyInFirestoreUseCase.invoke(property)
+    /**fun createPropertyInFirestoreDb(property: PropertyFirestore): String =
+        createPropertyInFirestoreUseCase.invoke(property)*/
+
+    fun createPropertyFirestore(property: PropertyFirestore) {
+        createPropertyInFirestoreUseCase.invokePropertyFirestore(property) { createdId ->
+            createdPropertyId = createdId
+        }
+    }
+
 
     suspend fun updateProperty(property: Property) = updatePropertyUseCase.invoke(property)
 

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ACTIVITY LOGIN/SIGN UP -->
+    <dimen name="layout_login_padding">30dp</dimen>
+    <dimen name="card_elevation">20dp</dimen>
+    <dimen name="card_corner_radius">20dp</dimen>
+    <dimen name="cardview_login_height">160dp</dimen>
+    <dimen name="cardview_title_text_size">18sp</dimen>
+    <dimen name="cardview_title_margin_start">5dp</dimen>
+    <dimen name="cardview_title_margin_top">15dp</dimen>
+    <dimen name="cardview_title_padding_start">10dp</dimen>
+    <dimen name="radio_group_padding_start">8dp</dimen>
+    <dimen name="radio_group_padding_end">12dp</dimen>
+    <dimen name="radio_group_margin_start">8dp</dimen>
+    <dimen name="radio_group_margin_end">8dp</dimen>
+    <dimen name="radio_group_margin_top">40dp</dimen>
+    <dimen name="edit_txt_login_email_password_height">55dp</dimen>
+    <dimen name="edit_txt_login_email_password_margin_top">30dp</dimen>
+    <dimen name="edit_txt_login_email_password_drawable_padding">8dp</dimen>
+    <dimen name="edit_txt_login_email_password_padding_start">10dp</dimen>
+    <dimen name="edit_txt_login_email_password_text_size">18sp</dimen>
+    <dimen name="material_btn_login_margin_bottom">60dp</dimen>
+    <dimen name="material_btn_login_text_size">16sp</dimen>
+    <dimen name="material_btn_login_sign_up_padding_start">20dp</dimen>
+    <dimen name="material_btn_login_sign_up_padding_end">20dp</dimen>
+    <dimen name="material_btn_login_create_account_text_size">14sp</dimen>
+    <dimen name="sign_up_layout_padding">30dp</dimen>
+    <dimen name="edit_txt_sign_up_email_name_password_height">55dp</dimen>
+    <dimen name="edit_txt_sign_up_email_margin_top">40dp</dimen>
+    <dimen name="edit_txt_sign_up_email_name_password_drawable_padding">8dp</dimen>
+    <dimen name="edit_txt_sign_up_email_name_password_padding_start">10dp</dimen>
+    <dimen name="edit_txt_sign_up_email_name_password_text_size">18sp</dimen>
+    <dimen name="edit_txt_sign_up_password_name_margin_top">40dp</dimen>
+    <dimen name="material_btn_sign_up_margin_bottom">50dp</dimen>
+    <dimen name="material_btn_sign_up_text_size">16sp</dimen>
+
+    <!-- FRAGMENT PROPERTIES LIST/MAP -->
+    <dimen name="frame_layout_properties_list_map_container_width">210dp</dimen>
+    <dimen name="frame_layout_properties_list_map_container_height">210dp</dimen>
+    <dimen name="frame_layout_properties_list_map_container_margin_bottom_end">20dp</dimen>
+
+    <!-- ACTIVITY ADD EDIT PROPERTY -->
+    <dimen name="txt_input_layout_add_edit_property_margin_top">15dp</dimen>
+    <dimen name="txt_input_layout_add_edit_property_margin_end">15dp</dimen>
+    <dimen name="txt_input_layout_add_edit_property_margin_start_twenty">20dp</dimen>
+    <dimen name="txt_input_layout_add_edit_property_margin_start_fifteen">15dp</dimen>
+    <dimen name="cardview_amenities_add_edit_property_margin">10dp</dimen>
+    <dimen name="cardview_amenities_add_edit_property_elevation">5dp</dimen>
+    <dimen name="txt_view_add_edit_property_available_margin_start">30dp</dimen>
+    <dimen name="txt_view_add_edit_property_available_margin_top">15dp</dimen>
+    <dimen name="txt_view_add_edit_property_available_text_size">17sp</dimen>
+    <dimen name="switch_material_add_edit_property_available_width">60dp</dimen>
+    <dimen name="switch_material_add_edit_property_available_height">50dp</dimen>
+    <dimen name="switch_material_add_edit_property_available_margin_top">6dp</dimen>
+    <dimen name="switch_material_add_edit_property_available_margin_start">30dp</dimen>
+    <dimen name="txt_input_layout_add_edit_property_sold_date_margin_top">12dp</dimen>
+    <dimen name="txt_input_layout_add_edit_property_sold_date_margin_start">15dp</dimen>
+    <dimen name="txt_input_layout_add_edit_property_sold_date_margin_end">100dp</dimen>
+    <dimen name="material_btn_add_edit_property_add_pictures_text_size">15sp</dimen>
+    <dimen name="material_btn_add_edit_property_add_pictures_margin_top">15dp</dimen>
+    <dimen name="recycler_view_add_edit_property_pictures_height">200dp</dimen>
+    <dimen name="recycler_view_add_edit_property_pictures_margin_top">20dp</dimen>
+    <dimen name="edit_txt_add_edit_property_description_height">50dp</dimen>
+    <dimen name="edit_txt_add_edit_property_description_margin_top">15dp</dimen>
+    <dimen name="edit_txt_add_edit_property_description_margin_start_end">10dp</dimen>
+    <dimen name="edit_txt_add_edit_property_description_text_size">18sp</dimen>
+    <dimen name="spinner_add_edit_property_select_agent_height">50dp</dimen>
+    <dimen name="spinner_add_edit_property_select_agent_margin_start_bottom">15dp</dimen>
+    <dimen name="spinner_add_edit_property_select_agent_margin_top">25dp</dimen>
+    <dimen name="spinner_add_edit_property_select_agent_text_size">15sp</dimen>
+    <dimen name="extended_fab_add_edit_property_cancel_margin_start_end_bottom">15dp</dimen>
+    <dimen name="extended_fab_add_edit_property_cancel_margin_top">20dp</dimen>
+    <dimen name="extended_fab_add_edit_property_cancel_add_edit_property_text_size">15sp</dimen>
+    <dimen name="extended_fab_add_edit_property_add_property_margin_end_bottom">15dp</dimen>
+    <dimen name="extended_fab_add_edit_property_add_property_margin_top">20dp</dimen>
+    <dimen name="extended_fab_add_edit_property_edit_property_margin_top">20dp</dimen>
+    <dimen name="extended_fab_add_edit_property_edit_property_margin_bottom">15dp</dimen>
+
+    <!-- BOTTOM SHEET DIALOG FRAGMENT ADD PICTURES -->
+    <dimen name="bottom_sheet_dialog_fragment_layout_padding">10dp</dimen>
+    <dimen name="edit_txt_add_pictures_name_description_height">40dp</dimen>
+    <dimen name="edit_txt_add_pictures_name_margin_top_start_end">10dp</dimen>
+    <dimen name="edit_txt_add_pictures_name_padding_start_end">10dp</dimen>
+    <dimen name="img_view_add_pictures_see_selected_picture_width_height">100dp</dimen>
+    <dimen name="img_view_add_pictures_see_selected_picture_margin_top">20dp</dimen>
+    <dimen name="edit_txt_add_pictures_description_margin_start_end">10dp</dimen>
+    <dimen name="edit_txt_add_pictures_description_margin_top">20dp</dimen>
+    <dimen name="edit_txt_add_pictures_description_padding_start_end">10dp</dimen>
+    <dimen name="material_btn_add_pictures_choose_take_text_size">12sp</dimen>
+    <dimen name="material_btn_add_pictures_choose_take_margin_top">15dp</dimen>
+    <dimen name="material_btn_add_pictures_choose_take_margin_bottom">15dp</dimen>
+    <dimen name="material_btn_add_pictures_choose_take_margin_start_end">5dp</dimen>
+    <dimen name="material_btn_add_pictures_save_text_size">12sp</dimen>
+    <dimen name="material_btn_add_pictures_save_margin_bottom">10dp</dimen>
+
+    <!-- FRAGMENT PROPERTY DETAILS -->
+    <dimen name="txt_view_type_media_description_title_text_size">20sp</dimen>
+    <dimen name="txt_view_type_title_margin_start">5dp</dimen>
+    <dimen name="txt_view_type_title_margin_top">15dp</dimen>
+    <dimen name="txt_view_type_content_margin_top">19dp</dimen>
+    <dimen name="txt_view_type_content_margin_start">6dp</dimen>
+    <dimen name="txt_view_media_description_title_margin_top">15dp</dimen>
+    <dimen name="txt_view_media_description_title_margin_start">5dp</dimen>
+    <dimen name="recycler_view_pictures_property_details_height">100dp</dimen>
+    <dimen name="txt_view_type_description_content_text_size">15sp</dimen>
+    <dimen name="txt_view_description_content_margin_top">5dp</dimen>
+    <dimen name="txt_view_description_content_padding">9dp</dimen>
+    <dimen name="img_view_rooms_area_status_width_height">20dp</dimen>
+    <dimen name="img_view_rooms_area_status_margin_top">11dp</dimen>
+    <dimen name="img_view_rooms_area_status_margin_start">10dp</dimen>
+    <dimen name="txt_view_rooms_title_content_margin_top">10dp</dimen>
+    <dimen name="txt_view_rooms_title_content_margin_start">8dp</dimen>
+    <dimen name="txt_view_area_title_margin_top">13dp</dimen>
+    <dimen name="txt_view_area_title_margin_start">8dp</dimen>
+    <dimen name="txt_view_area_content_margin_top">12dp</dimen>
+    <dimen name="txt_view_area_content_margin_start">8dp</dimen>
+    <dimen name="txt_view_availability_title_content_margin_top">12dp</dimen>
+    <dimen name="txt_view_availability_title_content_margin_start">8dp</dimen>
+    <dimen name="txt_view_rooms_area_availability_location_title_text_size">15sp</dimen>
+    <dimen name="txt_view_rooms_area_availability_location_content_text_size">14sp</dimen>
+    <dimen name="img_view_location_width_height">15dp</dimen>
+    <dimen name="img_view_location_margin_top">10dp</dimen>
+    <dimen name="img_view_location_margin_end">8dp</dimen>
+    <dimen name="txt_view_location_title_margin_top">7dp</dimen>
+    <dimen name="txt_view_location_title_margin_end">10dp</dimen>
+    <dimen name="txt_view_address_city_margin_top">8dp</dimen>
+    <dimen name="txt_view_address_city_margin_end">10dp</dimen>
+    <dimen name="constraint_layout_amenities_margin_top">15dp</dimen>
+    <dimen name="txt_view_near_title_text_size">20sp</dimen>
+    <dimen name="txt_view_near_title_margin_top">10dp</dimen>
+    <dimen name="txt_view_near_title_margin_start">10dp</dimen>
+    <dimen name="img_view_amenities_positive_negative_icons_width_height">15dp</dimen>
+    <dimen name="img_view_amenities_positive_negative_icons_margin_top">12dp</dimen>
+    <dimen name="img_view_amenities_positive_negative_icons_margin_start_end">10dp</dimen>
+    <dimen name="txt_view_amenities_names_text_size">14sp</dimen>
+    <dimen name="cardview_details_margin_top">30dp</dimen>
+    <dimen name="cardview_details_margin">10dp</dimen>
+    <dimen name="cardview_details_titles_margin_top">7dp</dimen>
+    <dimen name="cardview_details_titles_contents_margin_top">8dp</dimen>
+    <dimen name="cardview_details_titles_contents_margin_start">10dp</dimen>
+    <dimen name="cardview_details_titles_contents_text_size">16sp</dimen>
+    <dimen name="cardview_details_agent_title_content_margin_top">5dp</dimen>
+    <dimen name="material_btn_property_details_text_size">14sp</dimen>
+    <dimen name="material_btn_property_details_margin_top">10dp</dimen>
+
+    <!-- FRAGMENT SEARCH PROPERTIES -->
+    <dimen name="txt_view_search_properties_price_range_title_margin_start_top">10dp</dimen>
+    <dimen name="txt_view_search_properties_price_area_type_range_title_text_size">20sp</dimen>
+    <dimen name="txt_view_search_properties_area_range_title_margin_start">10dp</dimen>
+    <dimen name="txt_view_search_properties_area_range_title_margin_top">12dp</dimen>
+    <dimen name="txt_view_search_properties_type_title_margin_start">10dp</dimen>
+    <dimen name="txt_view_search_properties_type_title_margin_top">12dp</dimen>
+    <dimen name="chip_groups_search_properties_type_number_rooms_margin_top">12dp</dimen>
+    <dimen name="chip_groups_search_properties_type_number_rooms_margin_start_end">7dp</dimen>
+    <dimen name="chip_groups_search_properties_type_number_rooms_spacing_horizontal_vertical">8dp</dimen>
+    <dimen name="txt_view_search_properties_number_rooms_proximity_title_margin_top">12dp</dimen>
+    <dimen name="txt_view_search_properties_number_rooms_proximity_title_margin_start">10dp</dimen>
+    <dimen name="txt_view_search_properties_number_rooms_proximity_title_text_size">20sp</dimen>
+    <dimen name="chip_groups_search_properties_proximity_number_pictures_availability_margin_top">12dp</dimen>
+    <dimen name="chip_groups_search_properties_proximity_number_pictures_availability_margin_start_end">7dp</dimen>
+    <dimen name="chip_groups_search_properties_proximity_number_pictures_availability_spacing_horizontal_vertical">8dp</dimen>
+    <dimen name="txt_view_search_properties_number_pictures_availability_title_text_size">20sp</dimen>
+    <dimen name="txt_view_search_properties_number_pictures_availability_title_margin_top">12dp</dimen>
+    <dimen name="txt_view_search_properties_number_pictures_availability_title_margin_start">10dp</dimen>
+    <dimen name="edit_text_search_properties_start_date_end_date_city_height">50dp</dimen>
+    <dimen name="edit_text_search_properties_start_date_end_date_city_margin_top">12dp</dimen>
+    <dimen name="edit_text_search_properties_start_date_end_date_city_margin_start_end">15dp</dimen>
+    <dimen name="edit_text_search_properties_start_date_end_date_city_drawable_padding">8dp</dimen>
+    <dimen name="edit_text_search_properties_start_date_end_date_city_padding_start">10dp</dimen>
+    <dimen name="edit_text_search_properties_start_date_end_date_city_text_size">18sp</dimen>
+    <dimen name="spinner_search_properties_agent_margin_top">12dp</dimen>
+    <dimen name="material_btn_search_properties_search_margin_top">12dp</dimen>
+    <dimen name="material_btn_search_properties_search_margin_bottom">22dp</dimen>
+    <dimen name="material_btn_search_properties_search_text_size">15sp</dimen>
+
+    <!-- ITEM PROPERTY -->
+    <dimen name="img_view_item_property_width_height">70dp</dimen>
+    <dimen name="img_view_item_property_margin_top_start">10dp</dimen>
+    <dimen name="txt_view_item_property_type_margin_start">20dp</dimen>
+    <dimen name="txt_view_item_property_type_margin_top">10dp</dimen>
+    <dimen name="txt_view_item_property_type_text_size">20sp</dimen>
+    <dimen name="txt_view_item_property_price_margin_top">15dp</dimen>
+    <dimen name="txt_view_item_property_price_margin_start">25dp</dimen>
+    <dimen name="txt_view_item_property_price_text_size">18sp</dimen>
+    <dimen name="img_view_item_property_currency_icons_width_height">20dp</dimen>
+    <dimen name="img_view_item_property_currency_icons_margin_start">15dp</dimen>
+    <dimen name="img_view_item_property_currency_icons_margin_bottom">5dp</dimen>
+
+    <!-- ITEM PICTURES ADD PROPERTY -->
+    <dimen name="img_view_item_pictures_add_property_width_height">80dp</dimen>
+    <dimen name="img_view_item_pictures_add_property_margin">8dp</dimen>
+
+</resources>

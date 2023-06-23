@@ -6,5 +6,7 @@ import javax.inject.Inject
 
 class CreatePropertyInFirestoreUseCase @Inject constructor(private val propertyRepository: PropertyRepository) {
 
-    fun invoke(property: PropertyFirestore): String = propertyRepository.createPropertyInFirestoreDatabase(property)
+    /**fun invoke(property: PropertyFirestore): String = propertyRepository.createPropertyInFirestoreDatabase(property)*/
+
+    fun invokePropertyFirestore(property: PropertyFirestore, callback: (String) -> Unit) = propertyRepository.createPropertyFirestore(property, callback)
 }

@@ -105,9 +105,16 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
     fun createProperty() {
         if (validateFields() && validateFieldsSoldOrAvailable()) {
             val propertyFirestore: PropertyFirestore = getPropertyFirestore()
-            val propertyCreatedIdString = viewModel.createPropertyInFirestoreDb(propertyFirestore)
-            val property: Property = getPropertyToCreate(propertyCreatedIdString)
-            viewModel.createPropertyInLocalDb(property)
+            /**val propertyCreatedIdString = viewModel.createPropertyInFirestoreDb(propertyFirestore)*/
+            /**val property: Property = getPropertyToCreate(propertyCreatedIdString)*/
+            viewModel.createPropertyFirestore(propertyFirestore)
+            val createdId = viewModel.createdPropertyId
+            if (createdId != null) {
+                val property: Property = getPropertyToCreate(createdId)
+                viewModel.createPropertyInLocalDb(property)
+            } else {
+                Toast.makeText(this, "Property not saved in local database because of missing id", Toast.LENGTH_LONG).show()
+            }
             Toast.makeText(this, "Property create with success !", Toast.LENGTH_SHORT).show()
         }
     }

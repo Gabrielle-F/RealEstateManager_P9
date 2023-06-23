@@ -8,7 +8,7 @@ data class LocalPicture(
     @PrimaryKey
     var imageUrl: String,
     var imageTitle: String?,
-    var imageDescription: String?,
+    var imageDescription: String?
 ) {
     constructor() : this("", "", "")
 }
