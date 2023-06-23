@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -72,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             configureNavDrawer();
 
             configureNavDrawerOnItemClickListener();
+            updateNavigationViewInfo();
         }
     }
 
@@ -136,6 +139,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             }
         });
+    }
+
+    private void updateNavigationViewInfo() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        NavigationView navView = findViewById(R.id.navigation_view);
+        View navHeader = navView.getHeaderView(0);
+        TextView userEmail = navHeader.findViewById(R.id.nav_header_user_email);
+        TextView userName = navHeader.findViewById(R.id.nav_header_user_name);
+        if(user != null) {
+            userEmail.setText(user.getEmail());
+            userName.setText(user.getDisplayName());
+        }
     }
 
     private void configureBottomBar() {
