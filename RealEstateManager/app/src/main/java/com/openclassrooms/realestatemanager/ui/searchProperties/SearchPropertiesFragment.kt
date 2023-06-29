@@ -47,6 +47,10 @@ class SearchPropertiesFragment : Fragment(R.layout.fragment_search_properties) {
                        types: List<String>?, rooms: List<Int>?, availability: Boolean?, startDate: String?,
                        endDate: String?, numberOfPictures: List<Int>?, agentName: String?, school: Boolean, restaurants: Boolean,
                        playground: Boolean, supermarket: Boolean, shoppingArea: Boolean, cinema: Boolean)
+        fun resetFilter(minPrice: Int, maxPrice: Int, minArea: Int, maxArea: Int, city: String?,
+                        types: List<String>?, rooms: List<Int>?, availability: Boolean?, startDate: String?,
+                        endDate: String?, numberOfPictures: List<Int>?, agentName: String?, school: Boolean, restaurants: Boolean,
+                        playground: Boolean, supermarket: Boolean, shoppingArea: Boolean, cinema: Boolean)
     }
     @Override
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -76,7 +80,7 @@ class SearchPropertiesFragment : Fragment(R.layout.fragment_search_properties) {
     }
 
     private fun configureListener() {
-        val filterListListener = object : OnParametersSelected{
+        /**val filterListListener = object : OnParametersSelected{
             override fun filterList(
                 minPrice: Int, maxPrice: Int, minArea: Int, maxArea: Int, city: String?, types: List<String>?,
                 rooms: List<Int>?, availability: Boolean?, startDate: String?, endDate: String?,
@@ -85,7 +89,7 @@ class SearchPropertiesFragment : Fragment(R.layout.fragment_search_properties) {
             ) {
                 requireActivity().supportFragmentManager.beginTransaction().remove(this@SearchPropertiesFragment).commit()
             }
-        }
+        }*/
 
         binding.searchStartDateEditTxt.setOnClickListener {
             showDatePickerDialog(binding.searchStartDateEditTxt)
@@ -107,6 +111,10 @@ class SearchPropertiesFragment : Fragment(R.layout.fragment_search_properties) {
                 getSelectedNumberOfRooms(), getAvailabilityChoice(), startDate, endDate, getSelectedNumberOfPictures(),
                 selectedAgent?.name, schoolAmenitie, restaurantsAmenitie, playgroundAmenitie,
                 supermarketAmenitie, shoppingAreaAmenitie, cinemaAmenitie)
+        }
+
+        binding.searchMaterialBtnResetFilters.setOnClickListener {
+            resetFilters()
         }
     }
 
@@ -265,6 +273,30 @@ class SearchPropertiesFragment : Fragment(R.layout.fragment_search_properties) {
                 }
             }
         }
+    }
+
+    fun resetFilters() {
+        minPrice = 0
+        maxPrice = 300000
+        minArea = 0
+        maxArea = 300
+        val city : String? = null
+        val types : List<String>? = null
+        val rooms : List<Int>? = null
+        val pictures : List<Int>? = null
+        val startDate : String? = null
+        val endDate : String? = null
+        val agentName : String? = null
+        val availability : Boolean? = null
+        schoolAmenitie = true
+        restaurantsAmenitie = true
+        playgroundAmenitie = true
+        shoppingAreaAmenitie = true
+        supermarketAmenitie = true
+        cinemaAmenitie = true
+        onParametersSelectedListener?.resetFilter(minPrice, maxPrice, minArea, maxArea, city, types, rooms,
+            availability, startDate, endDate, pictures, agentName, schoolAmenitie, restaurantsAmenitie,
+            playgroundAmenitie, supermarketAmenitie, shoppingAreaAmenitie, cinemaAmenitie)
     }
 
 }

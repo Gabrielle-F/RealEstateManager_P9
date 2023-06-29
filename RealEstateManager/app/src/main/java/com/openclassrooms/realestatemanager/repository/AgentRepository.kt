@@ -27,7 +27,7 @@ class AgentRepository @Inject constructor(private val agentDao: AgentDao) {
 
     suspend fun createAgent(agent: Agent) = agentDao.insertAgent(agent)
 
-    fun getAgentsCollection(): CollectionReference {
+    private fun getAgentsCollection(): CollectionReference {
         return FirebaseFirestore.getInstance().collection(agentsCollectionName)
     }
 

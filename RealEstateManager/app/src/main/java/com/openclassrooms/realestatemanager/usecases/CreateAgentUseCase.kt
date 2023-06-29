@@ -1,7 +1,6 @@
 package com.openclassrooms.realestatemanager.usecases
 
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.ktx.Firebase
 import com.openclassrooms.realestatemanager.model.Agent
 import com.openclassrooms.realestatemanager.repository.AgentRepository
 import javax.inject.Inject

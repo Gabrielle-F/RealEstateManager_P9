@@ -26,6 +26,7 @@ class PropertiesListFragment : Fragment(R.layout.activity_main),
     private lateinit var propertiesAdapter: PropertiesRecyclerViewAdapter
     private lateinit var mapFragment: MapFragment
     private var internetAvailable: Boolean = true
+    private var isTablet: Boolean = false
 
     @Override
     override fun onCreateView(
@@ -42,9 +43,12 @@ class PropertiesListFragment : Fragment(R.layout.activity_main),
         super.onViewCreated(view, savedInstanceState)
 
         internetAvailable = Utils.isInternetAvailable(requireContext())
+        isTablet = resources.getBoolean(R.bool.isTablet)
         mapFragment = MapFragment()
-        childFragmentManager.beginTransaction()
-            .add(binding.propertiesListMapContainer.id, mapFragment).commit()
+        binding.mapContainer?.id?.let {
+            childFragmentManager.beginTransaction()
+                .add(it, mapFragment).commit()
+        }
 
         propertiesAdapter = PropertiesRecyclerViewAdapter(this)
         binding.propertiesListRecyclerView.adapter = propertiesAdapter
@@ -62,6 +66,10 @@ class PropertiesListFragment : Fragment(R.layout.activity_main),
     @Override
     override fun onStart() {
         super.onStart()
+        propertiesListViewModel.getAllProperties()
+    }
+
+    fun getCompleteList() {
         propertiesListViewModel.getAllProperties()
     }
 
@@ -114,10 +122,15 @@ class PropertiesListFragment : Fragment(R.layout.activity_main),
         val bundle = Bundle()
         bundle.putString("selectedPropertyId", property.id)
         propertyDetailsFragment.arguments = bundle
-        fragmentManager.beginTransaction()
-            .replace(R.id.activity_main_fragment_container_view, propertyDetailsFragment)
-            .addToBackStack(null)
-            .commit()
+
+        if(isTablet) {
+            fragmentManager.beginTransaction().replace(R.id.fragment_view_details_property, propertyDetailsFragment).commit()
+        } else {
+            fragmentManager.beginTransaction()
+                .replace(R.id.activity_main_fragment_container_view, propertyDetailsFragment)
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     override fun getSharedPreferences(): String {

@@ -112,6 +112,7 @@
     <string name="search_date_picker_end_date">End date :</string>
     <string name="search_edit_text_city">City</string>
     <string name="search_material_button_text">Search</string>
+    <string name="search_material_button_reset_filters_text">Reset</string>
 
     <!-- FRAGMENT MAP -->
     <string name="retry">Retry</string>
@@ -127,7 +128,6 @@
     <string name="nav_close">Close</string>
 
     <!-- BOTTOMBAR/TOOLBAR MENU -->
-    <string name="properties_list_bottom_bar">PropertiesListIcon</string>
     <string name="make_search_toolbar">MakeSearchIcon</string>
     <string name="currency_money_exchange_bottom_bar">CurrencyExchangeIcon</string>
     <string name="add_property_bottom_bar">AddProperty</string>

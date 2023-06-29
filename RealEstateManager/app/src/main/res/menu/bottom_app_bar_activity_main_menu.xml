@@ -3,13 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/bottom_bar_properties_list"
-        android:title="@string/properties_list_bottom_bar"
-        android:icon="@drawable/ic_properties_list"
-        app:showAsAction="ifRoom"
-        />
-
-    <item
         android:id="@+id/bottom_bar_add_property"
         android:title="@string/add_property_bottom_bar"
         android:icon="@drawable/ic_add_property_white"

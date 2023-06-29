@@ -39,7 +39,6 @@ class AddEditPropertyViewModel @Inject constructor(
         }
     }
 
-
     suspend fun updateProperty(property: Property) = updatePropertyUseCase.invoke(property)
 
     fun getAllAgents() {

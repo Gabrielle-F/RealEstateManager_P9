@@ -11,6 +11,7 @@ import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.FragmentPropertyDetailsBinding
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.ui.addProperty.AddEditPropertyActivity
+import com.openclassrooms.realestatemanager.ui.propertiesMap.MapFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,6 +21,8 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
     private val viewModel: PropertyDetailsViewModel by viewModels()
     private lateinit var picturesAdapter: PropertyDetailsRecyclerViewAdapter
     private var selectedPropertyId: String = "propertyId"
+    private lateinit var mapFragment: MapFragment
+    private var isTablet: Boolean = false
 
     @Override
     override fun onCreateView(
@@ -37,6 +40,7 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
 
         picturesAdapter = PropertyDetailsRecyclerViewAdapter()
         binding.propertyDetailsRecyclerView.adapter = picturesAdapter
+        isTablet = resources.getBoolean(R.bool.isTablet)
 
         viewModel.propertyLiveData.observe(viewLifecycleOwner) { property ->
             fetchPropertyDetails(property)

@@ -16,12 +16,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,6 +28,8 @@ import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.ui.addProperty.AddEditPropertyActivity;
 import com.openclassrooms.realestatemanager.ui.authentication.LogInActivity;
 import com.openclassrooms.realestatemanager.ui.propertiesList.PropertiesListFragment;
+import com.openclassrooms.realestatemanager.ui.propertiesMap.MapFragment;
+import com.openclassrooms.realestatemanager.ui.propertyDetails.PropertyDetailsFragment;
 import com.openclassrooms.realestatemanager.ui.searchProperties.SearchPropertiesFragment;
 
 import org.jetbrains.annotations.Nullable;
@@ -48,6 +48,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolbar;
     private final PropertiesListFragment propertiesListFragment = new PropertiesListFragment();
     private final SearchPropertiesFragment searchPropertiesFragment = new SearchPropertiesFragment();
+
+    private PropertyDetailsFragment propertyDetailsFragment = null;
+
+    private Boolean isTablet = false;
     private Boolean userClient;
 
     private Boolean userAgent;
@@ -62,6 +66,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             finish();
         } else {
             setContentView(R.layout.activity_main);
+            isTablet = getResources().getBoolean(R.bool.isTablet);
+
+            if(isTablet) {
+                Fragment mapFrameLayout = getSupportFragmentManager().findFragmentById(R.id.map_container);
+                if(mapFrameLayout != null) {
+                    MapFragment mapFragment = new MapFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.map_container, mapFragment).commit();
+                }
+            }
 
             getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_fragment_container_view, propertiesListFragment).commit();
 
@@ -100,13 +113,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.search_toolbar:
-                getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_fragment_container_view, searchPropertiesFragment).commit();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.search_toolbar) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_fragment_container_view, searchPropertiesFragment).commit();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private void configureToolbar() {
@@ -125,19 +136,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void configureNavDrawerOnItemClickListener() {
         NavigationView navigationView = findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.logout:
-                        signOut(getApplicationContext());
-                        break;
-                    case R.id.currency_exchange:
-                        showCurrencyDialog();
-                        break;
-                }
-                return true;
+        navigationView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.logout:
+                    signOut(getApplicationContext());
+                    break;
+                case R.id.currency_exchange:
+                    showCurrencyDialog();
+                    break;
             }
+            return true;
         });
     }
 
@@ -155,31 +163,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void configureBottomBar() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-                if (id == R.id.bottom_bar_properties_list) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_fragment_container_view, propertiesListFragment).commit();
-                    return true;
-                }
-                if (id == R.id.bottom_bar_add_property) {
-                    Intent intent = new Intent(getApplicationContext(), AddEditPropertyActivity.class);
-                    startActivity(intent);
-                }
-                return true;
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.findItem(R.id.bottom_bar_add_property);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if(userClient) {
+                menuItem.setVisible(false);
+            } else if (userAgent && id == R.id.bottom_bar_add_property) {
+                Intent intent = new Intent(getApplicationContext(), AddEditPropertyActivity.class);
+                startActivity(intent);
             }
+            return true;
         });
     }
 
     private void signOut(Context context) {
-        AuthUI.getInstance().signOut(context).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    startLogInActivity();
-                    Toast.makeText(getApplicationContext(), "Logout successful", Toast.LENGTH_LONG).show();
-                }
+        AuthUI.getInstance().signOut(context).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                startLogInActivity();
+                Toast.makeText(getApplicationContext(), "Logout successful", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -209,7 +211,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        //TODO : use it for Toolbar
         return true;
     }
 
@@ -225,6 +226,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                            boolean playground, boolean supermarket, boolean shoppingArea, boolean cinema) {
         propertiesListFragment.getFilteredList(minPrice, maxPrice, minArea, maxArea, city, types, rooms, availability, startDate, endDate, numberOfPictures,
                 agentName, school, restaurants, playground, supermarket, shoppingArea, cinema);
+        getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_fragment_container_view, propertiesListFragment).commit();
+    }
+
+    @Override
+    public void resetFilter(int minPrice, int maxPrice, int minArea, int maxArea, @Nullable String city,
+                            @Nullable List<String> types, @Nullable List<Integer> rooms, @Nullable Boolean availability,
+                            @Nullable String startDate, @Nullable String endDate, @Nullable List<Integer> numberOfPictures,
+                            @Nullable String agentName, boolean school, boolean restaurants, boolean playground,
+                            boolean supermarket, boolean shoppingArea, boolean cinema) {
+        propertiesListFragment.getFilteredList(minPrice, maxPrice, minArea, maxArea, city, types, rooms,
+                availability, startDate, endDate, numberOfPictures, agentName, school, restaurants, playground,
+                supermarket, shoppingArea, cinema);
         getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_fragment_container_view, propertiesListFragment).commit();
     }
 }

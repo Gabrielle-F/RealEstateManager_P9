@@ -526,11 +526,25 @@
                     android:layout_marginTop="@dimen/spinner_search_properties_agent_margin_top"/>
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/search_material_btn"
+                    android:id="@+id/search_material_btn_reset_filters"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@+id/search_agent_spinner"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/search_material_btn"
+                    android:layout_marginTop="@dimen/material_btn_search_properties_search_margin_top"
+                    android:layout_marginBottom="@dimen/material_btn_search_properties_search_margin_bottom"
+                    android:textSize="17sp"
+                    android:text="@string/search_material_button_reset_filters_text"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/variantNeutralDarkColor"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/search_material_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/search_agent_spinner"
+                    app:layout_constraintStart_toEndOf="@+id/search_material_btn_reset_filters"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginTop="@dimen/material_btn_search_properties_search_margin_top"
                     android:layout_marginBottom="@dimen/material_btn_search_properties_search_margin_bottom"
