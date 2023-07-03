@@ -142,7 +142,7 @@ class PropertyRepository @Inject constructor(private val propertyDao: PropertyDa
     fun getSearchProperties(
         minPrice: Int, maxPrice: Int, minArea: Int, maxArea: Int, city: String?,
         types: List<String>?, rooms: List<Int>?,
-        availability: Boolean?, startDate: String?, endDate: String?, numberOfPictures: List<Int>,
+        availability: Boolean?, startDate: String?, endDate: String?, numberOfPictures: List<Int>?,
         agentName: String?, school: Boolean, restaurants: Boolean, playground: Boolean,
         supermarket: Boolean, shoppingArea: Boolean, cinema: Boolean
     ): Flow<List<Property>> = propertyDao.getSearchProperties(

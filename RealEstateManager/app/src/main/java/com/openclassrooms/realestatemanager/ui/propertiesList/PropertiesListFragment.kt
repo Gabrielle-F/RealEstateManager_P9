@@ -85,7 +85,7 @@ class PropertiesListFragment : Fragment(R.layout.activity_main),
         startDate:
         String?,
         endDate: String?,
-        numberOfPictures: List<Int>,
+        numberOfPictures: List<Int>?,
         agentName: String?,
         school: Boolean,
         restaurants: Boolean,
