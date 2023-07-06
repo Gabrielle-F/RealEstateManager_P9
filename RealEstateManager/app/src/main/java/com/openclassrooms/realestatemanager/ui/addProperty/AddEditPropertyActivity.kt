@@ -71,7 +71,7 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
         viewModel.getPropertyById(selectedPropertyId)
     }
 
-    fun configureListeners() {
+    private fun configureListeners() {
         val addPropertyAddedOrUpdatedListener = object : OnPropertyAddedOrUpdatedListener {
             override fun onPropertyAddedOrUpdated() {
                 val intent = Intent(applicationContext, MainActivity::class.java)
@@ -102,7 +102,7 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
     }
 
 
-    fun createProperty() {
+    private fun createProperty() {
         if (validateFields() && validateFieldsSoldOrAvailable()) {
             val propertyFirestore: PropertyFirestore = getPropertyFirestore()
             /**val propertyCreatedIdString = viewModel.createPropertyInFirestoreDb(propertyFirestore)*/
@@ -119,13 +119,13 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
         }
     }
 
-    suspend fun updateProperty() {
+    private suspend fun updateProperty() {
         val property: Property = getUpdateProperty()
         viewModel.updateProperty(property)
         Toast.makeText(this, "Property update with success !", Toast.LENGTH_SHORT).show()
     }
 
-    fun getPropertyToCreate(id: String): Property {
+    private fun getPropertyToCreate(id: String): Property {
         return Property(
             id = id,
             type = binding.addPropertyTypeEdittxt.text.toString(),
@@ -234,37 +234,26 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
             binding.addPropertySwitchSoldOrAvailable.isChecked = property.sold
             binding.addPropertySoldDateEdittxt.setText(property.soldDate)
             propertyRegisterDate = property.registerDate
-
-            var propertyLatLng: LatLng? = null
-
-            /**val agentId = property.agentName
-            binding.addPropertyAgentSpinner.id = agentId*/
-            val latitude = property.latitude
-            val longitude = property.longitude
-            val latLng = LatLng(latitude, longitude)
-            if (latLng != null) {
-                propertyLatLng = latLng
-            }
         }
     }
 
-    fun convertAddressToLatLng(): LatLng {
+    @Suppress("DEPRECATION")
+    private fun convertAddressToLatLng(): LatLng {
         val streetNumber = binding.addPropertyStreetNumberEdittxt.text.toString()
         val streetName = binding.addPropertyStreetEdittxt.text.toString()
         val postalCode = binding.addPropertyPostalCodeEdittxt.text.toString()
         val city = binding.addPropertyCityEdittxt.text.toString()
         val geocoder = Geocoder(this)
-        var latLng: LatLng
         val addressParts = listOf(streetNumber, streetName, postalCode, city)
         val address = addressParts.joinToString(", ")
         val addressList = geocoder.getFromLocationName(address, 1)
-        if (addressList != null && addressList.isNotEmpty()) {
+        val latLng = if (addressList != null && addressList.isNotEmpty()) {
             val location = addressList[0]
             val latitude = location.latitude
             val longitude = location.longitude
-            latLng = LatLng(latitude, longitude)
+            LatLng(latitude, longitude)
         } else {
-            latLng = LatLng(0.0, 0.0)
+            LatLng(0.0, 0.0)
         }
         return latLng
     }
@@ -281,7 +270,7 @@ class AddEditPropertyActivity : AppCompatActivity(), AddPicturesFragment.OnDataC
         val adapter: ArrayAdapter<String> =
             ArrayAdapter(this, android.R.layout.simple_spinner_item, agents.map { it.name })
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        if (spinner != null) {
+        spinner.let {
             spinner.adapter = adapter
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(

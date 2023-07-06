@@ -33,7 +33,7 @@ class PropertyDetailsRecyclerViewAdapter :
         val item = list[position]
         holder.picture = item
         holder.pictureView.setImageURI(Uri.parse(item.imageUrl))
-        holder.pictureTitle.setText(item.imageTitle)
+        holder.pictureTitle.text = item.imageTitle
     }
 
     override fun getItemCount(): Int {

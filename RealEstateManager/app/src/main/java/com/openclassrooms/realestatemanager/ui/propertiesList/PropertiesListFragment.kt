@@ -33,7 +33,7 @@ class PropertiesListFragment : Fragment(R.layout.activity_main),
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentListPropertiesBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -66,10 +66,6 @@ class PropertiesListFragment : Fragment(R.layout.activity_main),
     @Override
     override fun onStart() {
         super.onStart()
-        propertiesListViewModel.getAllProperties()
-    }
-
-    fun getCompleteList() {
         propertiesListViewModel.getAllProperties()
     }
 
@@ -123,8 +119,9 @@ class PropertiesListFragment : Fragment(R.layout.activity_main),
         bundle.putString("selectedPropertyId", property.id)
         propertyDetailsFragment.arguments = bundle
 
-        if(isTablet) {
-            fragmentManager.beginTransaction().replace(R.id.fragment_view_details_property, propertyDetailsFragment).commit()
+        if (isTablet) {
+            fragmentManager.beginTransaction()
+                .replace(R.id.fragment_view_details_property, propertyDetailsFragment).commit()
         } else {
             fragmentManager.beginTransaction()
                 .replace(R.id.activity_main_fragment_container_view, propertyDetailsFragment)
@@ -135,8 +132,7 @@ class PropertiesListFragment : Fragment(R.layout.activity_main),
 
     override fun getSharedPreferences(): String {
         val daggerHilt = requireActivity().application as DaggerHiltApplication
-        var selectedCurrency: String = daggerHilt.appPreferences.getSelectedCurrency()
-        return selectedCurrency
+        return daggerHilt.appPreferences.getSelectedCurrency()
     }
 
     fun updateCurrency(currency: String) {

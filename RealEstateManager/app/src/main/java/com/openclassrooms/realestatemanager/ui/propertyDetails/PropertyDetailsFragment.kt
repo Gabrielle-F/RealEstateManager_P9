@@ -11,7 +11,6 @@ import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.FragmentPropertyDetailsBinding
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.ui.addProperty.AddEditPropertyActivity
-import com.openclassrooms.realestatemanager.ui.propertiesMap.MapFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,7 +20,6 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
     private val viewModel: PropertyDetailsViewModel by viewModels()
     private lateinit var picturesAdapter: PropertyDetailsRecyclerViewAdapter
     private var selectedPropertyId: String = "propertyId"
-    private lateinit var mapFragment: MapFragment
     private var isTablet: Boolean = false
 
     @Override
@@ -29,7 +27,7 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentPropertyDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -65,30 +63,30 @@ class PropertyDetailsFragment : Fragment(R.layout.fragment_property_details) {
 
     private fun fetchPropertyDetails(property: Property?) {
         if (property != null) {
-            binding.propertyDetailsTypeInfo.setText(property.type)
-            binding.propertyDetailsCityInfo.setText(property.city)
-            binding.propertyDetailsAreaInfo.setText(property.area.toString())
-            binding.propertyDetailsNumberOfRoomsInfo.setText(property.rooms.toString())
+            binding.propertyDetailsTypeInfo.text = property.type
+            binding.propertyDetailsCityInfo.text = property.city
+            binding.propertyDetailsAreaInfo.text = property.area.toString()
+            binding.propertyDetailsNumberOfRoomsInfo.text = property.rooms.toString()
             val address = getString(
                 R.string.details_address_with_number,
                 property.streetNumber,
                 property.streetName,
                 property.postalCode
             )
-            binding.propertyDetailsLocationAddress.setText(address)
-            binding.propertyDetailsPriceInfo.setText(property.price.toString())
-            binding.propertyDetailsRegisterDateInfo.setText(property.registerDate)
-            binding.propertyDetailsDescriptionContent.setText(property.description)
+            binding.propertyDetailsLocationAddress.text = address
+            binding.propertyDetailsPriceInfo.text = property.price.toString()
+            binding.propertyDetailsRegisterDateInfo.text = property.registerDate
+            binding.propertyDetailsDescriptionContent.text = property.description
             property.pictures.let { picturesList ->
                 picturesAdapter.updatePicturesList(picturesList)
             }
             picturesAdapter.updatePicturesList(property.pictures)
             if (property.sold) {
-                binding.propertyDetailsSoldDateInfo.setText(property.soldDate)
+                binding.propertyDetailsSoldDateInfo.text = property.soldDate
             } else {
-                binding.propertyDetailsSoldDateInfo.setText("?")
+                binding.propertyDetailsSoldDateInfo.text = "?"
             }
-            binding.propertyDetailsAgentInfo.setText(property.agentName)
+            binding.propertyDetailsAgentInfo.text = property.agentName
 
             if (property.sold) {
                 binding.propertyDetailsAvailableInfo.visibility = View.INVISIBLE

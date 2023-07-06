@@ -21,15 +21,17 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class AddPicturesFragment :
     BottomSheetDialogFragment(R.layout.bottom_sheet_dialog_fragment_add_image) {
+    companion object {
+        private const val EXTERNAL_STORAGE_PERMISSION_CODE = 20
+        private const val CAMERA_PERMISSION_CODE = 10
+        private const val REQUEST_IMAGE_CAPTURE_CODE = 100
+        private const val REQUEST_IMAGE_SELECT_CODE = 200
+    }
 
     private lateinit var context: Context
     private lateinit var listener: OnDataChangeListener
     private lateinit var binding: BottomSheetDialogFragmentAddImageBinding
     private lateinit var imagePath: String
-    private val EXTERNAL_STORAGE_PERMISSION_CODE: Int = 20
-    private val CAMERA_PERMISSION_CODE: Int = 10
-    private val REQUEST_IMAGE_CAPTURE_CODE: Int = 100
-    private val REQUEST_IMAGE_SELECT_CODE: Int = 200
     private val cameraPermissions = arrayOf(
         Manifest.permission.CAMERA,
         Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -47,7 +49,7 @@ class AddPicturesFragment :
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = BottomSheetDialogFragmentAddImageBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -70,6 +72,7 @@ class AddPicturesFragment :
         }
     }
 
+    @Suppress("DEPRECATION")
     private fun configureListeners() {
         binding.addPictureFragmentTakePictureBtn.setOnClickListener {
             val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -87,6 +90,7 @@ class AddPicturesFragment :
     }
 
     @Deprecated("Deprecated in Java")
+    @Suppress("DEPRECATION")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {

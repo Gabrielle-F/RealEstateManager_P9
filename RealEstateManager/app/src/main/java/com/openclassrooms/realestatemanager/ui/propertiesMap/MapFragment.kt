@@ -26,9 +26,12 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
 
+    companion object {
+        private const val ACCESS_FINE_LOCATION_CODE = 125
+        private const val ACCESS_WIFI_STATE_CODE = 115
+    }
+
     private lateinit var mapView: SupportMapFragment
-    private val ACCESS_FINE_LOCATION_CODE = 125
-    private val ACCESS_WIFI_STATE_CODE = 115
     private val viewModel: MapViewModel by viewModels()
     private lateinit var binding: FragmentMapBinding
     private lateinit var map: GoogleMap
@@ -46,7 +49,7 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentMapBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -104,7 +107,7 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
             showMap = true
         }
 
-        when (showMap.and(Utils.isInternetAvailable(context))) {
+        when (showMap.and(Utils.isInternetAvailable(requireContext()))) {
             true -> showActiveMap()
             false -> showInactiveMap()
         }

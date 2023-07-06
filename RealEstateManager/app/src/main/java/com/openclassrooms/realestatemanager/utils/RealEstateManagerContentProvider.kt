@@ -7,7 +7,6 @@ import android.database.Cursor
 import android.net.Uri
 import com.openclassrooms.realestatemanager.injection.DatabaseModule
 import com.openclassrooms.realestatemanager.model.Property
-import com.openclassrooms.realestatemanager.repository.PropertyRepository
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
@@ -23,7 +22,7 @@ class RealEstateManagerContentProvider @Inject constructor(
         firstString: String?,
         secondArray: Array<out String>?,
         secondString: String?
-    ): Cursor? {
+    ): Cursor {
         context?.let { context ->
             val id = ContentUris.parseId(uri).toInt()
             val cursor =
@@ -35,7 +34,7 @@ class RealEstateManagerContentProvider @Inject constructor(
         throw IllegalArgumentException("Failed to query row for uri $uri")
     }
 
-    override fun getType(uri: Uri): String? = "vnd.android.cursor.item/$AUTHORITY.$PROPERTY_TABLE"
+    override fun getType(uri: Uri): String = "vnd.android.cursor.item/$AUTHORITY.$PROPERTY_TABLE"
 
     override fun insert(uri: Uri, contentValues: ContentValues?): Uri? {
         context?.let { context ->
@@ -45,7 +44,7 @@ class RealEstateManagerContentProvider @Inject constructor(
                     val property = property.fromContentValues(it)
                     val id =
                         databaseModule.provideAppDatabase(context).propertyDao().insert(property)
-                    if (!!id.equals(0L)) {
+                    if (id != 0L) {
                         context.contentResolver.notifyChange(uri, null)
                         contentUris = ContentUris.withAppendedId(uri, id)
                     }
@@ -66,7 +65,7 @@ class RealEstateManagerContentProvider @Inject constructor(
     ): Int {
         context?.let { context ->
             contentValues?.let {
-                var count = 0
+                var count : Int
                 runBlocking {
                     count = databaseModule.provideAppDatabase(context).propertyDao()
                         .update(property.fromContentValues(it))

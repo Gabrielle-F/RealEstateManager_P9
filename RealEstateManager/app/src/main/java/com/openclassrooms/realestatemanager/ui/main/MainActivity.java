@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.ui.main;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,7 +30,6 @@ import com.openclassrooms.realestatemanager.ui.addProperty.AddEditPropertyActivi
 import com.openclassrooms.realestatemanager.ui.authentication.LogInActivity;
 import com.openclassrooms.realestatemanager.ui.propertiesList.PropertiesListFragment;
 import com.openclassrooms.realestatemanager.ui.propertiesMap.MapFragment;
-import com.openclassrooms.realestatemanager.ui.propertyDetails.PropertyDetailsFragment;
 import com.openclassrooms.realestatemanager.ui.searchProperties.SearchPropertiesFragment;
 
 import org.jetbrains.annotations.Nullable;
@@ -48,10 +48,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolbar;
     private final PropertiesListFragment propertiesListFragment = new PropertiesListFragment();
     private final SearchPropertiesFragment searchPropertiesFragment = new SearchPropertiesFragment();
-
-    private PropertyDetailsFragment propertyDetailsFragment = null;
-
-    private Boolean isTablet = false;
     private Boolean userClient;
 
     private Boolean userAgent;
@@ -65,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
             finish();
         } else {
+            boolean isTablet;
             setContentView(R.layout.activity_main);
             isTablet = getResources().getBoolean(R.bool.isTablet);
 
@@ -134,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
     }
 
+    @SuppressLint("NonConstantResourceId")
     private void configureNavDrawerOnItemClickListener() {
         NavigationView navigationView = findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(item -> {
@@ -193,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void showCurrencyDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
-        dialog.setTitle("Choisissez une devise");
+        dialog.setTitle("Choose a currency");
         final String[] currencies = {"Dollar", "Euro"};
         final DaggerHiltApplication daggerHilt = (DaggerHiltApplication) getApplication();
         dialog.setItems(currencies, (dialog1, which) -> {

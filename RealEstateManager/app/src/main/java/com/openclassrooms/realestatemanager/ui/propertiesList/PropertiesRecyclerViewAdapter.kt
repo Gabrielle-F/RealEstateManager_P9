@@ -48,14 +48,17 @@ class PropertiesRecyclerViewAdapter(private val onItemClickListener: OnItemClick
         holder.property = item
         holder.propertyType.text = item.type
         val price = item.price
-        if (selectedCurrency == "Euro") {
-            holder.propertyPriceEuro.visibility = View.VISIBLE
-            holder.propertyPriceDollar.visibility = View.GONE
-            Utils.convertDollarToEuro(price)
-        } else if (selectedCurrency == "Dollar") {
-            holder.propertyPriceDollar.visibility = View.VISIBLE
-            holder.propertyPriceEuro.visibility = View.GONE
-            Utils.convertEuroToDollar(price)
+        when (selectedCurrency) {
+            "Euro" -> {
+                holder.propertyPriceEuro.visibility = View.VISIBLE
+                holder.propertyPriceDollar.visibility = View.GONE
+                Utils.convertDollarToEuro(price)
+            }
+            "Dollar" -> {
+                holder.propertyPriceDollar.visibility = View.VISIBLE
+                holder.propertyPriceEuro.visibility = View.GONE
+                Utils.convertEuroToDollar(price)
+            }
         }
         holder.propertyPrice.text = item.price.toString()
 
@@ -82,7 +85,7 @@ class PropertiesRecyclerViewAdapter(private val onItemClickListener: OnItemClick
         init {
             itemView.setOnClickListener {
                 val property = property
-                if (property != null) {
+                property?.let {
                     onItemClickListener.onClick(property)
                 }
             }

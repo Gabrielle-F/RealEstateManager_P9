@@ -88,8 +88,7 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun getAgentCreatedId(name: String): String {
         val firebaseUser = FirebaseAuth.getInstance().currentUser
-        val createdId = viewModel.createAgentInFirestoreDatabase(firebaseUser, name)
-        return createdId
+        return viewModel.createAgentInFirestoreDatabase(firebaseUser, name)
     }
 
     private fun createAgent(agent: Agent) = viewModel.createAgent(agent)
@@ -100,8 +99,7 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun getClientCreatedId(name: String): String {
         val firebaseUser = FirebaseAuth.getInstance().currentUser
-        val createdId = viewModel.createClientInFirestoreDatabase(firebaseUser, name)
-        return createdId
+        return viewModel.createClientInFirestoreDatabase(firebaseUser, name)
     }
 
     private fun createClient(client: Client) = viewModel.createClient(client)

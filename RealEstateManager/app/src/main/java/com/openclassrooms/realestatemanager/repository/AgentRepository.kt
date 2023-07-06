@@ -20,10 +20,13 @@ import javax.inject.Singleton
 @Singleton
 class AgentRepository @Inject constructor(private val agentDao: AgentDao) {
 
+    companion object {
+        private const val TAG_ERROR_SIGN_IN = "Sign In Error"
+        private const val TAG_ERROR_INCORRECT_PASSWORD_OR_EMAIL = "Wrong password or mail"
+    }
+
     private val agentsCollectionName: String = "agents"
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val TAG_ERROR_SIGN_IN: String = "Error"
-    private val TAG_ERROR_INCORRECT_PASSWORD_OR_EMAIL: String = "Wrong password or email"
 
     suspend fun createAgent(agent: Agent) = agentDao.insertAgent(agent)
 
@@ -60,8 +63,8 @@ class AgentRepository @Inject constructor(private val agentDao: AgentDao) {
 
             val userData: Task<DocumentSnapshot>? = getUserData()
             val agent = AgentFirestore(email, name)
-            if (userData != null) {
-                userData.addOnSuccessListener {
+            userData?.let { data ->
+                data.addOnSuccessListener {
                     newAgentRef.set(agent).addOnSuccessListener {
                         createdId = newAgentRef.id
                     }
@@ -71,12 +74,12 @@ class AgentRepository @Inject constructor(private val agentDao: AgentDao) {
         return createdId
     }
 
-    fun getUserData(): Task<DocumentSnapshot>? {
+    private fun getUserData(): Task<DocumentSnapshot>? {
         val uid: String? = this.getCurrentFirebaseUser()?.uid
-        if (uid != null) {
-            return this.getAgentsCollection().document(uid).get()
+        return if (uid != null) {
+            this.getAgentsCollection().document(uid).get()
         } else {
-            return null
+            null
         }
     }
 

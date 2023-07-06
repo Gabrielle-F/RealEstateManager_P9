@@ -4,7 +4,6 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.openclassrooms.realestatemanager.model.LocalPicture
-import java.net.URL
 
 class Converters {
 
@@ -19,10 +18,5 @@ class Converters {
         val type = object : TypeToken<List<LocalPicture>>() {}.type
         val gson = Gson()
         return gson.fromJson(json, type)
-    }
-
-    @TypeConverter
-    fun fromStringToUrl(path: String): URL {
-        return URL(path)
     }
 }

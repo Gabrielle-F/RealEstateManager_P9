@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
-import com.google.android.material.slider.RangeSlider
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.FragmentSearchPropertiesBinding
 import com.openclassrooms.realestatemanager.model.Agent
@@ -53,7 +52,7 @@ class SearchPropertiesFragment : Fragment(R.layout.fragment_search_properties) {
                         playground: Boolean, supermarket: Boolean, shoppingArea: Boolean, cinema: Boolean)
     }
     @Override
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentSearchPropertiesBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -122,7 +121,7 @@ class SearchPropertiesFragment : Fragment(R.layout.fragment_search_properties) {
         onParametersSelectedListener = listener
     }
 
-    private fun getSelectedTypesList() : List<String>? {
+    private fun getSelectedTypesList() : List<String> {
         val selectedTypes = mutableListOf<String>()
         val chipGroup = binding.searchTypeChipGroup
 
@@ -135,7 +134,7 @@ class SearchPropertiesFragment : Fragment(R.layout.fragment_search_properties) {
         return selectedTypes
     }
 
-    private fun getSelectedNumberOfRoomsStringList() : List<String>? {
+    private fun getSelectedNumberOfRoomsStringList() : List<String> {
         val selectedNumbersOfRooms = mutableListOf<String>()
         val chipGroup = binding.searchRoomsChipGroup
 
@@ -148,11 +147,11 @@ class SearchPropertiesFragment : Fragment(R.layout.fragment_search_properties) {
         return selectedNumbersOfRooms
     }
 
-    private fun getSelectedNumberOfRooms(): List<Int>? {
-        val selectedStringRooms: List<String>? = getSelectedNumberOfRoomsStringList()
+    private fun getSelectedNumberOfRooms(): List<Int> {
+        val selectedStringRooms: List<String> = getSelectedNumberOfRoomsStringList()
         val selectedIntRooms = mutableListOf<Int>()
 
-        selectedStringRooms?.let { rooms ->
+        selectedStringRooms.let { rooms ->
             val roomValues = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11")
 
             for (roomValue in roomValues) {
@@ -178,8 +177,8 @@ class SearchPropertiesFragment : Fragment(R.layout.fragment_search_properties) {
     }
 
     private fun getSelectedAmenities() {
-        val selectedStringsAmenities: List<String>? = getSelectedStringsProximity()
-        selectedStringsAmenities?.forEach { amenity ->
+        val selectedStringsAmenities: List<String> = getSelectedStringsProximity()
+        selectedStringsAmenities.forEach { amenity ->
             when (amenity) {
                 "School" -> schoolAmenitie = true
                 "Restaurants" -> restaurantsAmenitie = true
@@ -204,11 +203,11 @@ class SearchPropertiesFragment : Fragment(R.layout.fragment_search_properties) {
         return selectedNumbersOfPictures
     }
 
-    private fun getSelectedNumberOfPictures(): List<Int>? {
-        val selectedStringsPictures:  List<String>? = getSelectedNumbersOfPicturesListString()
+    private fun getSelectedNumberOfPictures(): List<Int> {
+        val selectedStringsPictures:  List<String> = getSelectedNumbersOfPicturesListString()
         val selectedIntPictures = mutableListOf<Int>()
 
-        selectedStringsPictures?.let { pictures ->
+        selectedStringsPictures.let { pictures ->
             val picturesValues = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11")
 
             for (picturesValue in picturesValues) {
@@ -220,6 +219,7 @@ class SearchPropertiesFragment : Fragment(R.layout.fragment_search_properties) {
         return selectedIntPictures
     }
 
+    @Suppress("DEPRECATION")
     private fun getAvailabilityChoice() : Boolean? {
         var availability : Boolean? = false
         binding.searchAvailabilityChipGroup.setOnCheckedChangeListener { group, checkedId ->
@@ -261,7 +261,7 @@ class SearchPropertiesFragment : Fragment(R.layout.fragment_search_properties) {
         val spinner = binding.searchAgentSpinner
         val adapter : ArrayAdapter<String> = ArrayAdapter(context, android.R.layout.simple_spinner_item, agents.map { it.name })
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        if(spinner != null) {
+        spinner.let {
             spinner.adapter = adapter
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
@@ -275,7 +275,7 @@ class SearchPropertiesFragment : Fragment(R.layout.fragment_search_properties) {
         }
     }
 
-    fun resetFilters() {
+    private fun resetFilters() {
         minPrice = 0
         maxPrice = 300000
         minArea = 0
@@ -288,15 +288,9 @@ class SearchPropertiesFragment : Fragment(R.layout.fragment_search_properties) {
         val endDate : String? = null
         val agentName : String? = null
         val availability : Boolean? = null
-        schoolAmenitie = true
-        restaurantsAmenitie = true
-        playgroundAmenitie = true
-        shoppingAreaAmenitie = true
-        supermarketAmenitie = true
-        cinemaAmenitie = true
         onParametersSelectedListener?.resetFilter(minPrice, maxPrice, minArea, maxArea, city, types, rooms,
-            availability, startDate, endDate, pictures, agentName, schoolAmenitie, restaurantsAmenitie,
-            playgroundAmenitie, supermarketAmenitie, shoppingAreaAmenitie, cinemaAmenitie)
+            availability, startDate, endDate, pictures, agentName, school = true, restaurants = true,
+            playground = true, supermarket = true, shoppingArea = true, cinema = true)
     }
 
 }

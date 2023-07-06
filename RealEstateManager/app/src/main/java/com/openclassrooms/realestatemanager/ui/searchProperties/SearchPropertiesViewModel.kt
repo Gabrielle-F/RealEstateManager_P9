@@ -15,7 +15,7 @@ class SearchPropertiesViewModel @Inject constructor(private val getAgentsListUse
     val agentsListLiveData = object : MutableLiveData<List<Agent>>(){}
 
     suspend fun getAgentsListLD() {
-        getAgentsListUseCase.invoke().collect() { agents ->
+        getAgentsListUseCase.invoke().collect { agents ->
             agentsListLiveData.postValue(agents)
         }
     }

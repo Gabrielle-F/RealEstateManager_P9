@@ -5,12 +5,10 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.ActivityLoginBinding
 import com.openclassrooms.realestatemanager.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LogInActivity : AppCompatActivity() {
@@ -37,7 +35,7 @@ class LogInActivity : AppCompatActivity() {
             }
         }
 
-        binding.loginActivityRadioGroup.setOnCheckedChangeListener { group, checkedId ->
+        binding.loginActivityRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             if (R.id.agent_radio_btn == checkedId) {
                 agent = true
                 client = false

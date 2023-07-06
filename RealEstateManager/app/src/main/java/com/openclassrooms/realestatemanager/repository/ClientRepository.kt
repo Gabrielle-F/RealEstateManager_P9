@@ -15,10 +15,13 @@ import javax.inject.Inject
 
 class ClientRepository @Inject constructor(private val clientDao: ClientDao) {
 
+    companion object {
+        private const val TAG_ERROR_SIGN_IN = "Error"
+        private const val TAG_ERROR_INCORRECT_PASSWORD_OR_EMAIL = "Wrong password or email"
+    }
+
     private val clientCollectionName: String = "clients"
     private val firebaseAuth = FirebaseAuth.getInstance()
-    private val TAG_ERROR_SIGN_IN: String = "Error"
-    private val TAG_ERROR_INCORRECT_PASSWORD_OR_EMAIL: String = "Wrong password or email"
 
     suspend fun createClient(client: Client) = clientDao.createClient(client)
 
@@ -58,8 +61,8 @@ class ClientRepository @Inject constructor(private val clientDao: ClientDao) {
 
             val userData: Task<DocumentSnapshot>? = getUserData()
             val client = ClientFirestore(email, name)
-            if (userData != null) {
-                userData.addOnCompleteListener {
+            userData?.let { data ->
+                data.addOnSuccessListener {
                     newClientRef.set(client).addOnSuccessListener {
                         createdId = newClientRef.id
                     }
@@ -69,12 +72,12 @@ class ClientRepository @Inject constructor(private val clientDao: ClientDao) {
         return createdId
     }
 
-    fun getUserData(): Task<DocumentSnapshot>? {
+    private fun getUserData(): Task<DocumentSnapshot>? {
         val uid: String? = this.getCurrentFirebaseUser()?.uid
-        if (uid != null) {
-            return this.getClientsCollection().document(uid).get()
+        return if (uid != null) {
+            this.getClientsCollection().document(uid).get()
         } else {
-            return null
+            null
         }
     }
 
